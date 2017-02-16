@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+	<head>
+	  	<meta charset="UTF-8"></meta>
+		<title>Betting Application</title>
+	    <link rel="stylesheet" href="styles/login.css"></link>
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"></link>
+	    <script src="https://use.fontawesome.com/4709fbc9b6.js"></script>
+	</head>
+	
+	<body>
+		<!--  <div th:replace="fragments/header :: header">&nbsp;</div>-->
+		
+		<div class="wrapper">
+			<div class="container1">
+				<h1 style="color:white;" th:text="Welcome"></h1>
+				
+				<form th:action="@{/login}" method="post">
+					<input type="text" name="username" placeholder="Username"></input>
+					<input type="password" name="password" placeholder="Password"></input>
+					<button type="submit" id="login" th:text="Login"></button>
+				</form>
+				<!-- <h3 style="color:white;" th:if="${param.error}" th:text="Invalid username and password"></h3>
+				<h3 style="color:white;" th:if="${param.logout}" th:text="You have been logged out"></h3> -->
+			</div>
+		</div>
+		<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+	    <script src="js/login.js"></script>
+	</body>
+</html>
