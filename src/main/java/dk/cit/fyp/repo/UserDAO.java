@@ -5,11 +5,11 @@ import java.util.List;
 import dk.cit.fyp.domain.User;
 
 public interface UserDAO {
-
-	User get(String username);
-
+	
+	User getEmployee(String username);
+	
 	void save(User user);
-
+	
 	List<User> findAll();
-
+	
 }

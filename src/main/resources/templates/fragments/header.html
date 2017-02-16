@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags">
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"></link>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="https://code.jquery.com/jquery-git2.min.js"></script>
+</head>
+<body>
+
+<!-- Navbar -->
+	
+	<div class="navbar navbar-inverse navbar-fixed-top" th:fragment="header">
+		<div class="container">
+	        <div class="navbar-header">
+	            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-collapse">
+	                <span class="icon-bar"></span>
+	                <span class="icon-bar"></span>
+	                <span class="icon-bar"></span>
+	            </button>
+	            <a class="navbar-brand" href="/review">Betting Manager</a> 
+	        </div>
+	        <div class="navbar-collapse collapse" id="nav-collapse">
+	            <ul class="nav navbar-nav navbar-right">
+	            	<li>
+	            		<a href="/translate" sec:authorize="isAuthenticated()">Translate</a>
+	            	</li>
+	            	<li>
+	            		<a href="/upload" sec:authorize="isAuthenticated()">Enter Image</a>
+	            	</li>
+	            	<li>
+	            		<a href="/review" sec:authorize="isAuthenticated()">Review Bets</a>
+	            	</li>
+            		<li>
+	            		<a href="/customers" sec:authorize="isAuthenticated()">Customers</a>
+	            	</li> 
+	            	<li sec:authorize="hasAuthority('ADMIN')">
+	            		<a href="/admin">Admin</a>
+	            	</li>
+	            	<li>
+	            		<a href="/logout" sec:authorize="isAuthenticated()">
+	            			<i class="fa fa-sign-out" aria-hidden="true"></i> Logout
+            			</a>
+           			</li>  
+	            </ul>
+	        </div>
+	        <!--/.nav-collapse -->
+        </div>
+	</div>
+<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</body>
+</html>

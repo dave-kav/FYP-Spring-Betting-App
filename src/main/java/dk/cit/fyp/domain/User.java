@@ -1,16 +1,20 @@
 package dk.cit.fyp.domain;
 
-import java.sql.Date;
-
 public class User {
 	
+	private int employeeID;
 	private String username;
 	private String password;
-	private String firstName;
-	private String lastName;
-	private Date DOB;
-	private float credit;
+	private boolean admin;
 	
+	public int getEmployeeID() {
+		return employeeID;
+	}
+
+	public void setEmployeeID(int employeeID) {
+		this.employeeID = employeeID;
+	}
+
 	public String getUsername() {
 		return username;
 	}
@@ -27,36 +31,12 @@ public class User {
 		this.password = password;
 	}
 	
-	public String getFirstName() {
-		return firstName;
+	public boolean isAdmin() {
+		return admin;
 	}
 	
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
 	}
-	
-	public String getLastName() {
-		return lastName;
-	}
-	
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-	
-	public Date getDOB() {
-		return DOB;
-	}
-	
-	public void setDOB(Date dOB) {
-		DOB = dOB;
-	}
-	
-	public float getCredit() {
-		return credit;
-	}
-	
-	public void setCredit(float credit) {
-		this.credit = credit;
-	}
-	
+
 }

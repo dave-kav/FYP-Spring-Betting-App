@@ -8,7 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import dk.cit.fyp.domain.Employee;
+import dk.cit.fyp.domain.User;
 import dk.cit.fyp.service.EmployeeService;
 import dk.cit.fyp.service.UserService;
 
@@ -23,8 +23,8 @@ public class BettingApplication extends WebMvcConfigurerAdapter implements Comma
 	@Override
 	public void run(String... arg0) throws Exception {
 
-		List<Employee> empList = employeeRepo.findAll();
-		for (Employee e: empList)
+		List<User> empList = employeeRepo.findAll();
+		for (User e: empList)
 			System.out.println(e.getUsername());
 	}
 

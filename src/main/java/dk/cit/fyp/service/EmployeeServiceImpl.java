@@ -5,31 +5,31 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import dk.cit.fyp.domain.Employee;
-import dk.cit.fyp.repo.EmployeeDAO;
+import dk.cit.fyp.domain.User;
+import dk.cit.fyp.repo.UserDAO;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 	
-	EmployeeDAO employeeRepo;
+	UserDAO employeeRepo;
 	
 	@Autowired
-	public EmployeeServiceImpl(EmployeeDAO employeeRepo) {
+	public EmployeeServiceImpl(UserDAO employeeRepo) {
 		this.employeeRepo = employeeRepo;
 	}
 
 	@Override
-	public Employee get(String username) {
+	public User get(String username) {
 		return employeeRepo.getEmployee(username);
 	}
 
 	@Override
-	public void save(Employee employee) {
-		employeeRepo.save(employee);
+	public void save(User user) {
+		employeeRepo.save(user);
 	}
 
 	@Override
-	public List<Employee> findAll() {
+	public List<User> findAll() {
 		return employeeRepo.findAll();
 	}
 

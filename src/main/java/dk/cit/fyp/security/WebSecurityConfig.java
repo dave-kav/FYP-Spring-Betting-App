@@ -31,6 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		        .and()
         	.formLogin()
 	            .loginPage("/login")
+	            .failureUrl("/login-error")
 	            .successHandler(new AuthenticationSuccessHandler() {	
 					@Override
 					public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse res,
@@ -42,7 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	            .and()
 	        .logout()
 	            .permitAll()
-	            .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/home");
+	            .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login");
     }
 
     @Autowired

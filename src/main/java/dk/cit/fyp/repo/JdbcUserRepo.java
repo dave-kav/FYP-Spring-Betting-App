@@ -20,38 +20,34 @@ public class JdbcUserRepo implements UserDAO {
 	}
 
 	@Override
-	public User get(String username) {
-		String sql = "SELECT * FROM Customers WHERE username = ?";
+	public User getEmployee(String username) {
+		String sql = "SELECT * FROM users WHERE username = ?";
 		return jdbcTemplate.queryForObject(sql, new Object[] {username}, new UserRowMapper());
-	}
+	}	
 
 	@Override
 	public void save(User user) {
-		if ( get(user.getUsername()) == null )
-			update(user);
+		if (user.getEmployeeID() != 0)
+			updateEmployee(user);
 		else
-			add(user);
+			addEmployee(user);
 	}
 	
-	private void add(User user) {
-		String sql = "INSERT INTO Customers (Username, Password, First_name, Last_name, DOB, Credit) "
-				+ "VALUES (?, ?, ?, ?, ?, ?)";
-		
-		jdbcTemplate.update(sql, new Object[] {user.getUsername(), user.getPassword(), user.getFirstName(), 
-				user.getLastName(), user.getDOB(), user.getCredit()});
+	private void addEmployee(User user) {
+		String sql = "INSERT INTO users (Username, Password, Admin) VALUES (?, ?, ?)";
+		jdbcTemplate.update(sql, new Object[] {user.getUsername(), 
+				user.getPassword(), user.isAdmin()});
 	}
 	
-	private void update(User user) {
-		String sql = "UPDATE Customers SET Password = ?, First_name = ?, Last_name = ?, DOB = ?, Credit = ?"
-				+ "WHERE username = ?";
-		
-		jdbcTemplate.update(sql, new Object[] {user.getPassword(), user.getFirstName(), 
-				user.getLastName(), user.getDOB(), user.getCredit(), user.getUsername()});
+	private void updateEmployee(User user) {
+		String sql = "UPDATE users SET Username = ?, Password = ?, Admin = ? WHERE Employee_id = ?";
+		jdbcTemplate.update(sql, new Object[] {user.getUsername(), 
+				user.getPassword(), user.isAdmin(), user.getEmployeeID()});
 	}
 
 	@Override
 	public List<User> findAll() {
-		String sql = "SELECT * FROM Customers";
+		String sql = "SELECT * FROM users";		
 		return jdbcTemplate.query(sql, new UserRowMapper());
 	}
 
