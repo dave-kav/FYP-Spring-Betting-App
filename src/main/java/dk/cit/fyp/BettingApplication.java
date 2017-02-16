@@ -9,16 +9,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import dk.cit.fyp.domain.User;
-import dk.cit.fyp.service.EmployeeService;
 import dk.cit.fyp.service.UserService;
+import dk.cit.fyp.service.CustomerService;
 
 @SpringBootApplication
 public class BettingApplication extends WebMvcConfigurerAdapter implements CommandLineRunner {
 	
 	@Autowired 
-	UserService userRepo;
+	CustomerService userRepo;
 	@Autowired
-	EmployeeService employeeRepo;
+	UserService employeeRepo;
 
 	@Override
 	public void run(String... arg0) throws Exception {

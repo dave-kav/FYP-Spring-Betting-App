@@ -2,14 +2,14 @@ package dk.cit.fyp.service;
 
 import java.util.List;
 
-import dk.cit.fyp.domain.Customer;
+import dk.cit.fyp.domain.User;
 
 public interface UserService {
 	
-Customer get(String username);
+	User get(String username);
 	
-	void save(Customer customer);
+	void save(User user);
 	
-	List<Customer> findAll();
+	List<User> findAll();
 
 }

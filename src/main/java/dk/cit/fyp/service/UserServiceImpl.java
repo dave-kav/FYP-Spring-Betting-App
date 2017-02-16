@@ -5,32 +5,31 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import dk.cit.fyp.domain.Customer;
-import dk.cit.fyp.repo.CustomerDAO;
+import dk.cit.fyp.domain.User;
+import dk.cit.fyp.repo.UserDAO;
 
 @Service
 public class UserServiceImpl implements UserService {
 	
-	private CustomerDAO userRepo;
+	UserDAO userRepo;
 	
 	@Autowired
-	public UserServiceImpl(CustomerDAO userRepo) {
-		this.userRepo = userRepo;
+	public UserServiceImpl(UserDAO employeeRepo) {
+		this.userRepo = employeeRepo;
 	}
 
 	@Override
-	public Customer get(String username) {
-		return userRepo.get(username);
+	public User get(String username) {
+		return userRepo.getEmployee(username);
 	}
 
 	@Override
-	public void save(Customer customer) {
-		userRepo.save(customer);
-
+	public void save(User user) {
+		userRepo.save(user);
 	}
 
 	@Override
-	public List<Customer> findAll() {
+	public List<User> findAll() {
 		return userRepo.findAll();
 	}
 
