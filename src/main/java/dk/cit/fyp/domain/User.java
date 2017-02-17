@@ -5,7 +5,7 @@ public class User {
 	private int employeeID;
 	private String username;
 	private String password;
-	private boolean admin;
+	private String role;
 	
 	public int getEmployeeID() {
 		return employeeID;
@@ -31,12 +31,16 @@ public class User {
 		this.password = password;
 	}
 	
-	public boolean isAdmin() {
-		return admin;
+	public String getRole() {
+		return role;
 	}
 	
-	public void setAdmin(boolean admin) {
-		this.admin = admin;
+	public void setRole(String role) {
+		this.role = role;
+	}
+	
+	public String toString() {
+		return employeeID + ", " + username + ", " + role;
 	}
 
 }

@@ -2,6 +2,7 @@ package dk.cit.fyp;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,13 +20,16 @@ public class BettingApplication extends WebMvcConfigurerAdapter implements Comma
 	CustomerService userRepo;
 	@Autowired
 	UserService employeeRepo;
+	
+	private final static Logger logger = Logger.getLogger(BettingApplication.class);
 
 	@Override
 	public void run(String... arg0) throws Exception {
 
-		List<User> empList = employeeRepo.findAll();
-		for (User e: empList)
-			System.out.println(e.getUsername());
+		List<User> userList = employeeRepo.findAll();
+		logger.info("Active Users:");
+		for (User u: userList)
+			logger.info(u.toString());
 	}
 
 	public static void main(String[] args) {

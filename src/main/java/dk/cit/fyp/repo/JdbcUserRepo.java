@@ -21,7 +21,7 @@ public class JdbcUserRepo implements UserDAO {
 
 	@Override
 	public User getEmployee(String username) {
-		String sql = "SELECT * FROM users WHERE username = ?";
+		String sql = "SELECT * FROM users u WHERE username = ? INNER JOIN authorities a ON a.username = u.username";
 		return jdbcTemplate.queryForObject(sql, new Object[] {username}, new UserRowMapper());
 	}	
 
@@ -34,20 +34,28 @@ public class JdbcUserRepo implements UserDAO {
 	}
 	
 	private void addEmployee(User user) {
-		String sql = "INSERT INTO users (Username, Password, Admin) VALUES (?, ?, ?)";
+		String sql = "INSERT INTO users (Username, Password) VALUES (?, ?)";
 		jdbcTemplate.update(sql, new Object[] {user.getUsername(), 
-				user.getPassword(), user.isAdmin()});
+				user.getPassword()});
+		
+		sql = "INSERT INTO authorities (username, authority) VALUES (?, ?)";
+		jdbcTemplate.update(sql, new Object[] {user.getUsername(), 
+				user.getRole()});
+		
 	}
 	
 	private void updateEmployee(User user) {
-		String sql = "UPDATE users SET Username = ?, Password = ?, Admin = ? WHERE Employee_id = ?";
+		String sql = "UPDATE users SET Username = ?, Password = ?, WHERE Employee_id = ?";
 		jdbcTemplate.update(sql, new Object[] {user.getUsername(), 
-				user.getPassword(), user.isAdmin(), user.getEmployeeID()});
+				user.getPassword(), user.getRole(), user.getEmployeeID()});
+		
+		sql = "UPDATE authorities SET authority = ? WHERE username = ?";
+		jdbcTemplate.update(sql, new Object[] {user.getRole(), user.getUsername()});
 	}
 
 	@Override
 	public List<User> findAll() {
-		String sql = "SELECT * FROM users";		
+		String sql = "SELECT * FROM users u INNER JOIN authorities a ON a.username = u.username";		
 		return jdbcTemplate.query(sql, new UserRowMapper());
 	}
 
