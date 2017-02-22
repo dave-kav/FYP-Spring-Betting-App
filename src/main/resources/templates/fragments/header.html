@@ -2,9 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags">
 
 <head>
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" 
+		  integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"></link>	
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"></link>
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script src="https://code.jquery.com/jquery-git2.min.js"></script>
 </head>
 <body>
 
@@ -18,30 +18,43 @@
 	                <span class="icon-bar"></span>
 	                <span class="icon-bar"></span>
 	            </button>
-	            <a class="navbar-brand" href="/review">Betting Manager</a> 
+	            <a class="navbar-brand" href="/">Betting Manager</a> 
 	        </div>
 	        <div class="navbar-collapse collapse" id="nav-collapse">
 	            <ul class="nav navbar-nav navbar-right">
-	            	<li>
-	            		<a href="/translate" sec:authorize="isAuthenticated()">Translate</a>
+	            	<li th:if="!${translatePage}">
+	            		<a href="/translate" sec:authorize="isAuthenticated()">
+	            			<i class="fa fa-comments" aria-hidden="true"></i> Translate
+            			</a>
 	            	</li>
-	            	<li>
-	            		<a href="/upload" sec:authorize="isAuthenticated()">Enter Image</a>
+	            	<li th:if="!${uploadPage}" >
+	            		<a href="/upload" sec:authorize="isAuthenticated()">
+	            			<i class="fa fa-upload" aria-hidden="true"></i> Upload
+            			</a>
 	            	</li>
-	            	<li>
-	            		<a href="/review" sec:authorize="isAuthenticated()">Review Bets</a>
+	            	<li  th:if="!${reviewPage}">
+	            		<a href="/review" sec:authorize="isAuthenticated()">
+	            			<i class="fa fa-list" aria-hidden="true"></i> Review Bets
+            			</a>
 	            	</li>
-            		<li>
-	            		<a href="/customers" sec:authorize="isAuthenticated()">Customers</a>
+            		<li th:if="!${customerPage}">
+	            		<a href="/customers" sec:authorize="isAuthenticated()">
+	            			<i class="fa fa-users" aria-hidden="true"></i> Customers
+            			</a>
 	            	</li> 
 	            	<li sec:authorize="hasAuthority('ADMIN')">
-	            		<a href="/admin">Admin</a>
+	            		<a th:if="!${adminPage}" href="/admin">Admin</a>
 	            	</li>
-	            	<li>
+	            	<li sec:authorize="isAuthenticated()" >
+	            		<a href="#">
+	            			<i class="fa fa-user-o" aria-hidden="true" th:text=" ${userName}"> </i>
+            			</a>
+           			</li>  
+           			<li>
 	            		<a href="/logout" sec:authorize="isAuthenticated()">
 	            			<i class="fa fa-sign-out" aria-hidden="true"></i> Logout
             			</a>
-           			</li>  
+           			</li>
 	            </ul>
 	        </div>
 	        <!--/.nav-collapse -->
