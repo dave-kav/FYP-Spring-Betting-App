@@ -17,7 +17,7 @@
 		
 		<!-- Panel on left of GUI -->
 		<div class="col-lg-4 img-rounded" id="left-box">
-			<img id="bet-img" th:if="${img}" th:src="${imgSrc}"></img>
+			<img id="bet-img" th:if="${isImg}" th:src="${imgSrc}"></img>
 		</div>
 		
 		<!-- Panel on right of GUI -->
@@ -26,7 +26,8 @@
 		
 				<!-- Upper right panel -->
 				<div class="row small-box img-rounded">
-					<div id="translate-fields">
+					<!-- Display if no image -->
+					<div th:unless="${isImg}" id="translate-fields">
 						<form class="form" th:action="@{/upload}" method="post" enctype="multipart/form-data">
 							<div class="form-group">
 							    <label for="inputFile">Upload File</label>
@@ -34,6 +35,22 @@
 							    <small id="fileHelp" class="form-text text-muted">
 							    	Please select the betting slip image to be translated. 
 						    	</small>
+							</div>
+							<button type="submit" class="btn btn-default pull-right">Submit</button>
+						</form>
+					</div>
+					<!-- Display to confirm image --> 
+					<div th:if="${isImg}" id="translate-fields">
+						<!-- For debugging purpose ONLY!! -->  
+						<p th:text="${filePath}"></p>  
+						<form class="form" th:action="@{/confirmUpload}" method="post" th:object="${bet}">
+							<div class="form-group">
+							    <label for="stake">Stake</label>
+							    <input type="text" class="form-control" name="stake" th:field="*{stake}" aria-describedby="stakeHelp"></input>
+							    <small id="stakeHelp" class="form-text text-muted">
+							    	Please enter the stake as indicated on the betting slip. 
+						    	</small>
+						    	<input type="hidden" th:attr="name=image" th:value="${filePath}" th:field="*{image}"></input>
 							</div>
 							<button type="submit" class="btn btn-default pull-right">Submit</button>
 						</form>

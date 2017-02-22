@@ -10,6 +10,8 @@ public interface BetDAO {
 	
 	void save(Bet bet);
 	
+	List<Bet> top();
+	
 	List<Bet> findAll();
 	
 	List<Bet> findAllOpen();

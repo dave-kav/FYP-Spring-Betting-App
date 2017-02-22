@@ -17,8 +17,7 @@
 		
 		<!-- Panel on left of GUI -->
 		<div class="col-lg-4 img-rounded" id="left-box">
-			<!--   Sample image hardcoded in for dev purposes, to be pulled from queue in server -->
-			<img src="/images/bet2.jpg" id="bet-img"></img>
+			<img th:if="${img}" th:src="${imgSrc}" id="bet-img"></img>
 		</div>
 		
 		<!-- Panel on right of GUI -->

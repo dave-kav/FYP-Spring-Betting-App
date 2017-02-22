@@ -29,6 +29,11 @@ public class BetServiceImpl implements BetService {
 	}
 
 	@Override
+	public List<Bet> top() {
+		return betRepo.top();
+	}
+	
+	@Override
 	public List<Bet> findAll() {
 		return betRepo.findAll();
 	}

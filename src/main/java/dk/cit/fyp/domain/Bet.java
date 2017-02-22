@@ -16,8 +16,6 @@ public class Bet {
 	private boolean winner;
 	// indicates whether bet has been translated i.e. details entered into system
 	private boolean translated;
-	// indicates whether bet has been translated manually or via OCR
-	private boolean translatedManually;
 	// indicates whether bet was placed via app
 	private boolean onlineBet;
 	// amount returned if bet is a winner
@@ -85,14 +83,6 @@ public class Bet {
 		this.translated = translated;
 	}
 	
-	public boolean isTranslatedManually() {
-		return translatedManually;
-	}
-	
-	public void setTranslatedManually(boolean translatedManually) {
-		this.translatedManually = translatedManually;
-	}
-	
 	public boolean isOnlineBet() {
 		return onlineBet;
 	}
@@ -123,6 +113,14 @@ public class Bet {
 
 	public void setOpen(boolean open) {
 		this.open = open;
+	}
+	
+	public boolean isPaid() {
+		return paid;
+	}
+
+	public void setPaid(boolean paid) {
+		this.paid = paid;
 	}
 	
 }

@@ -1,7 +1,9 @@
 package dk.cit.fyp.repo;
 
+import java.sql.ResultSet;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -13,6 +15,7 @@ import dk.cit.fyp.mapper.BetRowMapper;
 public class JdbcBetRepo implements BetDAO {
 	
 	private JdbcTemplate jdbcTemplate;
+	private final static Logger logger = Logger.getLogger(JdbcBetRepo.class);
 	
 	@Autowired
 	public JdbcBetRepo(JdbcTemplate jdbcTemplate) {
@@ -34,23 +37,32 @@ public class JdbcBetRepo implements BetDAO {
 	}
 	
 	private void add(Bet bet) {
-		String sql = "INSERT INTO Bets (Selection, Race_id, Stake, Winner, Translated, "
-				+ "Manual_translated, Online_bet, Winnings, Image, Monitored, Open) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO Bets (Stake, Online_bet, Image, Translated) "
+				+ "VALUES (?, ?, ?, ?)";
 		
-		jdbcTemplate.update(sql, new Object[] {bet.getSelection(), bet.getRaceID(), bet.getStake(), 
-				bet.isWinner(), bet.isTranslated(), bet.isTranslatedManually(), bet.isOnlineBet(),
-				bet.getWinnings(), bet.getImage(), bet.isMonitoredCustomer()});
+		jdbcTemplate.update(sql, new Object[] {bet.getStake(), 
+				bet.isOnlineBet(), bet.getImage(), bet.isTranslated()});
+		
+		logger.info("Added bet to database.");
 	}
 	
 	private void update(Bet bet) {
 		String sql = "UPDATE Bets SET Selection = ?, Race_id = ?, Stake = ?, Winner = ?,"
-				+ "Translated = ?, Manual_translated = ?, Online_bet = ?, Winnings = ?,"
+				+ "Translated = ?, Online_bet = ?, Winnings = ?,"
 				+ "Image = ?, Monitored = ?, Open = ? WHERE Bet_id = ?";
 		
 		jdbcTemplate.update(sql, new Object[] {bet.getSelection(), bet.getRaceID(), bet.getStake(), 
-				bet.isWinner(), bet.isTranslated(), bet.isTranslatedManually(), bet.isOnlineBet(),
+				bet.isWinner(), bet.isTranslated(), bet.isOnlineBet(),
 				bet.getWinnings(), bet.getImage(), bet.isMonitoredCustomer(), bet.isOpen(), bet.getBetID()});
+	}
+	
+	@Override
+	public List<Bet> top() {
+		String sql 	= "SELECT * FROM "
+					+ "Bets WHERE Translated=0 "
+					+ "ORDER BY Bet_id "
+					+ "LIMIT 1;";
+		return jdbcTemplate.query(sql, new BetRowMapper());
 	}
 
 	@Override

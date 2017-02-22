@@ -3,11 +3,14 @@ package dk.cit.fyp.service;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Base64;
 
 import org.springframework.stereotype.Service;
 
 @Service
 public class ImageServiceImpl implements ImageService {
+	
+	private static String last_file;
 
 	/**
 	 * Takes in a filePath and returns the file as bytes 
@@ -43,5 +46,23 @@ public class ImageServiceImpl implements ImageService {
         	}
         }
 		return fileBytes;
+	}
+	
+	@Override
+	public String getImageSource(byte[] bytes) {
+		byte[] encoded=Base64.getEncoder().encode(bytes);
+        String encodedString = new String(encoded);
+        return "data:image/jpeg;base64," + encodedString;
+	}
+
+	@Override
+	public void storeLastImgPath(String filePath) {
+		ImageServiceImpl.last_file = filePath;
+		
+	}
+
+	@Override
+	public String getLastImagePath() {
+		return ImageServiceImpl.last_file;
 	}
 }
