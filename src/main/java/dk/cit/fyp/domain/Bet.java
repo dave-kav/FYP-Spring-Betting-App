@@ -4,6 +4,7 @@ public class Bet {
 	
 	// Unique number auto-assigned to each bet via DB
 	private int betID;
+	private String timePlaced;
 	// E.g. horse that is being bet on
 	private String selection;
 	// particular race to which the selection and bet relate
@@ -12,6 +13,7 @@ public class Bet {
 	private float stake;
 	//location of captured betting slip image
 	private String image;
+	private boolean eachWay;
 	// indicates whether bet has won or lost
 	private boolean winner;
 	// indicates whether bet has been translated i.e. details entered into system
@@ -35,6 +37,14 @@ public class Bet {
 		this.betID = betID;
 	}
 	
+	public String getTimePlaced() {
+		return timePlaced;
+	}
+
+	public void setTimePlaced(String timePlaced) {
+		this.timePlaced = timePlaced;
+	}
+
 	public String getSelection() {
 		return selection;
 	}
@@ -67,6 +77,14 @@ public class Bet {
 		this.image = image;
 	}
 	
+	public boolean isEachWay() {
+		return eachWay;
+	}
+
+	public void setEachWay(boolean eachWay) {
+		this.eachWay = eachWay;
+	}
+
 	public boolean isWinner() {
 		return winner;
 	}

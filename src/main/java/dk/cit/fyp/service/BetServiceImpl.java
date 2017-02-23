@@ -40,6 +40,11 @@ public class BetServiceImpl implements BetService {
 	}
 	
 	@Override
+	public int getNumUntranslated() {
+		return betRepo.getNumUntranslated();
+	}
+	
+	@Override
 	public Model getNext(Model model) {
 		List<Bet> bets = betRepo.top();
 		if (bets.size() != 0) {
@@ -50,8 +55,9 @@ public class BetServiceImpl implements BetService {
 			
 			model.addAttribute("imgSrc", imgSrc);
 			model.addAttribute("img", true);
-			model.addAttribute("betID", bet.getBetID());
 			model.addAttribute("bet", bet);
+			model.addAttribute("race", new Race());
+			model.addAttribute("queue", getNumUntranslated());
 		}
 		else {
 			model.addAttribute("race", new Race());

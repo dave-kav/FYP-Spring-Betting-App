@@ -12,6 +12,8 @@ public interface BetDAO {
 	
 	List<Bet> top();
 	
+	int getNumUntranslated();
+	
 	List<Bet> findAll();
 	
 	List<Bet> findAllOpen();

@@ -2,6 +2,8 @@ package dk.cit.fyp.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 import org.springframework.jdbc.core.RowMapper;
 
@@ -14,8 +16,12 @@ public class BetRowMapper implements RowMapper<Bet>{
 		Bet b = new Bet();
 		
 		b.setBetID(rs.getInt("Bet_id"));
+		Timestamp date = rs.getTimestamp("Time_placed");
+		String dateString = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy").format(date);
+		b.setTimePlaced(dateString);
 		b.setSelection(rs.getString("Selection"));
 		b.setRaceID(rs.getInt("Race_id"));
+		b.setEachWay(rs.getBoolean("Each_way"));
 		b.setStake(rs.getFloat("Stake"));
 		b.setWinner(rs.getBoolean("Winner"));
 		b.setTranslated(rs.getBoolean("Translated"));

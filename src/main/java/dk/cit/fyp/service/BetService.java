@@ -14,6 +14,8 @@ public interface BetService {
 	
 	List<Bet> top();
 	
+	int getNumUntranslated();
+	
 	Model getNext(Model model);
 	
 	List<Bet> findAll();

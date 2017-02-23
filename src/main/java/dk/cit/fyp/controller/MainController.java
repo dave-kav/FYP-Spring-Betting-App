@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import dk.cit.fyp.domain.Bet;
 import dk.cit.fyp.domain.Race;
@@ -68,6 +69,7 @@ public class MainController {
 		bet.setSelection(tempBet.getSelection());
 		bet.setTranslated(true);
 		bet.setOpen(true);
+		bet.setEachWay(tempBet.isEachWay());
 		
 		logger.info("Race time: " + tempRace.getTime());
 		
@@ -98,7 +100,8 @@ public class MainController {
 	 */
 	@RequestMapping(value={"/upload"}, method=RequestMethod.POST)
 	public String uploadImage(Model model, Principal principal, 
-			@RequestParam MultipartFile file,HttpSession session) {
+			@RequestParam MultipartFile file,HttpSession session, 
+			RedirectAttributes attributes) {
 		
 		logger.info("POST request to '/upload'");
 		model.addAttribute("userName", principal.getName());
@@ -107,6 +110,18 @@ public class MainController {
 		// save image to file system
 		String path = session.getServletContext().getRealPath("/");  
         String fileName = file.getOriginalFilename();
+        
+        //check file selected and file is correct type
+        if (fileName.equals("")) {
+        	attributes.addFlashAttribute("noFile", "Please select a file.");
+        	return "redirect:upload";
+        } 
+        
+        if (!fileName.endsWith(".jpg")) {
+        	attributes.addFlashAttribute("wrongFile", "Please select a '.jpg' file.");
+        	return "redirect:upload";
+        }
+        
         byte bytes[] = null;
         try{  
         	bytes = file.getBytes();  

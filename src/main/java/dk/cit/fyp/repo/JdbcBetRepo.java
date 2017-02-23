@@ -48,11 +48,11 @@ public class JdbcBetRepo implements BetDAO {
 	private void update(Bet bet) {
 		String sql = "UPDATE Bets SET Selection = ?, Race_id = ?, Stake = ?, Winner = ?,"
 				+ "Translated = ?, Online_bet = ?, Winnings = ?,"
-				+ "Image = ?, Monitored = ?, Open = ? WHERE Bet_id = ?";
+				+ "Image = ?, Monitored = ?, Open = ?, Each_way =? WHERE Bet_id = ?";
 		
 		jdbcTemplate.update(sql, new Object[] {bet.getSelection(), bet.getRaceID(), bet.getStake(), 
-				bet.isWinner(), bet.isTranslated(), bet.isOnlineBet(),
-				bet.getWinnings(), bet.getImage(), bet.isMonitoredCustomer(), bet.isOpen(), bet.getBetID()});
+				bet.isWinner(), bet.isTranslated(), bet.isOnlineBet(), bet.getWinnings(), bet.getImage(), 
+				bet.isMonitoredCustomer(), bet.isOpen(), bet.isEachWay(), bet.getBetID()});
 	}
 	
 	@Override
@@ -62,6 +62,13 @@ public class JdbcBetRepo implements BetDAO {
 					+ "ORDER BY Bet_id "
 					+ "LIMIT 1;";
 		return jdbcTemplate.query(sql, new BetRowMapper());
+	}
+	
+	@Override
+	public int getNumUntranslated() {
+		String sql = "SELECT COUNT(*) FROM Bets "
+					+ "WHERE Translated=0";
+		return jdbcTemplate.queryForObject(sql, Integer.class);
 	}
 
 	@Override

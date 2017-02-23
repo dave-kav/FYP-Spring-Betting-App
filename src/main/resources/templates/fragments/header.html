@@ -46,7 +46,7 @@
 	            		<a th:if="!${adminPage}" href="/admin">Admin</a>
 	            	</li>
 	            	<li sec:authorize="isAuthenticated()" >
-	            		<a href="#">
+	            		<a href="#" id="user-name">
 	            			<i class="fa fa-user-o" aria-hidden="true" th:text=" ${userName}"> </i>
             			</a>
            			</li>  
