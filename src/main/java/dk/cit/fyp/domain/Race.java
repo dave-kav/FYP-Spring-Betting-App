@@ -1,12 +1,10 @@
 package dk.cit.fyp.domain;
 
-import java.sql.Date;
-
 public class Race {
 	
 	private int raceID;
-	private Date time;
-	private String racetrack;
+	private String time;
+	private String track;
 	
 	public int getRaceID() {
 		return raceID;
@@ -16,20 +14,20 @@ public class Race {
 		this.raceID = raceID;
 	}
 	
-	public Date getTime() {
+	public String  getTime() {
 		return time;
 	}
 	
-	public void setTime(Date date) {
-		this.time = date;
+	public void setTime(String time) {
+		this.time = time;
 	}
 	
-	public String getRacetrack() {
-		return racetrack;
+	public String getTrack() {
+		return track;
 	}
 	
-	public void setRacetrack(String racetrack) {
-		this.racetrack = racetrack;
+	public void setTrack(String track) {
+		this.track = track;
 	}
 
 }

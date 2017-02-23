@@ -17,14 +17,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import dk.cit.fyp.domain.Bet;
+import dk.cit.fyp.domain.Race;
 import dk.cit.fyp.service.BetService;
 import dk.cit.fyp.service.ImageService;
+import dk.cit.fyp.service.RaceService;
 
 @Controller
 public class MainController {
 	
 	@Autowired
 	BetService betService;
+	@Autowired
+	RaceService raceService;
 	@Autowired 
 	ImageService imgService;
 	
@@ -49,17 +53,33 @@ public class MainController {
 		model.addAttribute("userName", principal.getName());
 		model.addAttribute("translatePage", true);
 		
-		List<Bet> bets = betService.top();
-		if (bets.size() != 0) {
-			Bet bet = bets.get(0);
-			logger.info("Loading image for bet_id " + bet.getBetID());
-			byte[] bytes = imgService.getBytes(bet.getImage());
-			String imgSrc = imgService.getImageSource(bytes);
-			
-			model.addAttribute("imgSrc", imgSrc);
-			model.addAttribute("img", true);
-		}
+		model = betService.getNext(model);
 		
+		return "translate";
+	}
+	
+	@RequestMapping(value={"/translate"}, method=RequestMethod.POST)
+	public String translate(Model model, Principal principal, Bet tempBet, Race tempRace) {
+		logger.info("POST request to '/translate'");
+		model.addAttribute("userName", principal.getName());
+		model.addAttribute("translatePage", true);
+		
+		Bet bet = betService.get(tempBet.getBetID());
+		bet.setSelection(tempBet.getSelection());
+		bet.setTranslated(true);
+		bet.setOpen(true);
+		
+		logger.info("Race time: " + tempRace.getTime());
+		
+		List<Race> races = raceService.find(tempRace.getTime());
+		if (races.size() > 0) {
+			Race race = races.get(0);
+			bet.setRaceID(race.getRaceID());
+		}
+	
+		betService.save(bet);
+		
+		model = betService.getNext(model);				
 		return "translate";
 	}
 		
@@ -91,7 +111,7 @@ public class MainController {
         try{  
         	bytes = file.getBytes();  
 	          
-	        BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream(path+"/"+fileName));  
+	        BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream(path + "/" + fileName));  
 	        bout.write(bytes);  
 	        bout.flush();  
 	        bout.close();  

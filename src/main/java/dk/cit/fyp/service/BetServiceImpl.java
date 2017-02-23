@@ -2,20 +2,26 @@ package dk.cit.fyp.service;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import dk.cit.fyp.domain.Bet;
+import dk.cit.fyp.domain.Race;
 import dk.cit.fyp.repo.BetDAO;
 
 @Service
 public class BetServiceImpl implements BetService {
 	
+	private final static Logger logger = Logger.getLogger(BetServiceImpl.class);
 	private BetDAO betRepo;
+	private ImageService imgService;
 	
 	@Autowired
-	public BetServiceImpl(BetDAO betRepo) {
+	public BetServiceImpl(BetDAO betRepo, ImageService imgService) {
 		this.betRepo = betRepo;
+		this.imgService = imgService;
 	}
 
 	@Override
@@ -31,6 +37,24 @@ public class BetServiceImpl implements BetService {
 	@Override
 	public List<Bet> top() {
 		return betRepo.top();
+	}
+	
+	@Override
+	public Model getNext(Model model) {
+		List<Bet> bets = betRepo.top();
+		if (bets.size() != 0) {
+			Bet bet = bets.get(0);
+			logger.info("Loading image for bet_id " + bet.getBetID());
+			byte[] bytes = imgService.getBytes(bet.getImage());
+			String imgSrc = imgService.getImageSource(bytes);
+			
+			model.addAttribute("imgSrc", imgSrc);
+			model.addAttribute("img", true);
+			model.addAttribute("betID", bet.getBetID());
+			model.addAttribute("bet", bet);
+			model.addAttribute("race", new Race());
+		}
+		return model;
 	}
 	
 	@Override

@@ -2,6 +2,8 @@ package dk.cit.fyp.service;
 
 import java.util.List;
 
+import org.springframework.ui.Model;
+
 import dk.cit.fyp.domain.Bet;
 
 public interface BetService {
@@ -11,6 +13,8 @@ public interface BetService {
 	void save(Bet bet);
 	
 	List<Bet> top();
+	
+	Model getNext(Model model);
 	
 	List<Bet> findAll();
 	

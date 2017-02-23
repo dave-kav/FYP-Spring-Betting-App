@@ -7,6 +7,8 @@ import dk.cit.fyp.domain.Race;
 public interface RaceDAO {
 
 	Race get(int raceID);
+	
+	List<Race> find(String time);
 
 	void save(Race race);
 

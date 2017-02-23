@@ -29,6 +29,11 @@ public class RaceServiceImpl implements RaceService {
 	}
 
 	@Override
+	public List<Race> find(String time) {
+		return raceRepo.find(time);
+	}
+	
+	@Override
 	public List<Race> findAll() {
 		return raceRepo.findAll();
 	}

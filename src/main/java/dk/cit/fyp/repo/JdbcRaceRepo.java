@@ -1,5 +1,8 @@
 package dk.cit.fyp.repo;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,13 @@ public class JdbcRaceRepo implements RaceDAO {
 		String sql = "SELECT * FROM Races WHERE Race_id = ?";
 		return jdbcTemplate.queryForObject(sql, new Object[] {raceID}, new RaceRowMapper());
 	}
+	
+	@Override
+	public List<Race> find(String time) {
+		String sql = "SELECT * FROM Races WHERE Time = ?";
+		
+		return jdbcTemplate.query(sql, new Object[] {time}, new RaceRowMapper());
+	}
 
 	@Override
 	public void save(Race race) {
@@ -35,15 +45,24 @@ public class JdbcRaceRepo implements RaceDAO {
 	
 	private void add(Race race) {
 		String sql = "INSERT INTO Races (Time, Racetrack) VALUES (?, ?)";
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+		Date time = null;
+		try {
+			time = sdf.parse(race.getTime());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String formattedTime = sdf.format(time);
 		
-		jdbcTemplate.update(sql, new Object[] {race.getTime(), race.getRacetrack()});
+		jdbcTemplate.update(sql, new Object[] {formattedTime, race.getTrack()});
 	}
 	
 	private void update(Race race) {
 		String sql = "UPDATE Races SET Time = ?, Racetrack = ?"
 				+ "WHERE Race_id = ?";
 		
-		jdbcTemplate.update(sql, new Object[] {race.getTime(), race.getRacetrack(), race.getRaceID()});
+		jdbcTemplate.update(sql, new Object[] {race.getTime(), race.getTrack(), race.getRaceID()});
 	}
 
 	@Override

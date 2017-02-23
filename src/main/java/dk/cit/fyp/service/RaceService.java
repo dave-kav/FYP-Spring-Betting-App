@@ -10,6 +10,8 @@ public interface RaceService {
 	
 	void save(Race race);
 	
+	List<Race> find(String time);
+	
 	List<Race> findAll();
 
 }
