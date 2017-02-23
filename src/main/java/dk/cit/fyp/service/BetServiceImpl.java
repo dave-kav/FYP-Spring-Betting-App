@@ -52,7 +52,10 @@ public class BetServiceImpl implements BetService {
 			model.addAttribute("img", true);
 			model.addAttribute("betID", bet.getBetID());
 			model.addAttribute("bet", bet);
+		}
+		else {
 			model.addAttribute("race", new Race());
+			model.addAttribute("bet", new Bet());
 		}
 		return model;
 	}
