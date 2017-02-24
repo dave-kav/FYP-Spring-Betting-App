@@ -5,15 +5,77 @@
 	<head>
 	  	<meta charset="UTF-8"></meta>
 		<title>Betting Application</title>
-	    <link rel="stylesheet" href="styles/login.css"></link>
-	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"></link>
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
 	    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" 
 		  integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"></link>
+	    <link rel="stylesheet" type="text/css" href="/styles/main.css"></link>
+	    <title>Review Bets</title>
 	</head>
 	
 	<body>
 		<div th:replace="fragments/header :: header">&nbsp;</div>
 		
-		
+		<div id="table">
+			<table class="table table-striped table-hover table-scroll">
+				<thead class="thead-default">
+					<tr>
+						<th>Bet Number</th>
+						<th>Time placed</th>
+						<th>Stake</th>
+						<th>Each Way</th>
+						<th>Translated</th>
+						<th>Status</th>
+						<th>Winnings</th>
+						<th>Paid</th>
+						<th>Monitored</th>
+						<th>How Placed</th>
+					</tr>
+				</thead>
+				<!-- footer not working -->
+				<tfoot>
+					<tr>
+						<td>Total Bets:</td>
+						<td></td>
+						<td>Total Stakes:</td>
+						<td></td>
+						<td>Untranslated:</td>
+						<td></td>
+						<td>Total Winnings</td>
+						<td></td>
+						<td>Outstanding Payouts</td>
+						<td></td>
+					</tr>						
+				</tfoot>
+				<tbody>
+					<tr th:each="bet: ${bets}">
+						<td th:text="${bet.betID}"></td>
+						<td th:text="${bet.timePlaced}"></td>
+						<td th:text="${bet.stake}"></td>
+						<td th:switch="${bet.eachWay}">
+							<span th:case="true">Yes</span>
+							<span th:case="false">No</span>
+						</td>
+						<td th:switch="${bet.translated}">
+							<span th:case="true">Yes</span>
+							<span th:case="false">No</span>
+						</td>
+						<td th:text="${bet.status}"></td>
+						<td th:text="${bet.winnings}"></td>
+						<td th:switch="${bet.paid}">
+							<span th:case="true">Yes</span>
+							<span th:case="false">No</span>
+						</td>						
+						<td th:switch="${bet.monitoredCustomer}">
+							<span th:case="true">Yes</span>
+							<span th:case="false">No</span>
+						</td>
+						<td th:switch="${bet.onlineBet}">
+							<span th:case="true">Online</span>
+							<span th:case="false">In store</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</body>
 </html>

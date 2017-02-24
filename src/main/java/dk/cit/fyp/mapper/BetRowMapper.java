@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import org.springframework.jdbc.core.RowMapper;
 
 import dk.cit.fyp.domain.Bet;
+import dk.cit.fyp.domain.Status;
 
 public class BetRowMapper implements RowMapper<Bet>{
 
@@ -23,12 +24,12 @@ public class BetRowMapper implements RowMapper<Bet>{
 		b.setRaceID(rs.getInt("Race_id"));
 		b.setEachWay(rs.getBoolean("Each_way"));
 		b.setStake(rs.getFloat("Stake"));
-		b.setWinner(rs.getBoolean("Winner"));
 		b.setTranslated(rs.getBoolean("Translated"));
 		b.setOnlineBet(rs.getBoolean("Online_bet"));
 		b.setWinnings(rs.getFloat("Winnings"));
 		b.setImage(rs.getString("Image"));
 		b.setMonitoredCustomer(rs.getBoolean("Monitored"));
+		b.setStatus(Status.valueOf(rs.getString("Status")));
 		
 		return b;
 	}

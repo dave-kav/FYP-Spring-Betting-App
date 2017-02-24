@@ -2,9 +2,9 @@ html, body {
 	height: 80vh;
 }
 
-body {
+.content {
 	padding-top: 90px;
-}     
+} 
 
 #left-box {
 	border: 2px solid lightgray;
@@ -53,4 +53,25 @@ body {
 
 .no-bets-translate {
 	padding: 90px 250px;
+}
+
+#table {
+	padding: 30px;
+	padding-top:51px;
+}
+
+.table-scroll tbody {
+    position: absolute;
+    overflow-y: scroll;
+    height: 85vh;
+}
+
+.table-scroll tr {
+    width: 98%;
+    table-layout: fixed;
+    display: inline-table;
+}
+
+.table-scroll thead > tr > th {
+    border: none;
 }

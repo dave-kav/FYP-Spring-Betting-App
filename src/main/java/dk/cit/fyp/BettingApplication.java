@@ -1,6 +1,5 @@
 package dk.cit.fyp;
 
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import dk.cit.fyp.domain.User;
 import dk.cit.fyp.service.UserService;
 import dk.cit.fyp.service.CustomerService;
 
@@ -25,11 +23,6 @@ public class BettingApplication extends WebMvcConfigurerAdapter implements Comma
 
 	@Override
 	public void run(String... arg0) throws Exception {
-
-		List<User> userList = employeeRepo.findAll();
-		logger.info("Active Users:");
-		for (User u: userList)
-			logger.info(u.toString());
 	}
 
 	public static void main(String[] args) {

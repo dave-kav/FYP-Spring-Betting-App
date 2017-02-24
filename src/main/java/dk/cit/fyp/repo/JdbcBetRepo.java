@@ -46,13 +46,15 @@ public class JdbcBetRepo implements BetDAO {
 	}
 	
 	private void update(Bet bet) {
-		String sql = "UPDATE Bets SET Selection = ?, Race_id = ?, Stake = ?, Winner = ?,"
-				+ "Translated = ?, Online_bet = ?, Winnings = ?,"
-				+ "Image = ?, Monitored = ?, Open = ?, Each_way =? WHERE Bet_id = ?";
+		String sql = "UPDATE Bets SET Selection = ?, Race_id = ?, Stake = ?,"
+				+ "Translated = ?, Online_bet = ?, Winnings = ?, Image = ?, "
+				+ "Monitored = ?, Status = ?, Each_way =? WHERE Bet_id = ?";
+		
+		logger.info(bet.getStatus().toString());
 		
 		jdbcTemplate.update(sql, new Object[] {bet.getSelection(), bet.getRaceID(), bet.getStake(), 
-				bet.isWinner(), bet.isTranslated(), bet.isOnlineBet(), bet.getWinnings(), bet.getImage(), 
-				bet.isMonitoredCustomer(), bet.isOpen(), bet.isEachWay(), bet.getBetID()});
+				bet.isTranslated(), bet.isOnlineBet(), bet.getWinnings(), bet.getImage(), 
+				bet.isMonitoredCustomer(), bet.getStatus().toString(), bet.isEachWay(), bet.getBetID()});
 	}
 	
 	@Override
@@ -73,7 +75,7 @@ public class JdbcBetRepo implements BetDAO {
 
 	@Override
 	public List<Bet> findAll() {
-		String sql = "SELECT * FROM Bets";		
+		String sql = "SELECT * FROM Bets ORDER BY Bet_id DESC";		
 		return jdbcTemplate.query(sql, new BetRowMapper());
 	}
 

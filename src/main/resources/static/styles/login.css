@@ -11,6 +11,7 @@ body {
   font-family: 'Source Sans Pro', sans-serif;
   color: white;
   font-weight: 300;
+  height: 50%;
 }
 
 .wrapper {
@@ -34,17 +35,9 @@ body {
   max-width: 600px;
   margin: 0 auto;
   padding: 80px 0;
+  padding-top: 220px;
   height: 400px;
   text-align: center;
-  font-color: white;
-}
-.container1 h1 {
-  font-size: 40px;
-  -webkit-transition-duration: 1s;
-          transition-duration: 1s;
-  -webkit-transition-timing-function: ease-in-put;
-          transition-timing-function: ease-in-put;
-  font-weight: 200;
   font-color: white;
 }
 

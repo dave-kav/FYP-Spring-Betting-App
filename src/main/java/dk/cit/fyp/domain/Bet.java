@@ -14,8 +14,6 @@ public class Bet {
 	//location of captured betting slip image
 	private String image;
 	private boolean eachWay;
-	// indicates whether bet has won or lost
-	private boolean winner;
 	// indicates whether bet has been translated i.e. details entered into system
 	private boolean translated;
 	// indicates whether bet was placed via app
@@ -24,8 +22,8 @@ public class Bet {
 	private float winnings;
 	// indicates whether bet has been placed by a customer of interest e.g. high staking customer
 	private boolean monitoredCustomer;
-	// indicates if bet needs to be settled
-	private boolean open;
+	// indicates if bet needs to be settled, is winner or loser
+	private Status status;
 	//indicates if bet has been paid out or not
 	private boolean paid;
 	
@@ -85,14 +83,6 @@ public class Bet {
 		this.eachWay = eachWay;
 	}
 
-	public boolean isWinner() {
-		return winner;
-	}
-	
-	public void setWinner(boolean winner) {
-		this.winner = winner;
-	}
-	
 	public boolean isTranslated() {
 		return translated;
 	}
@@ -125,12 +115,12 @@ public class Bet {
 		this.monitoredCustomer = monitoredCustomer;
 	}
 	
-	public boolean isOpen() {
-		return open;
+	public Status getStatus() {
+		return status;
 	}
 
-	public void setOpen(boolean open) {
-		this.open = open;
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 	
 	public boolean isPaid() {

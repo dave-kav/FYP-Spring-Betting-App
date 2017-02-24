@@ -68,7 +68,6 @@ public class MainController {
 		Bet bet = betService.get(tempBet.getBetID());
 		bet.setSelection(tempBet.getSelection());
 		bet.setTranslated(true);
-		bet.setOpen(true);
 		bet.setEachWay(tempBet.isEachWay());
 		
 		logger.info("Race time: " + tempRace.getTime());
@@ -161,12 +160,20 @@ public class MainController {
 		logger.info(imagePath);
 		
 		bet.setImage(imagePath);
-		bet.setOnlineBet(false);
-		bet.setTranslated(false);
-		
 		betService.save(bet);
 		
         return "upload";  
+	}
+	
+	@RequestMapping(value={"/review"}, method=RequestMethod.GET)
+	public String showReviewPage(Model model, Principal principal) {
+		logger.info("GET request to '/review'");
+		model.addAttribute("userName", principal.getName());
+		model.addAttribute("reviewPage", true);
+		
+		List<Bet> bets = betService.findAll();
+		model.addAttribute("bets", bets);
+		return "review";
 	}
 	
 	@RequestMapping(value={"/admin"}, method=RequestMethod.GET)
@@ -183,14 +190,6 @@ public class MainController {
 		model.addAttribute("userName", principal.getName());
 		model.addAttribute("customerPage", true);
 		return "customers";
-	}
-	
-	@RequestMapping(value={"/review"}, method=RequestMethod.GET)
-	public String showReviewPage(Model model, Principal principal) {
-		logger.info("GET request to '/review'");
-		model.addAttribute("userName", principal.getName());
-		model.addAttribute("reviewPage", true);
-		return "review";
 	}
 
 }
