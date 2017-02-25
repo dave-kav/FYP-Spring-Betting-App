@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -165,7 +166,7 @@ public class MainController {
         return "upload";  
 	}
 	
-	@RequestMapping(value={"/review"}, method=RequestMethod.GET)
+	@RequestMapping(value={"/bets/all"}, method=RequestMethod.GET)
 	public String showReviewPage(Model model, Principal principal) {
 		logger.info("GET request to '/review'");
 		model.addAttribute("userName", principal.getName());
@@ -174,6 +175,20 @@ public class MainController {
 		List<Bet> bets = betService.findAll();
 		model.addAttribute("bets", bets);
 		return "review";
+	}
+	
+	@RequestMapping(value={"/bets/{betID}"}, method=RequestMethod.GET)
+	public String showBet(Model model, Principal principal, @PathVariable(value="betID") String betID) {
+		logger.info("GET request to '/review'");
+		model.addAttribute("userName", principal.getName());
+		model.addAttribute("reviewPage", true);
+		
+		logger.info("BET ID:" + betID);
+		
+		int betIDint = Integer.parseInt(betID);
+		Bet bet = betService.get(betIDint);
+		model.addAttribute("bet", bet);
+		return "edit";
 	}
 	
 	@RequestMapping(value={"/admin"}, method=RequestMethod.GET)

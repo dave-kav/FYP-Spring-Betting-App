@@ -75,3 +75,12 @@ html, body {
 .table-scroll thead > tr > th {
     border: none;
 }
+
+.hand-cursor { 
+	cursor: pointer; 
+	cursor: hand; 
+}
+
+.table-hoverplus>tbody>tr:hover>td {
+ 	background-color: #eeeeee;
+}
