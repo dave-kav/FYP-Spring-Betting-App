@@ -136,15 +136,15 @@ public class MainController {
         }
         
         // encode bytes for display
-        String filePath = path  + fileName;
-        logger.info(filePath);
-
         String imgSrc = imgService.getImageSource(bytes);
         
 		model.addAttribute("bet", new Bet());
         model.addAttribute("isImg", true);
 		model.addAttribute("imgSrc", imgSrc);
-		
+
+		//temporary store for display 
+        String filePath = path  + fileName;
+        logger.info(filePath);
 		imgService.storeLastImgPath(filePath); 
 		
         return "upload";  
@@ -160,7 +160,7 @@ public class MainController {
 		String imagePath = imgService.getLastImagePath();
 		logger.info(imagePath);
 		
-		bet.setImage(imagePath);
+		bet.setImagePath(imagePath);
 		betService.save(bet);
 		
         return "upload";  
@@ -179,15 +179,22 @@ public class MainController {
 	
 	@RequestMapping(value={"/bets/{betID}"}, method=RequestMethod.GET)
 	public String showBet(Model model, Principal principal, @PathVariable(value="betID") String betID) {
-		logger.info("GET request to '/review'");
+		logger.info("GET request to '/review/'" + betID);
 		model.addAttribute("userName", principal.getName());
 		model.addAttribute("reviewPage", true);
-		
-		logger.info("BET ID:" + betID);
 		
 		int betIDint = Integer.parseInt(betID);
 		Bet bet = betService.get(betIDint);
 		model.addAttribute("bet", bet);
+		
+		byte[] bytes = imgService.getBytes(bet.getImagePath());
+		String imgSrc = imgService.getImageSource(bytes);
+		
+		model.addAttribute("imgSrc", imgSrc);
+		//for dev. only, remove when other functionality is implemented	
+		model.addAttribute("race", new Race());
+		
+		logger.info(bet.toString());
 		return "edit";
 	}
 	

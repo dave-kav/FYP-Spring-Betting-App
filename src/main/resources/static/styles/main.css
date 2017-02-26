@@ -56,7 +56,7 @@ html, body {
 }
 
 #table {
-	padding: 30px;
+	padding: 60px;
 	padding-top:51px;
 }
 
@@ -67,7 +67,7 @@ html, body {
 }
 
 .table-scroll tr {
-    width: 98%;
+    width: 95%;
     table-layout: fixed;
     display: inline-table;
 }

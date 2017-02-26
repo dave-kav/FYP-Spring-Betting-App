@@ -12,7 +12,7 @@ public class Bet {
 	// amount being bet
 	private float stake;
 	//location of captured betting slip image
-	private String image;
+	private String imagePath;
 	private boolean eachWay;
 	// indicates whether bet has been translated i.e. details entered into system
 	private boolean translated;
@@ -67,12 +67,12 @@ public class Bet {
 		this.stake = stake;
 	}
 	
-	public String getImage() {
-		return image;
+	public String getImagePath() {
+		return imagePath;
 	}
 	
-	public void setImage(String image) {
-		this.image = image;
+	public void setImagePath(String image) {
+		this.imagePath = image;
 	}
 	
 	public boolean isEachWay() {
@@ -129,6 +129,14 @@ public class Bet {
 
 	public void setPaid(boolean paid) {
 		this.paid = paid;
+	}
+
+	@Override
+	public String toString() {
+		return "Bet [betID=" + betID + ", timePlaced=" + timePlaced + ", selection=" + selection + ", raceID=" + raceID
+				+ ", stake=" + stake + ", image=" + imagePath + ", eachWay=" + eachWay + ", translated=" + translated
+				+ ", onlineBet=" + onlineBet + ", winnings=" + winnings + ", monitoredCustomer=" + monitoredCustomer
+				+ ", status=" + status + ", paid=" + paid + "]";
 	}
 	
 }

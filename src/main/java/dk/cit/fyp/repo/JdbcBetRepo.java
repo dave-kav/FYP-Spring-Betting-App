@@ -40,7 +40,7 @@ public class JdbcBetRepo implements BetDAO {
 				+ "VALUES (?, ?, ?, ?)";
 		
 		jdbcTemplate.update(sql, new Object[] {bet.getStake(), 
-				bet.isOnlineBet(), bet.getImage(), bet.isTranslated()});
+				bet.isOnlineBet(), bet.getImagePath(), bet.isTranslated()});
 		
 		logger.info("Added bet to database.");
 	}
@@ -53,7 +53,7 @@ public class JdbcBetRepo implements BetDAO {
 		logger.info(bet.getStatus().toString());
 		
 		jdbcTemplate.update(sql, new Object[] {bet.getSelection(), bet.getRaceID(), bet.getStake(), 
-				bet.isTranslated(), bet.isOnlineBet(), bet.getWinnings(), bet.getImage(), 
+				bet.isTranslated(), bet.isOnlineBet(), bet.getWinnings(), bet.getImagePath(), 
 				bet.isMonitoredCustomer(), bet.getStatus().toString(), bet.isEachWay(), bet.getBetID()});
 	}
 	

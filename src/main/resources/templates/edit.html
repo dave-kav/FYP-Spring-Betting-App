@@ -26,7 +26,47 @@
 				<div id="right-box">
 					<!-- Right panel -->
 					<div id="left-box" class="row img-rounded">
-
+						<div class="fields">
+							<form class="form" th:action="@{/translate}" th:method="post">
+								<div class="form-group row">
+								    <label for="betID" class="col-sm-2 col-form-label">Bet Number:</label>
+								    <div class="col-sm-10">
+								    	<p class="form-control" name="betID" th:text="${bet.betID}"></p>
+								    </div>
+								</div>
+								<div class="form-group row">
+								    <label for="race" class="col-sm-2 col-form-label">Race Time: </label>
+								    <div class="col-sm-10">
+								    	<input type="time" class="form-control" name="race" th:field="*{race.time}" th:autofocus="true"></input>
+								    </div>
+								</div>
+								<div class="form-group row">
+								    <label for="track" class="col-sm-2 col-form-label">Track:</label>
+								    <div class="col-sm-10">
+								    	<input type="text" class="form-control" name="track" placeholder="Cheltenham" th:field="${race.track}"></input>
+								    </div>
+								</div>
+								<div class="form-group row">
+									<label for="selection" class="col-sm-2 col-form-label">Selection: </label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control" name="selection" th:value="${bet.selection}"></input>
+									</div>
+							  	</div>
+							  	<div class="form-group row">
+									<label for="selection" class="col-sm-2 col-form-label">Odds: </label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control" name="odds" placeholder="11/4"></input>								
+									</div>
+							  	</div>
+							  	<input type="hidden" name="BetID" th:field="${bet.betID}" th:value="${betID}"></input>
+							  	<div class="checkbox" id="check-ew">
+	    							<label>
+		      							<input type="checkbox" th:name="eachWay" th:field="${bet.eachWay}">Each-way</input>
+	    							</label>	
+	  							</div>
+							 	<button type="submit" class="btn btn-default pull-right">Submit</button>
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>
