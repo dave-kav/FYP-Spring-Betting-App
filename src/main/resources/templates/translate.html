@@ -16,7 +16,7 @@
 	<div class="container">
 		<div class="row">
 			<!-- Panel on left of GUI -->
-			<div class="col-lg-4 img-rounded" id="left-box">
+			<div class="col-sm-4 img-rounded" id="left-box">
 				<img th:if="${img}" th:src="${imgSrc}" id="bet-img"></img>
 				<p th:if="${queue}" id="bets-left" class="h3">Bets to be translated:
 					<small class="text-muted" th:text="${queue}"></small>
@@ -25,7 +25,7 @@
 			</div>
 			
 			<!-- Panel on right of GUI -->
-			<div class="col-lg-8">
+			<div class="col-sm-8">
 				<div id="right-box">
 			
 					<!-- Upper right panel -->

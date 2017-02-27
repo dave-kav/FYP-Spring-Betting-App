@@ -23,26 +23,26 @@
 	        <div class="navbar-collapse collapse" id="nav-collapse">
 	            <ul class="nav navbar-nav navbar-right">
 	            	<li th:if="!${translatePage}">
-	            		<a href="/translate" sec:authorize="isAuthenticated()">
+	            		<a href="/translate" sec:authorize="isAuthenticated()" th:accesskey="t">
 	            			<i class="fa fa-comments" aria-hidden="true"></i> Translate
             			</a>
 	            	</li>
 	            	<li th:if="!${uploadPage}" >
-	            		<a href="/upload" sec:authorize="isAuthenticated()">
+	            		<a href="/upload" sec:authorize="isAuthenticated()" th:accesskey="u">
 	            			<i class="fa fa-upload" aria-hidden="true"></i> Upload
             			</a>
 	            	</li>
 	            	<li  th:if="!${reviewPage}">
-	            		<a href="/bets/all" sec:authorize="isAuthenticated()">
+	            		<a href="/bets/all" sec:authorize="isAuthenticated()" th:accesskey="r">
 	            			<i class="fa fa-list" aria-hidden="true"></i> Review Bets
             			</a>
 	            	</li>
             		<li th:if="!${customerPage}">
-	            		<a href="/customers" sec:authorize="isAuthenticated()">
+	            		<a href="/customers" sec:authorize="isAuthenticated()" th:accesskey="c">
 	            			<i class="fa fa-users" aria-hidden="true"></i> Customers
             			</a>
 	            	</li> 
-	            	<li sec:authorize="hasAuthority('ADMIN')">
+	            	<li sec:authorize="hasAuthority('ADMIN')" th:accesskey="a">
 	            		<a th:if="!${adminPage}" href="/admin">Admin</a>
 	            	</li>
 	            	<li sec:authorize="isAuthenticated()" >

@@ -139,7 +139,6 @@ public class MainController {
         String imgSrc = imgService.getImageSource(bytes);
         
 		model.addAttribute("bet", new Bet());
-        model.addAttribute("isImg", true);
 		model.addAttribute("imgSrc", imgSrc);
 
 		//temporary store for display 
@@ -195,6 +194,7 @@ public class MainController {
 		model.addAttribute("race", new Race());
 		
 		logger.info(bet.toString());
+		logger.info(bet.getStatus());
 		return "edit";
 	}
 	

@@ -17,12 +17,18 @@
 		<div class="row">
 			
 			<!-- Panel on left of GUI -->
-			<div class="col-lg-4 img-rounded" id="left-box">
+			<div class="col-sm-4 img-rounded" id="left-box">
 				<img id="bet-img" th:if="${imgSrc}" th:src="${imgSrc}"></img>
+				<div th:switch="${bet.status}">
+					<p th:case="WINNER" class="h3">WINNER!!!!</p>
+					<p th:case="LOSER" class="h3">LOSER!!!!</p>
+					<p th:case="OPEN" class="h3">OPEN BET!</p>
+					<p th:case="*" class="h3">DEFAULT!</p>
+				</div>
 			</div>
 			
 			<!-- Panel on right of GUI -->
-			<div class="col-lg-8">
+			<div class="col-sm-8">
 				<div id="right-box">
 					<!-- Right panel -->
 					<div id="left-box" class="row img-rounded">
@@ -31,7 +37,19 @@
 								<div class="form-group row">
 								    <label for="betID" class="col-sm-2 col-form-label">Bet Number:</label>
 								    <div class="col-sm-10">
-								    	<p class="form-control" name="betID" th:text="${bet.betID}"></p>
+								    	<input class="form-control" name="betID" th:value="${bet.betID}" th:disabled="true"></input>
+								    </div>
+								</div>
+								<div class="form-group row">
+								    <label for="timePlaced" class="col-sm-2 col-form-label">Time Placed:</label>
+								    <div class="col-sm-10">
+								    	<input class="form-control" name="timePlaced" th:value="${bet.timePlaced}" th:disabled="true"></input>
+								    </div>
+								</div>
+								<div class="form-group row">
+								    <label for="stake" class="col-sm-2 col-form-label">Stake:</label>
+								    <div class="col-sm-10">
+								    	<input class="form-control" name="stake" th:value="${bet.stake}"></input>
 								    </div>
 								</div>
 								<div class="form-group row">
@@ -47,18 +65,29 @@
 								    </div>
 								</div>
 								<div class="form-group row">
-									<label for="selection" class="col-sm-2 col-form-label">Selection: </label>
+									<label for="selection" class="col-sm-2 col-form-label">Selection:</label>
 									<div class="col-sm-10">
 										<input type="text" class="form-control" name="selection" th:value="${bet.selection}"></input>
 									</div>
 							  	</div>
 							  	<div class="form-group row">
-									<label for="selection" class="col-sm-2 col-form-label">Odds: </label>
+									<label for="odds" class="col-sm-2 col-form-label">Odds:</label>
 									<div class="col-sm-10">
 										<input type="text" class="form-control" name="odds" placeholder="11/4"></input>								
 									</div>
 							  	</div>
-							  	<input type="hidden" name="BetID" th:field="${bet.betID}" th:value="${betID}"></input>
+							  	<div class="form-group row">
+									<label for="selection" class="col-sm-2 col-form-label">Status:</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control" name="odds" th:value="${bet.status}" th:disabled="true"></input>								
+									</div>
+							  	</div>
+								<div th:if="${bet.winnings} > 0" class="form-group row">
+									<label for="winnings" class="col-sm-2 col-form-label">Winnings:</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control" name="winnings" th:value="${bet.winnings}" th:disabled="true"></input>								
+									</div>
+						  		</div>	  								
 							  	<div class="checkbox" id="check-ew">
 	    							<label>
 		      							<input type="checkbox" th:name="eachWay" th:field="${bet.eachWay}">Each-way</input>

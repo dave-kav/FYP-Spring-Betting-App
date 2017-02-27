@@ -8,6 +8,11 @@
 	    <link rel="stylesheet" href="styles/login.css"></link>
 	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"></link>
 	    <script src="https://use.fontawesome.com/4709fbc9b6.js"></script>
+	    <script>
+	    function full() {
+	    	document.documentElement.webkitRequestFullScreen()
+	    }
+	    </script>
 	</head>
 	
 	<body>
@@ -15,11 +20,11 @@
 		
 		<div class="wrapper">
 			<div class="container1">
-				<p th:if="${loginError}" class="error">Wrong user or password</p>
+				<h4 class="text-danger" th:if="${loginError}">Invalid username or password!</h4>
 				<form th:action="@{/login}" method="post">
-					<input type="text" name="username" placeholder="Username"></input>
+					<input type="text" name="username" placeholder="Username" th:autofocus="true"></input>
 					<input type="password" name="password" placeholder="Password"></input>
-					<button type="submit" id="login" th:text="Login"></button>
+					<button type="submit" id="login" th:text="Login" onclick=""></button>
 				</form>
 			</div>
 		</div>
