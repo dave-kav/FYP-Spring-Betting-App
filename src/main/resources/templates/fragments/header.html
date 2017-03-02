@@ -42,8 +42,8 @@
 	            			<i class="fa fa-users" aria-hidden="true"></i> Customers
             			</a>
 	            	</li> 
-	            	<li sec:authorize="hasAuthority('ADMIN')" th:accesskey="a">
-	            		<a th:if="!${adminPage}" href="/admin">Admin</a>
+	            	<li sec:authorize="hasAuthority('ADMIN')">
+	            		<a th:if="!${adminPage}" href="/admin" th:accesskey="a">Admin</a>
 	            	</li>
 	            	<li sec:authorize="isAuthenticated()" >
 	            		<a href="#" id="user-name">

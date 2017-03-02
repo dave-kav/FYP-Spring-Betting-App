@@ -96,5 +96,18 @@ public class JdbcBetRepo implements BetDAO {
 		String sql = "SELECT * FROM Bets WHERE Winner == 1 AND Paid == 0";
 		return jdbcTemplate.query(sql, new BetRowMapper());
 	}
-
+	
+	@Override 
+	public void onScreen(Bet bet) {
+		String sql = "UPDATE Bets SET On_screen = true WHERE Bet_id = ?";
+		
+		jdbcTemplate.update(sql, new Object[] {bet.getBetID()});
+	}
+	
+	@Override 
+	public void offScreen(Bet bet) {
+		String sql = "UPDATE Bets SET On_screen = false WHERE Bet_id = ?";
+		
+		jdbcTemplate.update(sql, new Object[] {bet.getBetID()});
+	}
 }

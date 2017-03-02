@@ -19,7 +19,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public Customer get(String username) {
+	public List<Customer> get(String username) {
 		return customerRepo.get(username);
 	}
 

@@ -20,14 +20,14 @@ public class JdbcCustomerRepo implements CustomerDAO {
 	}
 
 	@Override
-	public Customer get(String username) {
+	public List<Customer> get(String username) {
 		String sql = "SELECT * FROM Customers WHERE username = ?";
-		return jdbcTemplate.queryForObject(sql, new Object[] {username}, new CustomerRowMapper());
+		return jdbcTemplate.query(sql, new Object[] {username}, new CustomerRowMapper());
 	}
 
 	@Override
 	public void save(Customer customer) {
-		if ( get(customer.getUsername()) == null )
+		if ( get(customer.getUsername()) != null )
 			update(customer);
 		else
 			add(customer);

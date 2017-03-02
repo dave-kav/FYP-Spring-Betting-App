@@ -25,5 +25,9 @@ public interface BetService {
 	List<Bet> findAllPaid();
 	
 	List<Bet> findAllUnpaid();	
+
+	void onScreen(Bet bet);
+
+	void offScreen(Bet bet);
 	
 }

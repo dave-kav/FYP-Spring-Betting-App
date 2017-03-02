@@ -2,17 +2,17 @@ package dk.cit.fyp.domain;
 
 public class User {
 	
-	private int employeeID;
+	private int id;
 	private String username;
 	private String password;
-	private String role;
+	private boolean admin;
 	
-	public int getEmployeeID() {
-		return employeeID;
+	public int getID() {
+		return id;
 	}
 
-	public void setEmployeeID(int employeeID) {
-		this.employeeID = employeeID;
+	public void setID(int id) {
+		this.id = id;
 	}
 
 	public String getUsername() {
@@ -31,16 +31,18 @@ public class User {
 		this.password = password;
 	}
 	
-	public String getRole() {
-		return role;
+	public boolean isAdmin() {
+		return admin;
 	}
 	
-	public void setRole(String role) {
-		this.role = role;
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
 	}
 	
+	@Override
 	public String toString() {
-		return employeeID + ", " + username + ", " + role;
+		return "User [employeeID=" + id + ", username=" + username + ", password=" + password + ", admin="
+				+ admin + "]";
 	}
 
 }

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,10 +20,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import dk.cit.fyp.domain.Bet;
+import dk.cit.fyp.domain.Customer;
 import dk.cit.fyp.domain.Race;
+import dk.cit.fyp.domain.User;
 import dk.cit.fyp.service.BetService;
+import dk.cit.fyp.service.CustomerService;
 import dk.cit.fyp.service.ImageService;
 import dk.cit.fyp.service.RaceService;
+import dk.cit.fyp.service.UserService;
 
 @Controller
 public class MainController {
@@ -33,6 +38,10 @@ public class MainController {
 	RaceService raceService;
 	@Autowired 
 	ImageService imgService;
+	@Autowired
+	CustomerService customerService;
+	@Autowired
+	UserService userService;
 	
 	private final static Logger logger = Logger.getLogger(MainController.class);
 	
@@ -49,7 +58,7 @@ public class MainController {
 		return "login";
 	}
 	
-	@RequestMapping(value={"/", "/translate"}, method=RequestMethod.GET)
+	@RequestMapping(value={"/", "/translate", "/home"}, method=RequestMethod.GET)
 	public String showTranslatePage(Model model, Principal principal) {
 		logger.info("GET request to '/translate'");
 		model.addAttribute("userName", principal.getName());
@@ -67,6 +76,7 @@ public class MainController {
 		model.addAttribute("translatePage", true);
 		
 		Bet bet = betService.get(tempBet.getBetID());
+		betService.onScreen(bet);
 		bet.setSelection(tempBet.getSelection());
 		bet.setTranslated(true);
 		bet.setEachWay(tempBet.isEachWay());
@@ -184,26 +194,34 @@ public class MainController {
 		
 		int betIDint = Integer.parseInt(betID);
 		Bet bet = betService.get(betIDint);
-		model.addAttribute("bet", bet);
-		
+
 		byte[] bytes = imgService.getBytes(bet.getImagePath());
 		String imgSrc = imgService.getImageSource(bytes);
 		
 		model.addAttribute("imgSrc", imgSrc);
-		//for dev. only, remove when other functionality is implemented	
+		model.addAttribute("bet", bet);
 		model.addAttribute("race", new Race());
+		model.addAttribute("tempBet", new Bet());
 		
 		logger.info(bet.toString());
 		logger.info(bet.getStatus());
 		return "edit";
 	}
 	
-	@RequestMapping(value={"/admin"}, method=RequestMethod.GET)
-	public String showAdminPage(Model model, Principal principal) {
-		logger.info("GET request to '/admin'");
+	@RequestMapping(value={"/bets/{betID}"}, method=RequestMethod.POST)
+	public String updateBet(Model model, Principal principal, @PathVariable(value="betID") String betID, Bet bet, Bet tempBet) {
+		logger.info("POST request to '/review/'" + betID);
 		model.addAttribute("userName", principal.getName());
-		model.addAttribute("adminPage", true);
-		return "admin";
+		
+		logger.info(bet.getTimePlaced());
+		logger.info(bet.getBetID());
+		logger.info(betID);
+		
+		
+		
+		List<Bet> bets = betService.findAll();
+		model.addAttribute("bets", bets);
+		return "review";
 	}
 	
 	@RequestMapping(value={"/customers"}, method=RequestMethod.GET)
@@ -211,7 +229,50 @@ public class MainController {
 		logger.info("GET request to '/customers'");
 		model.addAttribute("userName", principal.getName());
 		model.addAttribute("customerPage", true);
+		
+		model.addAttribute("customers", customerService.findAll());
+		model.addAttribute("newCustomer", new Customer());
 		return "customers";
 	}
+	
+	@RequestMapping(value={"/customers"}, method=RequestMethod.POST)
+	public String addCustomer(Model model, Principal principal, Customer customer) {
+		logger.info("POST request to '/customers'");
+		model.addAttribute("userName", principal.getName());
+		model.addAttribute("customerPage", true);
+		
+		customerService.save(customer);
+				
+		model.addAttribute("customers", customerService.findAll());
+		model.addAttribute("newCustomer", new Customer());
+		return "customers";
+		
+	}
 
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@RequestMapping(value={"/admin"}, method=RequestMethod.GET)
+	public String showAdminPage(Model model, Principal principal) {
+		logger.info("GET request to '/admin'");
+		model.addAttribute("userName", principal.getName());
+		model.addAttribute("adminPage", true);
+		
+		model.addAttribute("user", new User());
+		model.addAttribute("race", new Race());
+		return "admin";
+	}
+	
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@RequestMapping(value={"/admin/users"}, method=RequestMethod.POST)
+	public String addUser(Model model, Principal principal, User user) {
+		logger.info("POST request to '/admin/users'");
+		model.addAttribute("userName", principal.getName());
+		model.addAttribute("adminPage", true);
+		
+		logger.info("Adding user...");
+		userService.save(user);
+		logger.info("User added!");
+		logger.info(" Redirecting to /admin");
+		
+		return "redirect:/admin";
+	}
 }

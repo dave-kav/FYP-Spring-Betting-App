@@ -1,0 +1,14 @@
+body {
+	padding : 10px ;
+	padding-top: 70px;
+}
+
+#tabs .tab-content {
+	padding : 5px 15px;
+}
+
+#t3-content {
+	width:50%;
+	margin: 0 auto;
+	padding-top:30px;
+}

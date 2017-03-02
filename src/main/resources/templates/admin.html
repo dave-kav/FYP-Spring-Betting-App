@@ -4,8 +4,8 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 	<head>
 	  	<meta charset="UTF-8"></meta>
-		<title>Betting Application</title>
-	    <link rel="stylesheet" href="styles/login.css"></link>
+		<title>Admin Panel</title>
+	    <link rel="stylesheet" href="styles/tabs.css"></link>
 	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"></link>
 		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" 
 		  integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"></link>
@@ -13,7 +13,63 @@
 	
 	<body>
 		<div th:replace="fragments/header :: header">&nbsp;</div>
+
+		<div id="tabs" class="container">	
+			<ul class="nav nav-tabs">
+				<li class="active">
+		        	<a href="#1" data-toggle="tab" th:accesskey="1">Races</a>
+				</li>
+				<li>
+					<a href="#2" data-toggle="tab" th:accesskey="2">Add Races</a>
+				</li>
+				<li>
+					<a href="#3" data-toggle="tab" th:accesskey="3">Add User</a>
+				</li>
+			</ul>
+	
+			<div class="tab-content ">
+				
+				<div class="tab-pane active" id="1">
+	        		<h3>Standard tab panel created on bootstrap using nav-tabs</h3>
+				</div>
+				
+				
+				<div class="tab-pane" id="2">
+	        		<h3>Notice the gap between the content and tab after applying a background color</h3>
+				</div>
+				
+				
+	        	<div class="tab-pane" id="3">
+	        		<div class="container">
+	        			<div id="t3-content">
+		        			<p class="lead">Add a user</p>
+		        			<form class="form" th:action="@{/admin/users}" th:method="post" th:object="${user}">
+		        				<div class="form-group row">
+		        					<label for="username" class="col-sm-2 col-form-label">Username:</label>
+		        					<div class="col-sm-10">
+		        						<input class="form-control" name="username" th:field="*{username}" th:autofocus="true"></input>
+		        					</div>
+		        				</div>
+		        				<div class="form-group row">
+		        					<label for="password" class="col-sm-2 col-form-label">Password:</label>
+		        					<div class="col-sm-10">
+		        						<input type="password" class="form-control" name="password" th:field="*{password}"></input>
+		        					</div>
+		        				</div>
+		        				<div class="checkbox" id="check-admin">
+	    							<label>
+		      							<input type="checkbox" th:name="admin" th:field="*{admin}">Admin User:</input>
+	    							</label>	
+	  							</div>
+		        				<button class="btn btn-default pull-right">Add</button>
+		        			</form>
+	        			</div>
+	        		</div>
+				</div>
+			</div>
+		</div>
 		
-		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 	</body>
 </html>

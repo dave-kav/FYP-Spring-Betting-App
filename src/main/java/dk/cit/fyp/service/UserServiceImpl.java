@@ -19,8 +19,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User get(String username) {
-		return userRepo.getEmployee(username);
+	public List<User> get(String username) {
+		return userRepo.get(username);
 	}
 
 	@Override

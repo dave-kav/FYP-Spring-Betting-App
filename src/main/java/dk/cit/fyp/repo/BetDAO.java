@@ -22,4 +22,8 @@ public interface BetDAO {
 	
 	List<Bet> findAllUnpaid();	
 	
+	void onScreen(Bet bet);
+
+	void offScreen(Bet bet);
+	
 }

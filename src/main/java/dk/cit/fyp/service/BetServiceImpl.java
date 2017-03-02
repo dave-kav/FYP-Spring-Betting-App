@@ -85,5 +85,15 @@ public class BetServiceImpl implements BetService {
 	public List<Bet> findAllUnpaid() {
 		return betRepo.findAllUnpaid();
 	}
+	
+	@Override
+	public void onScreen(Bet bet) {
+		betRepo.onScreen(bet);
+	}
+	
+	@Override
+	public void offScreen(Bet bet) {
+		betRepo.offScreen(bet);
+	}
 
 }

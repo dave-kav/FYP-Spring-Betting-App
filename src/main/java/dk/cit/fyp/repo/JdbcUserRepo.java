@@ -20,37 +20,42 @@ public class JdbcUserRepo implements UserDAO {
 	}
 
 	@Override
-	public User getEmployee(String username) {
-		String sql = "SELECT * FROM users u WHERE username = ? INNER JOIN authorities a ON a.username = u.username";
-		return jdbcTemplate.queryForObject(sql, new Object[] {username}, new UserRowMapper());
+	public List<User> get(String username) {
+		String sql = "SELECT * FROM users u INNER JOIN authorities a ON a.username = u.username WHERE u.username = ?";
+		return jdbcTemplate.query(sql, new Object[] {username}, new UserRowMapper());
 	}	
 
 	@Override
 	public void save(User user) {
-		if (user.getEmployeeID() != 0)
+		List<User> users = get(user.getUsername());
+		if (users.size() > 0)
 			updateEmployee(user);
 		else
 			addEmployee(user);
 	}
 	
 	private void addEmployee(User user) {
+		String role = user.isAdmin() ? "ADMIN" : "USER";
+		
 		String sql = "INSERT INTO users (Username, Password) VALUES (?, ?)";
 		jdbcTemplate.update(sql, new Object[] {user.getUsername(), 
 				user.getPassword()});
 		
 		sql = "INSERT INTO authorities (username, authority) VALUES (?, ?)";
-		jdbcTemplate.update(sql, new Object[] {user.getUsername(), 
-				user.getRole()});
+		jdbcTemplate.update(sql, new Object[] {user.getUsername(), role});
 		
 	}
 	
 	private void updateEmployee(User user) {
-		String sql = "UPDATE users SET Username = ?, Password = ?, WHERE Employee_id = ?";
-		jdbcTemplate.update(sql, new Object[] {user.getUsername(), 
-				user.getPassword(), user.getRole(), user.getEmployeeID()});
+		String role = user.isAdmin() ? "ADMIN" : "USER"; 
+		System.out.println(role);
+		System.out.println(user.toString());
+		
+		String sql = "UPDATE users SET Password = ? WHERE Username = ?";
+		jdbcTemplate.update(sql, new Object[] {user.getPassword(), user.getUsername()});
 		
 		sql = "UPDATE authorities SET authority = ? WHERE username = ?";
-		jdbcTemplate.update(sql, new Object[] {user.getRole(), user.getUsername()});
+		jdbcTemplate.update(sql, new Object[] {role, user.getUsername()});
 	}
 
 	@Override

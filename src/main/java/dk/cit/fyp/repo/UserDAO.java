@@ -6,7 +6,7 @@ import dk.cit.fyp.domain.User;
 
 public interface UserDAO {
 	
-	User getEmployee(String username);
+	List<User> get(String username);
 	
 	void save(User user);
 	

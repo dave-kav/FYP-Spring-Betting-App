@@ -6,7 +6,7 @@ import dk.cit.fyp.domain.Customer;
 
 public interface CustomerDAO {
 
-	Customer get(String username);
+	List<Customer> get(String username);
 
 	void save(Customer customer);
 

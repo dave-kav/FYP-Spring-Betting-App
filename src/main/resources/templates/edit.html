@@ -19,12 +19,14 @@
 			<!-- Panel on left of GUI -->
 			<div class="col-sm-4 img-rounded" id="left-box">
 				<img id="bet-img" th:if="${imgSrc}" th:src="${imgSrc}"></img>
+				
+				<!-- NOT WORKING 
 				<div th:switch="${bet.status}">
 					<p th:case="WINNER" class="h3">WINNER!!!!</p>
-					<p th:case="LOSER" class="h3">LOSER!!!!</p>
-					<p th:case="OPEN" class="h3">OPEN BET!</p>
+					<p th:case="loser" class="h3">LOSER!!!!</p>
+					<p th:case="'OPEN'" class="h3">OPEN BET!</p>
 					<p th:case="*" class="h3">DEFAULT!</p>
-				</div>
+				</div> -->
 			</div>
 			
 			<!-- Panel on right of GUI -->
@@ -33,7 +35,7 @@
 					<!-- Right panel -->
 					<div id="left-box" class="row img-rounded">
 						<div class="fields">
-							<form class="form" th:action="@{/translate}" th:method="post">
+							<form class="form" th:action="@{/bets/} + ${bet.betID}" th:method="post">
 								<div class="form-group row">
 								    <label for="betID" class="col-sm-2 col-form-label">Bet Number:</label>
 								    <div class="col-sm-10">
@@ -43,7 +45,7 @@
 								<div class="form-group row">
 								    <label for="timePlaced" class="col-sm-2 col-form-label">Time Placed:</label>
 								    <div class="col-sm-10">
-								    	<input class="form-control" name="timePlaced" th:value="${bet.timePlaced}" th:disabled="true"></input>
+								    	<input class="form-control" name="timePlaced" th:disabled="true" th:field="*{bet.timePlaced}" th:value="${bet.timePlaced}"></input>
 								    </div>
 								</div>
 								<div class="form-group row">
