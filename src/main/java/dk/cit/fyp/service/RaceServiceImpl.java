@@ -25,6 +25,30 @@ public class RaceServiceImpl implements RaceService {
 
 	@Override
 	public void save(Race race) {
+		int runners = race.getRunners();
+		int places;
+		double terms;
+		
+		//business logic to calculate each way bet places and terms
+		if (runners < 4) {
+			places = 0;
+			terms = 1;
+		} else if (runners < 8) {
+			places = 2;
+			terms = 0.25;
+		} else if (runners < 12) {
+			places = 3;
+			terms = 0.2;
+		} else if (runners < 16) {
+			places = 3; 
+			terms = 0.25;
+		} else {
+			places = 4; 
+			terms = 0.25;
+		}	
+		
+		race.setPlaces(places);
+		race.setTerms(terms);
 		raceRepo.save(race);
 	}
 

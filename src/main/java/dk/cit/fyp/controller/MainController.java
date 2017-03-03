@@ -257,7 +257,9 @@ public class MainController {
 		model.addAttribute("adminPage", true);
 		
 		model.addAttribute("user", new User());
-		model.addAttribute("race", new Race());
+		model.addAttribute("tempRace", new Race());
+		model.addAttribute("allRaces", raceService.findAll());
+		
 		return "admin";
 	}
 	
@@ -272,6 +274,18 @@ public class MainController {
 		userService.save(user);
 		logger.info("User added!");
 		logger.info(" Redirecting to /admin");
+		
+		return "redirect:/admin";
+	}
+	
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@RequestMapping(value={"/admin/races"}, method=RequestMethod.POST)
+	public String addRace(Model model, Principal principal, Race race) {
+		logger.info("POST request to '/admin/races'");
+		model.addAttribute("userName", principal.getName());
+		model.addAttribute("adminPage", true);
+		
+		raceService.save(race);
 		
 		return "redirect:/admin";
 	}

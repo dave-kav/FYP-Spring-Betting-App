@@ -43,11 +43,12 @@
             			</a>
 	            	</li> 
 	            	<li sec:authorize="hasAuthority('ADMIN')">
-	            		<a th:if="!${adminPage}" href="/admin" th:accesskey="a">Admin</a>
+	            		<a th:if="!${adminPage}" href="/admin" th:accesskey="a">
+	            		<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Admin</a>
 	            	</li>
 	            	<li sec:authorize="isAuthenticated()" >
 	            		<a href="#" id="user-name">
-	            			<i class="fa fa-user-o" aria-hidden="true" th:text=" ${userName}"> </i>
+	            			<i class="fa fa-user-o" aria-hidden="true"> <span th:text=" ${userName}"></span></i>
             			</a>
            			</li>  
            			<li>

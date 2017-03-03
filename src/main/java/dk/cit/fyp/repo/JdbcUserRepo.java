@@ -63,5 +63,4 @@ public class JdbcUserRepo implements UserDAO {
 		String sql = "SELECT * FROM users u INNER JOIN authorities a ON a.username = u.username";		
 		return jdbcTemplate.query(sql, new UserRowMapper());
 	}
-
 }

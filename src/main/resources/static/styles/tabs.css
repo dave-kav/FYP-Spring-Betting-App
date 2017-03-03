@@ -7,8 +7,41 @@ body {
 	padding : 5px 15px;
 }
 
-#t3-content {
+.table-small {
+	width: 105%;
+}
+
+.center-content {
 	width:50%;
 	margin: 0 auto;
-	padding-top:30px;
+	padding-top: 30px;
+}
+
+.tab-content-half {
+	width:50%;	
+}
+
+.table-scroll tbody {
+    position: absolute;
+    overflow-y: scroll;
+    height: 68vh;
+}
+
+.table-scroll tr {
+    width: 95%;
+    table-layout: fixed;
+    display: inline-table;
+}
+
+.table-scroll thead > tr > th {
+    border: none;
+}
+
+.hand-cursor { 
+	cursor: pointer; 
+	cursor: hand; 
+}
+
+.table-hoverplus>tbody>tr:hover>td {
+ 	background-color: #eeeeee;
 }

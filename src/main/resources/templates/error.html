@@ -5,9 +5,11 @@
         <link rel="stylesheet" href="css/main.css" th:href="@{/css/main.css}" />
     </head>
     <body>
-        <p>Whoops! Looks like we have a problem...</p>
-        <p th:text="${error}"></p>
-        <p th:unless="${error}">unknown error</p>
-        <a th:href="@{/translate.html}">Back to Home Page</a>
+    	<div id="error-content">
+	        <p>Whoops! Looks like we have a problem...</p>
+	        <p th:text="${error}"></p>
+	        <p th:unless="${error}">unknown error</p>
+	        <a th:href="@{/translate.html}">Back to Home Page</a>
+        </div>
     </body>
 </html>

@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -16,6 +17,7 @@ import dk.cit.fyp.mapper.RaceRowMapper;
 public class JdbcRaceRepo implements RaceDAO {
 
 	private JdbcTemplate jdbcTemplate;
+	private final static Logger logger = Logger.getLogger(JdbcRaceRepo.class);
 	
 	@Autowired
 	public JdbcRaceRepo(JdbcTemplate jdbcTemplate) {
@@ -44,7 +46,8 @@ public class JdbcRaceRepo implements RaceDAO {
 	}
 	
 	private void add(Race race) {
-		String sql = "INSERT INTO Races (Time, Racetrack) VALUES (?, ?)";
+		String sql = "INSERT INTO Races (Time, Racetrack, Terms, Places, Runners) "
+					+ "VALUES (?, ?, ?, ?, ?)";
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 		Date time = null;
 		try {
@@ -55,14 +58,16 @@ public class JdbcRaceRepo implements RaceDAO {
 		}
 		String formattedTime = sdf.format(time);
 		
-		jdbcTemplate.update(sql, new Object[] {formattedTime, race.getTrack()});
+		jdbcTemplate.update(sql, new Object[] {formattedTime, race.getTrack(), race.getTerms(),
+											race.getPlaces(), race.getRunners()});
 	}
 	
 	private void update(Race race) {
-		String sql = "UPDATE Races SET Time = ?, Racetrack = ?"
+		String sql = "UPDATE Races SET Time = ?, Racetrack = ?, Runners = ?, Terms = ?, Places = ?"
 				+ "WHERE Race_id = ?";
 		
-		jdbcTemplate.update(sql, new Object[] {race.getTime(), race.getTrack(), race.getRaceID()});
+		jdbcTemplate.update(sql, new Object[] {race.getTime(), race.getTrack(), race.getRunners(), 
+											race.getTerms(), race.getPlaces(), race.getRaceID()});
 	}
 
 	@Override

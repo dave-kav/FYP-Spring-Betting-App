@@ -9,7 +9,7 @@ public class Horse {
 	private int oddsEnumerator;
 	// used for calculating winnings
 	private int oddsDenominator;
-	// The horses assigned number within the a 
+	// The horses assigned number within the race
 	private int number;
 	
 	public String getName() {
