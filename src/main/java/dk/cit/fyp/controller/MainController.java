@@ -25,6 +25,7 @@ import dk.cit.fyp.domain.Race;
 import dk.cit.fyp.domain.User;
 import dk.cit.fyp.service.BetService;
 import dk.cit.fyp.service.CustomerService;
+import dk.cit.fyp.service.HorseService;
 import dk.cit.fyp.service.ImageService;
 import dk.cit.fyp.service.RaceService;
 import dk.cit.fyp.service.UserService;
@@ -42,6 +43,8 @@ public class MainController {
 	CustomerService customerService;
 	@Autowired
 	UserService userService;
+	@Autowired
+	HorseService horseService;
 	
 	private final static Logger logger = Logger.getLogger(MainController.class);
 	
@@ -52,10 +55,10 @@ public class MainController {
 	}
 	
 	@RequestMapping(value={"/login-error"}, method=RequestMethod.GET)
-	public String failedLogin(Model model) {
+	public String failedLogin(Model model, RedirectAttributes attributes) {
 		logger.info("GET request to '/login-error'");
-		model.addAttribute("loginError", true);
-		return "login";
+		attributes.addFlashAttribute("loginError", true);
+		return "redirect:login";
 	}
 	
 	@RequestMapping(value={"/", "/translate", "/home"}, method=RequestMethod.GET)
@@ -282,11 +285,21 @@ public class MainController {
 	@RequestMapping(value={"/admin/races"}, method=RequestMethod.POST)
 	public String addRace(Model model, Principal principal, Race race) {
 		logger.info("POST request to '/admin/races'");
-		model.addAttribute("userName", principal.getName());
-		model.addAttribute("adminPage", true);
-		
 		raceService.save(race);
 		
 		return "redirect:/admin";
+	}
+	
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@RequestMapping(value={"/admin/races/{raceID}"}, method=RequestMethod.GET)
+	public String viewRace(Model model, Principal principal, @PathVariable(value="raceID") int raceID) {
+		logger.info("GET request to '/admin/races/" + raceID + "'");
+		model.addAttribute("userName", principal.getName());
+		
+		model.addAttribute("race", new Race());
+		model.addAttribute("horses", horseService.getHorsesInRace(raceID));
+		logger.info(horseService.getHorsesInRace(raceID).get(0).toString());
+		logger.info(raceService.get(raceID));
+		return "race";
 	}
 }

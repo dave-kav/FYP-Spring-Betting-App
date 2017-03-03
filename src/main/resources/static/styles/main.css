@@ -88,3 +88,9 @@ html, body {
 .table-hoverplus>tbody>tr:hover>td {
  	background-color: #eeeeee;
 }
+
+.center-content {
+	width:50%;
+	margin: 0 auto;
+	padding-top: 100px;
+}

@@ -12,4 +12,6 @@ public interface HorseDAO {
 	
 	List<Horse> findAll();
 
+	List<Horse> getHorsesInRace(int raceID);
+
 }

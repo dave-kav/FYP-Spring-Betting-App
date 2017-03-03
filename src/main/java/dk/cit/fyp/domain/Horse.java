@@ -52,4 +52,9 @@ public class Horse {
 		this.number = number;
 	}
 
+	@Override
+	public String toString() {
+		return "Horse [name=" + name + ", raceID=" + raceID + ", oddsEnumerator=" + oddsEnumerator
+				+ ", oddsDenominator=" + oddsDenominator + ", number=" + number + "]";
+	}
 }

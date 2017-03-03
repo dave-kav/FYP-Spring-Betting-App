@@ -33,4 +33,9 @@ public class HorseServiceImpl implements HorseService {
 		return horseRepo.findAll();
 	}
 
+	@Override
+	public List<Horse> getHorsesInRace(int raceID) {
+		return horseRepo.getHorsesInRace(raceID);
+	}
+
 }
