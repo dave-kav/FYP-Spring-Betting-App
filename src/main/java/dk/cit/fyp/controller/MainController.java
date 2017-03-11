@@ -261,9 +261,11 @@ public class MainController {
 			
 			return "redirect:/customers";
 		}
-			//TODO add flash attributes
+		//TODO add flash attributes
 		
 		logger.info("POST request to '/customers'");
+		logger.info(customer.toString());
+		//TODO add customer is broken
 		
 		customerService.save(customer);
 				

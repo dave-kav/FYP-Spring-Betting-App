@@ -2,6 +2,7 @@ package dk.cit.fyp.repo;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -13,7 +14,7 @@ import dk.cit.fyp.mapper.CustomerRowMapper;
 public class JdbcCustomerRepo implements CustomerDAO {
 	
 	private JdbcTemplate jdbcTemplate;
-	
+	private final static Logger logger = Logger.getLogger(JdbcCustomerRepo.class);
 	@Autowired
 	public JdbcCustomerRepo(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
@@ -27,13 +28,15 @@ public class JdbcCustomerRepo implements CustomerDAO {
 
 	@Override
 	public void save(Customer customer) {
-		if ( get(customer.getUsername()) != null )
+		logger.info(get(customer.getUsername()).size());
+		if ( get(customer.getUsername()).size() != 0 )
 			update(customer);
 		else
 			add(customer);
 	}
 	
 	private void add(Customer customer) {
+		logger.info("in add");
 		String sql = "INSERT INTO Customers (Username, Password, First_name, Last_name, DOB, Credit) "
 				+ "VALUES (?, ?, ?, ?, ?, ?)";
 		

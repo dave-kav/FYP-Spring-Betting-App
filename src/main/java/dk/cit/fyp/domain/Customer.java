@@ -19,6 +19,7 @@ public class Customer {
 	private String lastName;
 	@NotNull
 	private Date DOB;
+	@Min(0)
 	private double credit;
 	
 	public String getUsername() {
@@ -67,6 +68,12 @@ public class Customer {
 	
 	public void setCredit(double credit) {
 		this.credit = credit;
+	}
+	
+	@Override
+	public String toString() {
+		return "Customer [username=" + username + ", password=" + password + ", firstName=" + firstName + ", lastName="
+				+ lastName + ", DOB=" + DOB + ", credit=" + credit + "]";
 	}
 	
 }
