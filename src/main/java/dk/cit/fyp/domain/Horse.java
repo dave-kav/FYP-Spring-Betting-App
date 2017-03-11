@@ -52,6 +52,11 @@ public class Horse {
 		this.number = number;
 	}
 
+	public Horse withNumber(int number) {
+		this.number = number;
+		return this;
+	}
+
 	@Override
 	public String toString() {
 		return "Horse [name=" + name + ", raceID=" + raceID + ", oddsEnumerator=" + oddsEnumerator

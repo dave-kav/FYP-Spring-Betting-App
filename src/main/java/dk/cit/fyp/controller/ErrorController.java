@@ -1,4 +1,4 @@
-package dk.cit.fyp.controller;
+/*package dk.cit.fyp.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -49,3 +49,4 @@ public class ErrorController {
 
 }
 
+*/

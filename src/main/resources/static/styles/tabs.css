@@ -17,6 +17,10 @@ body {
 	padding-top: 30px;
 }
 
+.center-content .buttons {
+	padding-left:50px;
+}
+
 .tab-content-half {
 	width:50%;	
 }

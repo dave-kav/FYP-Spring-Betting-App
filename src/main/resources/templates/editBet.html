@@ -39,49 +39,49 @@
 								<div class="form-group row">
 								    <label for="betID" class="col-sm-2 col-form-label">Bet Number:</label>
 								    <div class="col-sm-10">
-								    	<input class="form-control" name="betID" th:value="${bet.betID}" th:disabled="true"></input>
+								    	<input class="form-control" th:name="betID" th:id="betID" th:value="${bet.betID}" th:field="*{bet.betID}" th:disabled="true"></input>
 								    </div>
 								</div>
 								<div class="form-group row">
 								    <label for="timePlaced" class="col-sm-2 col-form-label">Time Placed:</label>
 								    <div class="col-sm-10">
-								    	<input class="form-control" name="timePlaced" th:disabled="true" th:field="*{bet.timePlaced}" th:value="${bet.timePlaced}"></input>
+								    	<input class="form-control" th:name="timePlaced" th:id="timePlaced" th:value="${bet.timePlaced}" th:field="*{bet.timePlaced}" th:disabled="true"></input>
 								    </div>
 								</div>
 								<div class="form-group row">
 								    <label for="stake" class="col-sm-2 col-form-label">Stake:</label>
 								    <div class="col-sm-10">
-								    	<input class="form-control" name="stake" th:value="${bet.stake}"></input>
+								    	<input class="form-control" th:name="stake" th:id="stake" th:value="${bet.stake}" th:field="*{bet.stake}"></input>
 								    </div>
 								</div>
 								<div class="form-group row">
 								    <label for="race" class="col-sm-2 col-form-label">Race Time: </label>
 								    <div class="col-sm-10">
-								    	<input type="time" class="form-control" name="race" th:field="*{race.time}" th:autofocus="true"></input>
+								    	<input type="time" class="form-control" th:name="time" th:id="time" th:value="${race.time}" th:field="*{race.time}"></input>
 								    </div>
 								</div>
 								<div class="form-group row">
 								    <label for="track" class="col-sm-2 col-form-label">Track:</label>
 								    <div class="col-sm-10">
-								    	<input type="text" class="form-control" name="track" placeholder="Cheltenham" th:field="${race.track}"></input>
+								    	<input type="text" class="form-control" th:name="track" th:id="track" th:field="${race.track}" th:value="${race.track}"></input>
 								    </div>
 								</div>
 								<div class="form-group row">
 									<label for="selection" class="col-sm-2 col-form-label">Selection:</label>
 									<div class="col-sm-10">
-										<input type="text" class="form-control" name="selection" th:value="${bet.selection}"></input>
+										<input type="text" class="form-control" th:name="selection" th:id="selection" th:value="${bet.selection}" th:field="*{bet.selection}" ></input>
 									</div>
 							  	</div>
 							  	<div class="form-group row">
 									<label for="odds" class="col-sm-2 col-form-label">Odds:</label>
 									<div class="col-sm-10">
-										<input type="text" class="form-control" name="odds" placeholder="11/4"></input>								
+										<!-- <input type="text" class="form-control" th:name="odds" th:id="odds" th:value="${bet.odds}" th:field="*{bet.odds}" ></input> -->								
 									</div>
 							  	</div>
 							  	<div class="form-group row">
 									<label for="selection" class="col-sm-2 col-form-label">Status:</label>
 									<div class="col-sm-10">
-										<input type="text" class="form-control" name="odds" th:value="${bet.status}" th:disabled="true"></input>								
+										<input type="text" class="form-control" th:name="odds" th:id="odds" th:value="${bet.status}" th:field="*{bet.status}" th:disabled="true"></input>								
 									</div>
 							  	</div>
 								<div th:if="${bet.winnings} > 0" class="form-group row">

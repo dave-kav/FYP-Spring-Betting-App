@@ -1,16 +1,21 @@
 package dk.cit.fyp.domain;
 
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+
 public class Bet {
 	
 	// Unique number auto-assigned to each bet via DB
 	private int betID;
 	private String timePlaced;
 	// E.g. horse that is being bet on
+	@NotNull
 	private String selection;
 	// particular race to which the selection and bet relate
 	private int raceID;
 	// amount being bet
-	private float stake;
+	@DecimalMin("0.01")
+	private double stake;
 	//location of captured betting slip image
 	private String imagePath;
 	private boolean eachWay;
@@ -59,11 +64,11 @@ public class Bet {
 		this.raceID = raceID;
 	}
 	
-	public float getStake() {
+	public double getStake() {
 		return stake;
 	}
 	
-	public void setStake(float stake) {
+	public void setStake(double stake) {
 		this.stake = stake;
 	}
 	

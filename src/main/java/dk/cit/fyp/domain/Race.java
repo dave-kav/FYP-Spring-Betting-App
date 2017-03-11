@@ -1,12 +1,18 @@
 package dk.cit.fyp.domain;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 public class Race {
 	
 	private int raceID;
+	@NotNull
 	private String time;
+	@NotNull
 	private String track;
 	private int places;
 	private double terms;
+	@Min(1)
 	private int runners;
 	
 	public int getRaceID() {

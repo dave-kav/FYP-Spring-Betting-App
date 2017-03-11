@@ -19,9 +19,9 @@
 				<p th:unless="${race.places} > 1" class="lead">Select winner</p>
 				<div class="form-group">
 					<select class = "form-control" th:field="${race.raceID}" id="raceDrop">
-						<option value="0" text="Select Winner"></option>
+						<!-- <option value="0" text="Select Winner"></option>
 						<option th:each="horse: ${horses}" th:value="${horse.number}" 
-								th:text="${horse.number} - ${horse.name}"></option>
+								th:text="${horse.number} - ${horse.name}"></option> -->
 					</select>
 				</div>
 			</div>

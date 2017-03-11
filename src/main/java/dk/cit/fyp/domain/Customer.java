@@ -2,14 +2,24 @@ package dk.cit.fyp.domain;
 
 import java.sql.Date;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
 public class Customer {
 	
+	@NotNull
 	private String username;
+	@Length(min=8, max=8)
 	private String password;
+	@NotNull
 	private String firstName;
+	@NotNull
 	private String lastName;
+	@NotNull
 	private Date DOB;
-	private float credit;
+	private double credit;
 	
 	public String getUsername() {
 		return username;
@@ -51,11 +61,11 @@ public class Customer {
 		DOB = dOB;
 	}
 	
-	public float getCredit() {
+	public double getCredit() {
 		return credit;
 	}
 	
-	public void setCredit(float credit) {
+	public void setCredit(double credit) {
 		this.credit = credit;
 	}
 	
