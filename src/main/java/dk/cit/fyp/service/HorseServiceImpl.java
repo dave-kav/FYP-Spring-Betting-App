@@ -1,5 +1,6 @@
 package dk.cit.fyp.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,18 @@ public class HorseServiceImpl implements HorseService {
 	@Override
 	public List<Horse> getHorsesInRace(int raceID) {
 		return horseRepo.getHorsesInRace(raceID);
+	}
+
+	@Override
+	public List<Horse> getRaceRunners(int runners) {
+		List<Horse> horses = new ArrayList<Horse>();
+		for (int i= 0; i < runners; i++) {
+			Horse horse = new Horse();
+			horse.setNumber(i + 1);
+			horses.add(horse);
+		}
+
+		return horses;
 	}
 
 }

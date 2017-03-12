@@ -15,31 +15,31 @@ public class Horse {
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public int getRaceID() {
 		return raceID;
 	}
-	
+
 	public void setRaceID(int raceID) {
 		this.raceID = raceID;
 	}
-	
+
 	public int getOddsEnumerator() {
 		return oddsEnumerator;
 	}
-	
+
 	public void setOddsEnumerator(int oddsEnumerator) {
 		this.oddsEnumerator = oddsEnumerator;
 	}
-	
+
 	public int getOddsDenominator() {
 		return oddsDenominator;
 	}
-	
+
 	public void setOddsDenominator(int oddsDenominator) {
 		this.oddsDenominator = oddsDenominator;
 	}
@@ -51,12 +51,7 @@ public class Horse {
 	public void setNumber(int number) {
 		this.number = number;
 	}
-
-	public Horse withNumber(int number) {
-		this.number = number;
-		return this;
-	}
-
+	
 	@Override
 	public String toString() {
 		return "Horse [name=" + name + ", raceID=" + raceID + ", oddsEnumerator=" + oddsEnumerator

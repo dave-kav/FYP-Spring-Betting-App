@@ -13,5 +13,7 @@ public interface HorseService {
 	List<Horse> findAll();
 
 	List<Horse> getHorsesInRace(int raceID);
+	
+	List<Horse> getRaceRunners(int runners);
 
 }

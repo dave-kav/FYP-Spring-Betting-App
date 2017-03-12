@@ -353,32 +353,42 @@ public class MainController {
 		}
 		logger.info("POST request to '/races'");
 		model.addAttribute("userName", principal.getName());
-		
-		ArrayList<Horse> raceHorses = new ArrayList<Horse>();
-		for (int i= 0; i < tempRace.getRunners(); i++)
-			raceHorses.add(new Horse().withNumber(i + 1));
 
-		model.addAttribute(raceHorses);
-		logger.info(raceHorses.size());
-		logger.info(raceHorses.get(0).toString());
+		List<Horse> horses = horseService.getRaceRunners(tempRace.getRunners());
+		
+		model.addAttribute(horses);
+		logger.info(horses.size());
+		logger.info(horses.get(horses.size()-1).toString());
+		model.addAttribute("customers", customerService.findAll());
 		
 		return "horses";
 	}
 	
 	/**
-	 * Load individual race to in order to settle. Save settled race details in database.
+	 * Load individual race in order to settle. Save settled race details in database.
 	 * Trigger settling of all bets related to the race on separate thread.
 	 */
 	@PreAuthorize("hasAuthority('ADMIN')")
-	@RequestMapping(value={"/admin/races/{raceID}"}, method=RequestMethod.GET)
+	@RequestMapping(value={"/races/{raceID}"}, method=RequestMethod.GET)
 	public String viewRace(Model model, Principal principal, @PathVariable(value="raceID") int raceID) {
-		logger.info("GET request to '/admin/races/" + raceID + "'");
+		logger.info("GET request to '/races/" + raceID + "'");
 		model.addAttribute("userName", principal.getName());
 		
-		model.addAttribute("race", new Race());
+		Race race = raceService.get(raceID);		
+		model.addAttribute("race", race);
+		logger.info(horseService.getHorsesInRace(raceID).size());
+		
+		logger.info(race);
 		model.addAttribute("horses", horseService.getHorsesInRace(raceID));
-		logger.info(horseService.getHorsesInRace(raceID).get(0).toString());
-		logger.info(raceService.get(raceID));
+		model.addAttribute("placedHorses", horseService.getRaceRunners(race.getPlaces()));
 		return "race";
+	}
+	
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@RequestMapping(value={"/races/{raceID}"}, method=RequestMethod.POST)
+	public String settleRace(@PathVariable(value="raceID") int raceID) {
+		logger.info("POST request to '/races/" + raceID + "'");
+	
+		return "redirect:/admin";
 	}
 }

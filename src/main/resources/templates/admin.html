@@ -44,7 +44,7 @@
 								</thead>
 								<tbody class="hand-cursor">
 									<div th:each="race: ${allRaces}">
-										<tr th:href="@{/admin/races/} + ${race.raceID}" class="table-row clickable">
+										<tr th:href="@{/races/} + ${race.raceID}" class="table-row clickable">
 											<td th:text="${race.track}"></td>
 											<td th:text="${race.time}"></td>
 											<td th:text="${race.runners}"></td>

@@ -14,16 +14,26 @@
 	<body>
 		<div th:replace="fragments/header :: header">&nbsp;</div>
 		<div class="container">
-			<div class="center-content">
-				<p th:if="${race.places} > 1" class="lead">Select winner and places</p>
+			<div class="center-content">				
 				<p th:unless="${race.places} > 1" class="lead">Select winner</p>
-				<div class="form-group">
-					<select class = "form-control" th:field="${race.raceID}" id="raceDrop">
-						<!-- <option value="0" text="Select Winner"></option>
-						<option th:each="horse: ${horses}" th:value="${horse.number}" 
-								th:text="${horse.number} - ${horse.name}"></option> -->
-					</select>
-				</div>
+				<p th:if="${race.places} > 1" class="lead">Select winner and places</p>
+				<form class="form" th:action="@{/races/} + ${race.raceID}" th:method="post">
+					<div class="form-group">
+						<select class = "form-control">
+							<option value="0" th:selected="true">Select Winner</option>
+							<option th:each="horse: ${horses}" th:value="${horse.number}" 
+									th:text="${horse.number} + @{ - } + ${horse.name}"></option>
+						</select>
+					</div>
+					<div class="form-group" th:if="${race.places} > 1" th:each="placedHorse: ${placedHorses}">
+							<select class = "form-control">
+							<option value="0" th:selected="true">Select Place</option>
+							<option th:each="horse: ${horses}" th:value="${horse.number}" 
+									th:text="${horse.number} + @{ - } + ${horse.name}"></option>
+						</select>
+					</div>
+					<button class="btn btn-primary pull-right" type="submit">Submit</button>
+				</form>
 			</div>
 		</div>
 	</body>

@@ -1,5 +1,7 @@
 package dk.cit.fyp.domain;
 
+import java.util.List;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -14,6 +16,8 @@ public class Race {
 	private double terms;
 	@Min(1)
 	private int runners;
+	private Horse winner;
+	private List<Horse> placedHorses;
 	
 	public int getRaceID() {
 		return raceID;
@@ -61,6 +65,22 @@ public class Race {
 
 	public void setRunners(int runners) {
 		this.runners = runners;
+	}
+
+	public Horse getWinner() {
+		return winner;
+	}
+
+	public void setWinner(Horse winner) {
+		this.winner = winner;
+	}
+
+	public List<Horse> getPlacedHorses() {
+		return placedHorses;
+	}
+
+	public void setPlacedHorses(List<Horse> placedHorses) {
+		this.placedHorses = placedHorses;
 	}
 
 	@Override

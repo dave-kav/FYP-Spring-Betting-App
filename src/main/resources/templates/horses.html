@@ -18,9 +18,10 @@
 			<div class="center-content">
 				<p class="lead">Horses</p>
 				<form class="form" th:action="@{/races}" th:method="post">
-					<div th:each="horse: ${raceHorses}">
+					<div th:each="horse: ${horses}">
 						<label for="horsey" class="col-sm-2 col-form-label">First Name:</label>
 						<div class="col-sm-10">
+							<p th:text="horse.number"></p>
 							<input type="text" class="form-control" name="horsey"></input> 
 						</div>
 					</div>
