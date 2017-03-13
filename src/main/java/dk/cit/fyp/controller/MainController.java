@@ -36,6 +36,7 @@ import dk.cit.fyp.service.HorseService;
 import dk.cit.fyp.service.ImageService;
 import dk.cit.fyp.service.RaceService;
 import dk.cit.fyp.service.UserService;
+import dk.cit.fyp.wrapper.RaceWrapper;
 
 @Controller
 public class MainController {
@@ -206,7 +207,7 @@ public class MainController {
 	
 	@RequestMapping(value={"/bets/{betID}"}, method=RequestMethod.GET)
 	public String showBet(Model model, Principal principal, @PathVariable(value="betID") String betID) {
-		logger.info("GET request to '/review/'" + betID);
+		logger.info("GET request to '/bets/'" + betID);
 		model.addAttribute("userName", principal.getName());
 		model.addAttribute("reviewPage", true);
 		
@@ -219,25 +220,18 @@ public class MainController {
 		model.addAttribute("imgSrc", imgSrc);
 		model.addAttribute("bet", bet);
 		model.addAttribute("race", new Race());
-		model.addAttribute("tempBet", new Bet());
 		
-		logger.info(bet.toString());
-		logger.info(bet.getStatus());
 		return "editBet";
 	}
 	
 	@RequestMapping(value={"/bets/{betID}"}, method=RequestMethod.POST)
-	public String updateBet(Model model, Principal principal, @PathVariable(value="betID") String betID, Bet bet, Bet tempBet) {
-		logger.info("POST request to '/review/'" + betID);
-		model.addAttribute("userName", principal.getName());
+	public String updateBet(Bet bet) {
+		logger.info("POST to /bets/'" + bet.getBetID() + "'");
+		logger.info(bet.toString());
 		
-		logger.info(bet.getTimePlaced());
-		logger.info(bet.getBetID());
-		logger.info(betID);
+		betService.save(bet);
 		
-		List<Bet> bets = betService.findAll();
-		model.addAttribute("bets", bets);
-		return "review";
+		return "redirect:/bets/all";
 	}
 	
 	@RequestMapping(value={"/customers"}, method=RequestMethod.GET)
@@ -264,8 +258,6 @@ public class MainController {
 		
 		logger.info("POST request to '/customers'");
 		logger.info(customer.toString());
-		//TODO add customer is broken
-		
 		customerService.save(customer);
 				
 		return "redirect:customers";
@@ -330,9 +322,9 @@ public class MainController {
 	}
 	
 	@PreAuthorize("hasAuthority('ADMIN')")
-	@RequestMapping(value={"/admin/users"}, method=RequestMethod.POST)
+	@RequestMapping(value={"/users"}, method=RequestMethod.POST)
 	public String addUser(User user) {
-		logger.info("POST request to '/admin/users'");
+		logger.info("POST request to '/users'");
 		
 		logger.info("Adding user...");
 		userService.save(user);
@@ -344,23 +336,32 @@ public class MainController {
 	
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value={"/races"}, method=RequestMethod.POST)
-	public String addRace(Model model, Principal principal, @Valid Race tempRace, BindingResult bindingResult) {
+	public String addHorses(Model model, Principal principal, @Valid Race tempRace, BindingResult bindingResult) {
+		logger.info("POST request to '/races'");
 		if (bindingResult.hasErrors()) {
 			//TODO Add flash attributes
 			//TODO Add active tab attribute to html
+			logger.info("Error: redirecting");
 			return "redirect:/admin";
 		}
-		logger.info("POST request to '/races'");
 		model.addAttribute("userName", principal.getName());
 
 		List<Horse> horses = horseService.getRaceRunners(tempRace.getRunners());
-		
-		model.addAttribute(horses);
-		logger.info(horses.size());
-		logger.info(horses.get(horses.size()-1).toString());
-		model.addAttribute("customers", customerService.findAll());
-		
+		RaceWrapper wrapper = new RaceWrapper();
+		wrapper.setHorseList((ArrayList<Horse>)horses);
+		wrapper.setRace(tempRace);
+		model.addAttribute("wrapper", wrapper);
 		return "horses";
+	}
+	
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@RequestMapping(value={"/races/add"}, method=RequestMethod.POST)
+	public String addRace(RaceWrapper wrapper, Race tempRace) {
+		logger.info("POST request to '/races/add'");
+		logger.info(wrapper.getHorseList().get(0).getName());
+		logger.info(tempRace.getTrack());
+		
+		return "redirect:/admin";
 	}
 	
 	/**
@@ -375,18 +376,19 @@ public class MainController {
 		
 		Race race = raceService.get(raceID);		
 		model.addAttribute("race", race);
+		model.addAttribute("horses", horseService.getHorsesInRace(raceID));
 		logger.info(horseService.getHorsesInRace(raceID).size());
 		
 		logger.info(race);
-		model.addAttribute("horses", horseService.getHorsesInRace(raceID));
-		model.addAttribute("placedHorses", horseService.getRaceRunners(race.getPlaces()));
+		
 		return "race";
 	}
 	
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value={"/races/{raceID}"}, method=RequestMethod.POST)
-	public String settleRace(@PathVariable(value="raceID") int raceID) {
+	public String settleRace(@PathVariable(value="raceID") int raceID, List<Horse> horses) {
 		logger.info("POST request to '/races/" + raceID + "'");
+		logger.info(horses.get(0).getName());
 	
 		return "redirect:/admin";
 	}

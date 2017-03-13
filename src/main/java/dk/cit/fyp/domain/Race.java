@@ -3,14 +3,17 @@ package dk.cit.fyp.domain;
 import java.util.List;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 public class Race {
 	
 	private int raceID;
-	@NotNull
+	@NotEmpty
 	private String time;
-	@NotNull
+	@NotEmpty
+	@Pattern(regexp="^[A-Za-z]*$")
 	private String track;
 	private int places;
 	private double terms;

@@ -14,19 +14,26 @@
 	<body>
 		<div th:replace="fragments/header :: header">&nbsp;</div>
 
-		<div class="container">	
+		<div class="container">
 			<div class="center-content">
 				<p class="lead">Horses</p>
-				<form class="form" th:action="@{/races}" th:method="post">
-					<div th:each="horse: ${horses}">
-						<label for="horsey" class="col-sm-2 col-form-label">First Name:</label>
-						<div class="col-sm-10">
-							<p th:text="horse.number"></p>
-							<input type="text" class="form-control" name="horsey"></input> 
+				<form class="form" th:action="@{/races/add}" th:method="post" th:object="${wrapper}">
+					<div th:each="horse, stat: ${wrapper.horseList}">
+						<div class="form-inline row">
+							<label for="number" class="sr-only">Number:</label>
+							<input type="text" class="form-control mb-2 mr-sm mb-sm-0" th:name="number" th:id="number" th:value="${horse.number}" th:field="*{horseList[__${stat.index}__].number}" th:disabled="true"></input> 
+							<label for="name" class="sr-only">Name:</label>
+							<input type="text" class="form-control mb-2 mr-sm mb-sm-0" th:name="name" th:id="name" placeholder="name" th:field="*{horseList[__${stat.index}__].name}" th:autofocus="true"></input> 
+							<label for="odds" class="sr-only">Odds:</label>
+							<input type="text" class="form-control mb-2 mr-sm mb-sm-0" th:name="odds" th:id="odds" placeholder="11/4"></input> 
 						</div>
 					</div>
+					<input type="hidden" th:name="track" th:id="track" th:field="${race.track}" th:value="*{race.track}"></input>
+					<input type="hidden" th:name="time" th:id="time" th:field="${race.time}" th:value="*{race.time}"></input>
+					<input type="hidden" th:name="runners" th:id="runners" th:field="${race.runners}" th:value="*{race.runners}"></input>
+					<button class="btn btn-primary pull-right">Add Horses</button>
 				</form>
-			</div>			
+			</div>
 		</div>
 	</body>
 </html>

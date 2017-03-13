@@ -48,13 +48,11 @@ public class JdbcBetRepo implements BetDAO {
 	private void update(Bet bet) {
 		String sql = "UPDATE Bets SET Selection = ?, Race_id = ?, Stake = ?,"
 				+ "Translated = ?, Online_bet = ?, Winnings = ?, Image = ?, "
-				+ "Monitored = ?, Status = ?, Each_way =? WHERE Bet_id = ?";
-		
-		logger.info(bet.getStatus().toString());
+				+ "Monitored = ?, Each_way = ? WHERE Bet_id = ?";
 		
 		jdbcTemplate.update(sql, new Object[] {bet.getSelection(), bet.getRaceID(), bet.getStake(), 
 				bet.isTranslated(), bet.isOnlineBet(), bet.getWinnings(), bet.getImagePath(), 
-				bet.isMonitoredCustomer(), bet.getStatus().toString(), bet.isEachWay(), bet.getBetID()});
+				bet.isMonitoredCustomer(), bet.isEachWay(), bet.getBetID()});
 	}
 	
 	@Override
