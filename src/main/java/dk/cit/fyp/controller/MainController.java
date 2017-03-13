@@ -176,11 +176,10 @@ public class MainController {
 	}
 	
 	@RequestMapping(value={"/confirmUpload"}, method=RequestMethod.POST)
-	public String confirmUpload(Model model, Principal principal, @Valid Bet bet, BindingResult bindingResult) {		
+	public String confirmUpload(Model model, Principal principal, Bet bet, BindingResult bindingResult) {		
 		if (bindingResult.hasErrors())
 			return "redirect:/upload";
 		
-		logger.info("POST request to '/confirmUpload'");
 		model.addAttribute("userName", principal.getName());
 		model.addAttribute("uploadPage", true);
 		
