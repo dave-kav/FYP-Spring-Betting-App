@@ -6,7 +6,7 @@ import dk.cit.fyp.domain.Horse;
 
 public interface HorseService {
 	
-	Horse get(String name);
+	List<Horse> get(String name);
 	
 	void save(Horse horse);
 	

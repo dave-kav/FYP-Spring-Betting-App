@@ -63,7 +63,7 @@
 		      							<input type="checkbox" th:name="eachWay" th:field="${bet.eachWay}">Each-way</input>
 	    							</label>	
 	  							</div>
-							 	<button th:if="${img}" type="submit" class="btn btn-default pull-right">Submit</button>
+							 	<input th:if="${img}" id="submitButton" type="submit" class="btn btn-default pull-right">Submit</input>
 							 	<button th:unless="${img}" type="submit" class="btn btn-default pull-right disabled" th:disabled="true">Submit</button>
 							</form>
 						</div>

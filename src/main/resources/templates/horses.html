@@ -28,9 +28,9 @@
 							<input type="text" class="form-control mb-2 mr-sm mb-sm-0" th:name="odds" th:id="odds" placeholder="11/4"></input> 
 						</div>
 					</div>
-					<input type="hidden" th:name="track" th:id="track" th:field="${race.track}" th:value="*{race.track}"></input>
-					<input type="hidden" th:name="time" th:id="time" th:field="${race.time}" th:value="*{race.time}"></input>
-					<input type="hidden" th:name="runners" th:id="runners" th:field="${race.runners}" th:value="*{race.runners}"></input>
+					<input type="hidden" th:name="track" th:id="track" th:field="*{race.track}" th:value="${race.track}"></input>
+					<input type="hidden" th:name="time" th:id="time" th:field="*{race.time}" th:value="${race.time}"></input>
+					<input type="hidden" th:name="runners" th:id="runners" th:field="*{race.runners}" th:value="${race.runners}"></input>
 					<button class="btn btn-primary pull-right">Add Horses</button>
 				</form>
 			</div>

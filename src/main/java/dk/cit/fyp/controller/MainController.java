@@ -348,7 +348,7 @@ public class MainController {
 
 		List<Horse> horses = horseService.getRaceRunners(tempRace.getRunners());
 		RaceWrapper wrapper = new RaceWrapper();
-		wrapper.setHorseList((ArrayList<Horse>)horses);
+		wrapper.setHorseList((ArrayList<Horse>) horses);
 		wrapper.setRace(tempRace);
 		model.addAttribute("wrapper", wrapper);
 		return "horses";
@@ -356,11 +356,22 @@ public class MainController {
 	
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value={"/races/add"}, method=RequestMethod.POST)
-	public String addRace(RaceWrapper wrapper, Race tempRace) {
+	public String addRace(RaceWrapper wrapper) {
 		logger.info("POST request to '/races/add'");
 		logger.info(wrapper.getHorseList().get(0).getName());
-		logger.info(tempRace.getTrack());
+		logger.info(wrapper.getRace().getTrack());
 		
+		Race race = wrapper.getRace();
+		raceService.save(race);
+		int raceID = raceService.find(race.getTime()).get(0).getRaceID();		
+		
+		int number = 1;
+		for (Horse h: wrapper.getHorseList()) {
+			h.setRaceID(raceID);
+			h.setNumber(number++);
+			horseService.save(h);
+		}
+				
 		return "redirect:/admin";
 	}
 	

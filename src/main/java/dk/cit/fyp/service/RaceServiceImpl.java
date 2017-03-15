@@ -31,8 +31,8 @@ public class RaceServiceImpl implements RaceService {
 		
 		//business logic to calculate each way bet places and terms
 		if (runners < 4) {
-			places = 0;
-			terms = 1;
+			places = 1;
+			terms = 0;
 		} else if (runners < 8) {
 			places = 2;
 			terms = 0.25;

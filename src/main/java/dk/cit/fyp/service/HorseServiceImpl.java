@@ -20,7 +20,7 @@ public class HorseServiceImpl implements HorseService {
 	}
 	
 	@Override
-	public Horse get(String name) {
+	public List<Horse> get(String name) {
 		return horseRepo.get(name);
 	}
 
