@@ -188,7 +188,7 @@ $("#editCustomer").click(function() {
 		event.preventDefault();
 });
 
-//deposit button
+//withdraw button
 $("#withdraw").click(function() {
 	var errorFree = true;
 	
@@ -203,8 +203,23 @@ $("#withdraw").click(function() {
 		alert("wrong format - letters only");
 	}
 	
-	//check enough in account before withdrawal
-	var json = 
+	//completely redundant code, have this done on server side, need to return flash attribute
+//	//check enough in account before withdrawal
+//	var user = $("#username").val();
+//	var json = $.ajax({
+//		type: "GET",
+//		dataType: "json",
+//		url: "/api/account/" + user,
+//	});
+//	
+//	var credit = json.responseJSON.credit;
+//	alert(credit);
+//	alert(amount);
+//	if ($("#amount").val() > credit) {
+//		$("#amount").addClass("error");
+//		errorFree = false; 
+//		alert("insufficient credit");
+//	}
 	
 	$("#amount").change(function() {
 		$("#amount").removeClass("error");

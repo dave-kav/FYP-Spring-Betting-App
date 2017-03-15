@@ -286,7 +286,7 @@ public class MainController {
 	@RequestMapping(value={"/balance/{username}"}, method=RequestMethod.POST)
 	public String updateBalance(HttpServletRequest request, @PathVariable(value="username") String username) {
 		Customer customer = customerService.get(username).get(0);
-		logger.info("POST request to '/balance/'" + customer.getUsername());
+		logger.info("POST request to '/balance/" + customer.getUsername() + "'");
 		
 		String amountString = request.getParameter("amount");
 		double amount = Double.parseDouble(amountString);
@@ -299,7 +299,7 @@ public class MainController {
 		else {
 			if (customer.getCredit() >= amount)
 				customer.setCredit(customer.getCredit() - amount);
-			//else return error flash attribute
+			//TODO else return error flash attribute
 		}
 		logger.info(customer.getCredit());
 		customerService.save(customer);
