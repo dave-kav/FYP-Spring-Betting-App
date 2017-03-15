@@ -94,3 +94,7 @@ html, body {
 	margin: 0 auto;
 	padding-top: 100px;
 }
+
+.error {
+	border-color: #ff0022;
+}

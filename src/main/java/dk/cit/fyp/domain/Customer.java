@@ -11,7 +11,7 @@ public class Customer {
 	
 	@NotNull
 	private String username;
-	@Length(min=8, max=8)
+	@Length(min=8)
 	private String password;
 	@NotNull
 	private String firstName;

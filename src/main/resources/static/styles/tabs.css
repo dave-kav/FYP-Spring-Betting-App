@@ -49,3 +49,7 @@ body {
 .table-hoverplus>tbody>tr:hover>td {
  	background-color: #eeeeee;
 }
+
+.error {
+	border-color: #ff0022;
+}
