@@ -177,7 +177,8 @@ public class MainController {
 	}
 	
 	@RequestMapping(value={"/confirmUpload"}, method=RequestMethod.POST)
-	public String confirmUpload(Model model, Principal principal, Bet bet, BindingResult bindingResult) {		
+	public String confirmUpload(Model model, Principal principal, Bet bet, 
+			BindingResult bindingResult, RedirectAttributes attributes) {		
 		if (bindingResult.hasErrors())
 			return "redirect:/upload";
 		
@@ -191,7 +192,8 @@ public class MainController {
 		bet.setImagePath(imagePath);
 		betService.save(bet);
 		
-        return "upload";  
+		attributes.addFlashAttribute("uploadSuccess", "Bet added to queue.");
+        return "redirect:upload";  
 	}
 	
 	@RequestMapping(value={"/bets/all"}, method=RequestMethod.GET)
@@ -284,7 +286,8 @@ public class MainController {
 	}
 	
 	@RequestMapping(value={"/balance/{username}"}, method=RequestMethod.POST)
-	public String updateBalance(HttpServletRequest request, @PathVariable(value="username") String username) {
+	public String updateBalance(HttpServletRequest request, @PathVariable(value="username") String username, 
+			RedirectAttributes attributes) {
 		Customer customer = customerService.get(username).get(0);
 		logger.info("POST request to '/balance/" + customer.getUsername() + "'");
 		
@@ -294,17 +297,24 @@ public class MainController {
 		
 		logger.info(request.getParameter("deposit"));
 		logger.info(request.getParameter("withdraw"));
-		if (request.getParameter("deposit") != null) 
+		if (request.getParameter("deposit") != null) {
 			customer.setCredit(customer.getCredit() + amount);
-		else {
-			if (customer.getCredit() >= amount)
-				customer.setCredit(customer.getCredit() - amount);
-			//TODO else return error flash attribute
+			customerService.save(customer);
+			attributes.addFlashAttribute("successMessage", "New account balance: " + customer.getCredit());
+			return "redirect:/customers/" + username;
 		}
-		logger.info(customer.getCredit());
-		customerService.save(customer);
-		
-		return "redirect:/customers";
+		else {
+			if (customer.getCredit() >= amount) {
+				customer.setCredit(customer.getCredit() - amount);
+				customerService.save(customer);
+				attributes.addFlashAttribute("successMessage", "New account balance: " + customer.getCredit());
+				return "redirect:/customers/" + username;
+			}
+			else {
+				attributes.addFlashAttribute("errorMessage", "Insufficient Credit - Max withdrawal: " + customer.getCredit());
+				return "redirect:/customers/" + username;
+			}
+		}
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN')")

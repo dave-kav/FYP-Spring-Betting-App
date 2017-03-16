@@ -1,7 +1,7 @@
 var oddsPattern = /\d+\/\d+/;
 var alphaPattern = /^[A-z]+$/;
 var alphaNumPattern = /^\w+$/;
-var numPattern = /^[0-9]*$/;
+var numPattern = /^\d*\.?\d*$/;
 
 //validate translate form
 $("#translateSubmit").click(function() {
@@ -203,30 +203,36 @@ $("#withdraw").click(function() {
 		alert("wrong format - letters only");
 	}
 	
-	//completely redundant code, have this done on server side, need to return flash attribute
-//	//check enough in account before withdrawal
-//	var user = $("#username").val();
-//	var json = $.ajax({
-//		type: "GET",
-//		dataType: "json",
-//		url: "/api/account/" + user,
-//	});
-//	
-//	var credit = json.responseJSON.credit;
-//	alert(credit);
-//	alert(amount);
-//	if ($("#amount").val() > credit) {
-//		$("#amount").addClass("error");
-//		errorFree = false; 
-//		alert("insufficient credit");
-//	}
-	
 	$("#amount").change(function() {
 		$("#amount").removeClass("error");
 	});
 	
 	if (!errorFree)
 		event.preventDefault();
+	
+	//check enough in account before withdrawal
+	var user = $("#username").val();
+	var json = $.ajax({
+		type: "GET",
+		dataType: "json",
+		url: "/api/account/" + user,
+	});
+	var credit = json.responseJSON.credit;
+	alert(credit);
+	
+	$("#withdraw").confirm({
+		title: "Withdraw Money?",
+		content: "Are ou sure you wish to confirm? " +
+				 "New balance will be " + credit - $("#amount").val(),
+		buttons: {
+			confirm: function() {
+				submit();
+			},
+			cancel: function() {
+				event.preventDefault();
+			}
+		}
+	});
 });
 
 //withdraw button
