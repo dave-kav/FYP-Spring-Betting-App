@@ -95,5 +95,4 @@ public class BetServiceImpl implements BetService {
 	public void offScreen(Bet bet) {
 		betRepo.offScreen(bet);
 	}
-
 }

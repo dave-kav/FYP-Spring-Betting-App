@@ -44,5 +44,4 @@ public class User {
 		return "User [employeeID=" + id + ", username=" + username + ", password=" + password + ", admin="
 				+ admin + "]";
 	}
-
 }

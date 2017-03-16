@@ -74,6 +74,5 @@ public class Customer {
 	public String toString() {
 		return "Customer [username=" + username + ", password=" + password + ", firstName=" + firstName + ", lastName="
 				+ lastName + ", DOB=" + DOB + ", credit=" + credit + "]";
-	}
-	
+	}	
 }

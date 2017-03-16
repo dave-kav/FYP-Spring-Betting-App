@@ -50,5 +50,4 @@ public class HorseServiceImpl implements HorseService {
 
 		return horses;
 	}
-
 }

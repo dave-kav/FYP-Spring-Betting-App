@@ -33,5 +33,4 @@ public class BetRowMapper implements RowMapper<Bet>{
 		
 		return b;
 	}
-
 }

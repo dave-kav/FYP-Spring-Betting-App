@@ -143,5 +143,4 @@ public class Bet {
 				+ ", onlineBet=" + onlineBet + ", winnings=" + winnings + ", monitoredCustomer=" + monitoredCustomer
 				+ ", status=" + status + ", paid=" + paid + "]";
 	}
-	
 }

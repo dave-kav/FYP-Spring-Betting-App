@@ -24,5 +24,4 @@ public class RestController {
 		Customer customer = customerService.get(username).get(0);
 		return customer;
 	}
-
 }

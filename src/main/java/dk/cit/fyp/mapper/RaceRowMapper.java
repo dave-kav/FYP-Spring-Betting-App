@@ -22,5 +22,4 @@ public class RaceRowMapper implements RowMapper<Race> {
 		
 		return r;
 	}
-
 }

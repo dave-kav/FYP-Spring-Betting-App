@@ -91,5 +91,4 @@ public class Race {
 		return "Race [raceID=" + raceID + ", time=" + time + ", track=" + track + ", places=" + places + ", terms="
 				+ terms + ", runners=" + runners + "]";
 	}
-
 }

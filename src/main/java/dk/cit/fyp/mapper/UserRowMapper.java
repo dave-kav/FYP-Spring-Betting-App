@@ -21,5 +21,4 @@ public class UserRowMapper implements RowMapper<User> {
 		
 		return e;
 	}
-
 }

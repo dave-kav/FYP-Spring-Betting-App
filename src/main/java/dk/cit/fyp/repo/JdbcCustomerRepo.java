@@ -57,5 +57,4 @@ public class JdbcCustomerRepo implements CustomerDAO {
 		String sql = "SELECT * FROM Customers";
 		return jdbcTemplate.query(sql, new CustomerRowMapper());
 	}
-
 }

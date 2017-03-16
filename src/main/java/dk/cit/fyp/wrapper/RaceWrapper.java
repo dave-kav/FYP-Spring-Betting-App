@@ -24,6 +24,5 @@ public class RaceWrapper {
 
 	public void setRace(Race race) {
 		this.race = race;
-	}
-	
+	}	
 }

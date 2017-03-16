@@ -75,5 +75,4 @@ public class JdbcRaceRepo implements RaceDAO {
 		String sql = "SELECT * FROM Races";
 		return jdbcTemplate.query(sql, new RaceRowMapper());
 	}
-
 }

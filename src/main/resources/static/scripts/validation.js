@@ -188,72 +188,84 @@ $("#editCustomer").click(function() {
 		event.preventDefault();
 });
 
-//withdraw button
-$("#withdraw").click(function() {
-	var errorFree = true;
-	
-	if ($("#amount").val() == "") {
-		errorFree = false;
-		$("#amount").addClass("error");
-	}
-	
-	if (!numPattern.test($("#amount").val())) {
-		$("#amount").addClass("error");
-		errorFree = false; 
-		alert("wrong format - letters only");
-	}
-	
-	$("#amount").change(function() {
-		$("#amount").removeClass("error");
-	});
-	
-	if (!errorFree)
-		event.preventDefault();
-	
-	//check enough in account before withdrawal
-	var user = $("#username").val();
-	var json = $.ajax({
+var json;
+function getCreditJson(user) {
+	return Promise.resolve($.ajax({
 		type: "GET",
 		dataType: "json",
 		url: "/api/account/" + user,
-	});
-	var credit = json.responseJSON.credit;
-	alert(credit);
-	
-	$("#withdraw").confirm({
-		title: "Withdraw Money?",
-		content: "Are ou sure you wish to confirm? " +
-				 "New balance will be " + credit - $("#amount").val(),
-		buttons: {
-			confirm: function() {
-				submit();
-			},
-			cancel: function() {
-				event.preventDefault();
-			}
+		success: function(data) {
+			json = data;
 		}
-	});
+	}));
+}
+
+var user;
+
+$(document).ready(function() {
+	user = $("#username").val();
+	getCreditJson(user);
 });
 
 //withdraw button
-$("#deposit").click(function() {
-	var errorFree = true;
+$("#withdraw").click(function() {
+	event.preventDefault();
 	
 	if ($("#amount").val() == "") {
-		errorFree = false;
 		$("#amount").addClass("error");
 	}
 	
 	if (!numPattern.test($("#amount").val())) {
 		$("#amount").addClass("error");
-		errorFree = false;
-		alert("wrong format - letters only");
+		alert("wrong format - numbers only");
 	}
 	
 	$("#amount").change(function() {
 		$("#amount").removeClass("error");
 	});
 	
-	if (!errorFree)
-		event.preventDefault();
+	event.preventDefault();
+	
+	$.confirm({
+	    title: 'Withdraw?',
+	    content: 'New balance will be: ' + (json.credit - $("#amount").val()),
+	    buttons: {
+	        confirm: function () {
+	        	$("#updateBalance").submit();
+	        },
+	        cancel: function () {
+	        }
+	    }
+	});
+
+});
+
+//deposit button
+$("#deposit").click(function() {
+	event.preventDefault();
+	
+	if ($("#amount").val() == "") {
+		$("#amount").addClass("error");
+	}
+	
+	if (!numPattern.test($("#amount").val())) {
+		$("#amount").addClass("error");
+		alert("wrong format - letters only");
+	}
+	
+	$("#amount").change(function() {
+		$("#amount").removeClass("error");
+	});
+
+	$.confirm({
+	    title: 'Deposit?',
+	    content: 'New balance will be: ' + (parseFloat(json.credit) + parseFloat($("#amount").val())),
+	    buttons: {
+	        confirm: function () {
+	        	$("#updateBalance").submit();
+	        },
+	        cancel: function () {
+	        }
+	    }
+	});
 });

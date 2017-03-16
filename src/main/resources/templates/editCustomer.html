@@ -10,6 +10,7 @@
 	    <link rel="stylesheet" href="/styles/customers.css"></link>	    
 		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" 
 		  	  integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"></link>
+	  	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.1.1/jquery-confirm.min.css"></link>
 	</head>
 	
 	<body>
@@ -29,7 +30,7 @@
 				<div class="tab-pane active table-tab" id="1">
 	        		<div class="container">
 	        			<div class="center-content">
-		        			<form class="form" th:action="@{/balance/} + ${customer.username}" th:method="post" th:object="${customer}">
+		        			<form class="form" th:method="post" th:object="${customer}">
 		        				<div class="form-group row">
 		        					<label for="track" class="col-sm-2 col-form-label">Balance:</label>
 		        					<div class="col-sm-10">
@@ -96,6 +97,7 @@
 			</div>
 		</div>
 		<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.1.1/jquery-confirm.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 		<script src="/scripts/table.js"></script>
 		<script src="/scripts/validation.js"></script>

@@ -60,5 +60,4 @@ public class JdbcHorseRepo implements HorseDAO {
 		String sql = "SELECT * FROM Horses WHERE Race_id = ?";		
 		return jdbcTemplate.query(sql, new Object[] {raceID}, new HorseRowMapper());
 	}
-
 }

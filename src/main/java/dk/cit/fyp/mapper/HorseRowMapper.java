@@ -21,5 +21,4 @@ public class HorseRowMapper implements RowMapper<Horse> {
 		
 		return h;
 	}
-
 }
