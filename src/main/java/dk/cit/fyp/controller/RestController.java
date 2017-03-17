@@ -21,6 +21,7 @@ public class RestController {
 			
 	@RequestMapping(value={"/api/account/{username}"}, method=RequestMethod.GET)
 	public @ResponseBody Customer getAccountInfo(@PathVariable(value="username") String username) {
+		logger.info("GET to /api/account/" + username);
 		Customer customer = customerService.get(username).get(0);
 		return customer;
 	}

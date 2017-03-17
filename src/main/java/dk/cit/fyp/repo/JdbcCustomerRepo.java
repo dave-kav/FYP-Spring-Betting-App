@@ -28,7 +28,6 @@ public class JdbcCustomerRepo implements CustomerDAO {
 
 	@Override
 	public void save(Customer customer) {
-		logger.info(get(customer.getUsername()).size());
 		if ( get(customer.getUsername()).size() != 0 )
 			update(customer);
 		else
@@ -36,7 +35,6 @@ public class JdbcCustomerRepo implements CustomerDAO {
 	}
 	
 	private void add(Customer customer) {
-		logger.info("in add");
 		String sql = "INSERT INTO Customers (Username, Password, First_name, Last_name, DOB, Credit) "
 				+ "VALUES (?, ?, ?, ?, ?, ?)";
 		

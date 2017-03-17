@@ -21,7 +21,7 @@
 				<li class="active">
 		        	<a href="#1" data-toggle="tab" th:accesskey="1">Update Balance</a>
 				</li>
-				<li>
+				<li> 
 					<a href="#2" data-toggle="tab" th:accesskey="2">Edit Details</a>
 				</li>
 			</ul>
@@ -30,7 +30,7 @@
 				<div class="tab-pane active table-tab" id="1">
 	        		<div class="container">
 	        			<div class="center-content">
-		        			<form class="form" th:method="post" th:object="${customer}">
+		        			<form class="form" th:method="post" th:object="${customer}" th:id="updateBalance" th:action="@{/balance/} + ${customer.username}">
 		        				<div class="form-group row">
 		        					<label for="track" class="col-sm-2 col-form-label">Balance:</label>
 		        					<div class="col-sm-10">
@@ -46,8 +46,8 @@
 		        				<p th:if="${successMessage}" th:text="${successMessage}" class="text-success center-content"></p>
 		        				<p th:if="${errorMessage}" th:text="${errorMessage}" class="text-danger center-content"></p>
 		        				<div class="center-content buttons">
-			        				<button class="btn btn-primary" name="deposit" id="deposit" value="deposit">Deposit</button>
-			        				<button class="btn btn-warning" name="withdraw" id="withdraw" value="withdraw">Withdraw</button>
+			        				<button type="button" class="btn btn-primary" name="deposit" id="deposit" value="deposit">Deposit</button>
+			        				<button type="button" class="btn btn-warning" name="withdraw" id="withdraw" value="withdraw">Withdraw</button>
 		        				</div>
 		        			</form>
 		  				</div>						
@@ -93,13 +93,13 @@
 		        			</form>
 	        			</div>
 	        		</div>
-				</div>				
+				</div>			
 			</div>
 		</div>
 		<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.1.1/jquery-confirm.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 		<script src="/scripts/table.js"></script>
-		<script src="/scripts/validation.js"></script>
+		<script src="/scripts/customer.js"></script>
 	</body>
 </html>

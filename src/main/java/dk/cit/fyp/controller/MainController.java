@@ -293,17 +293,14 @@ public class MainController {
 		
 		String amountString = request.getParameter("amount");
 		double amount = Double.parseDouble(amountString);
-		logger.info(amount);
-		
-		logger.info(request.getParameter("deposit"));
-		logger.info(request.getParameter("withdraw"));
+
 		if (request.getParameter("deposit") != null) {
 			customer.setCredit(customer.getCredit() + amount);
 			customerService.save(customer);
 			attributes.addFlashAttribute("successMessage", "New account balance: " + customer.getCredit());
 			return "redirect:/customers/" + username;
 		}
-		else {
+		else if (request.getParameter("withdraw") != null) {
 			if (customer.getCredit() >= amount) {
 				customer.setCredit(customer.getCredit() - amount);
 				customerService.save(customer);
@@ -314,6 +311,11 @@ public class MainController {
 				attributes.addFlashAttribute("errorMessage", "Insufficient Credit - Max withdrawal: " + customer.getCredit());
 				return "redirect:/customers/" + username;
 			}
+		}
+		else {
+			logger.info("deposit/withdrawal not found");
+			attributes.addFlashAttribute("errorMessage", "Sorry, an error occurred...");
+			return "redirect:/customers/" + username;
 		}
 	}
 
