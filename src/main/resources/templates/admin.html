@@ -5,10 +5,11 @@
 	<head>
 	  	<meta charset="UTF-8"></meta>
 		<title>Admin Panel</title>
-	    <link rel="stylesheet" href="styles/tabs.css"></link>
 	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"></link>
 		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" 
 		  	  integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"></link>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.1.1/jquery-confirm.min.css"></link>
+		<link rel="stylesheet" href="styles/tabs.css"></link>	
 	</head>
 	
 	<body>
@@ -16,13 +17,13 @@
 
 		<div id="tabs" class="container">	
 			<ul class="nav nav-tabs">
-				<li class="active">
+				<li id="l1" class="active">
 		        	<a href="#1" data-toggle="tab" th:accesskey="1">Races</a>
 				</li>
-				<li>
+				<li id="l2" >
 					<a href="#2" data-toggle="tab" th:accesskey="2">Add Race</a>
 				</li>
-				<li>
+				<li id="l3" >
 					<a href="#3" data-toggle="tab" th:accesskey="3">Users</a>
 				</li>
 			</ul>
@@ -66,22 +67,22 @@
 		        				<div class="form-group row">
 		        					<label for="track" class="col-sm-2 col-form-label">Track:</label>
 		        					<div class="col-sm-10">
-		        						<input class="form-control" name="track" th:field="*{track}" th:autofocus="true"></input>
+		        						<input class="form-control" th:name="track" th:id="track" th:field="*{track}" th:autofocus="true"></input>
 		        					</div>
 		        				</div>
 		        				<div class="form-group row">
 		        					<label for="time" class="col-sm-2 col-form-label">Time:</label>
 		        					<div class="col-sm-10">
-		        						<input type="time" class="form-control" name="time" th:field="*{time}"></input>
+		        						<input type="time" class="form-control" th:name="time" th:id="time" th:field="*{time}"></input>
 		        					</div>
 		        				</div>
 		        				<div class="form-group row">
 		        					<label for="runners" class="col-sm-2 col-form-label">Runners:</label>
 		        					<div class="col-sm-10">
-		        						<input type="number" class="form-control" name="runners" th:field="*{runners}" min="1"></input>
+		        						<input type="number" class="form-control" th:name="runners" th:id="runners" th:field="*{runners}" min="1"></input>
 		        					</div>
 		        				</div>
-		        				<button class="btn btn-default pull-right">Add</button>
+		        				<button th:id="addRace" class="btn btn-primary pull-right">Add</button>
 		        			</form>
 	        			</div>
 	        		</div>
@@ -95,13 +96,13 @@
 		        				<div class="form-group row">
 		        					<label for="username" class="col-sm-2 col-form-label">Username:</label>
 		        					<div class="col-sm-10">
-		        						<input class="form-control" name="username" th:field="*{username}" th:autofocus="true"></input>
+		        						<input class="form-control" th:name="username" th:id="username" th:field="*{username}" th:autofocus="true"></input>
 		        					</div>
 		        				</div>
 		        				<div class="form-group row">
 		        					<label for="password" class="col-sm-2 col-form-label">Password:</label>
 		        					<div class="col-sm-10">
-		        						<input type="password" class="form-control" name="password" th:field="*{password}"></input>
+		        						<input type="password" class="form-control" th:name="password" th:id="password" th:field="*{password}"></input>
 		        					</div>
 		        				</div>
 		        				<div class="checkbox" id="check-admin">
@@ -109,7 +110,8 @@
 		      							<input type="checkbox" th:name="admin" th:field="*{admin}">Admin User:</input>
 	    							</label>	
 	  							</div>
-		        				<button class="btn btn-default pull-right">Add</button>
+	  							<p th:if="${successMessage}" th:text="${successMessage}" class="text-success center-content"></p>
+		        				<button id="addUser" class="btn btn-primary pull-right">Add</button>
 		        			</form>
 	        			</div>
 	        		</div>
@@ -117,7 +119,10 @@
 			</div>
 		</div>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.1.1/jquery-confirm.min.js"></script>
 		<script src="/scripts/table.js"></script>
+		<script src="/scripts/admin.js"></script>
 	</body>
 </html>

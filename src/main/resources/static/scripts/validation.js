@@ -28,7 +28,6 @@ $("#translateSubmit").click(function() {
 	if (!alphaPattern.test($("#track").val())) {
 		$("#track").addClass("error");
 		errorFree = false;
-		alert("wrong format - letters only");
 	}
 	
 	if ($("#selection").val() == "") {
@@ -39,7 +38,6 @@ $("#translateSubmit").click(function() {
 	if (!alphaNumPattern.test($("#selection").val())) {
 		$("#selection").addClass("error");
 		errorFree = false;
-		alert("wrong format - letters or numbers only");
 	}
 	
 	$("#selection").change(function() {
@@ -54,7 +52,7 @@ $("#translateSubmit").click(function() {
 	if (!oddsPattern.test($("#odds").val())) {
 		$("#odds").addClass("error");
 		errorFree = false;
-		alert("wrong format - please follow the format of number/number e.g. 2/1");
+		$.dialog('Invalid Format entered for odds - please follow the format of number/number e.g. 2/1');
 	}
 	
 	$("#odds").change(function() {
@@ -121,7 +119,6 @@ $("#customerSubmit").click(function(){
 	if (!alphaPattern.test($("#firstName").val())) {
 		$("#firstName").addClass("error");
 		errorFree = false;
-		alert("wrong format - lettersonly");
 	}
 	
 	$("#firstName").change(function() {
@@ -136,7 +133,6 @@ $("#customerSubmit").click(function(){
 	if (!alphaPattern.test($("#lastName").val())) {
 		$("#lastName").addClass("error");
 		errorFree = false;
-		alert("wrong format - lettersonly");
 	}
 	
 	$("#lastName").change(function() {
@@ -169,10 +165,30 @@ $("#customerSubmit").click(function(){
 	if ($("#password").val().length < 8) {
 		$("#password").addClass("error");
 		errorFree = false;
+		$.dialog('Password must be 8 characters in length or greater');
 	}
-	
+
 	$("#password").change(function() {
 		$("#password").removeClass("error");
+	});
+	
+	if (!errorFree)
+		event.preventDefault();	
+});
+
+
+//validate stake on upload button
+$("#uploadSubmit").click(function(){
+	var errorFree = true;
+	
+	if ($("#stake").val() == 0.0) {
+		$("#stake").addClass("error");
+		errorFree = false;
+		$.dialog('Stake must be greater than 0');
+	}
+	
+	$("#stake").change(function() {
+		$("#stake").removeClass("error");
 	});
 	
 	if (!errorFree)

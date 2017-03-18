@@ -248,7 +248,7 @@ public class MainController {
 	}
 	
 	@RequestMapping(value={"/customers"}, method=RequestMethod.POST)
-	public String addCustomer(@Valid Customer customer, BindingResult bindingResult) {
+	public String addCustomer(Customer customer, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			for (ObjectError e: bindingResult.getAllErrors()) {
 				logger.info(e.toString());
@@ -335,7 +335,7 @@ public class MainController {
 	
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value={"/users"}, method=RequestMethod.POST)
-	public String addUser(User user) {
+	public String addUser(User user, RedirectAttributes attributes) {
 		logger.info("POST request to '/users'");
 		
 		logger.info("Adding user...");
@@ -343,7 +343,8 @@ public class MainController {
 		logger.info("User added!");
 		logger.info(" Redirecting to /admin");
 		
-		return "redirect:/admin";
+		attributes.addFlashAttribute("successMessage", "New User added!");
+		return "redirect:/admin?tab=3";
 	}
 	
 	@PreAuthorize("hasAuthority('ADMIN')")

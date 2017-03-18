@@ -2,99 +2,101 @@
 
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 
-<head>	
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"></link>
-	<link rel="stylesheet" type="text/css" href="/styles/main.css"></link>
-	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" 
-		  integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"></link>
-  	<title>Translate Bets</title>
-</head>
-<body>
-
-<div th:replace="fragments/header :: header">&nbsp;</div>
-<div class="content">
-	<div class="container">
-		<div class="row">
-			<!-- Panel on left of GUI -->
-			<div class="col-sm-4 img-rounded" id="left-box">
-				<img th:if="${img}" th:src="${imgSrc}" id="bet-img"></img>
-				<p th:if="${queue}" id="bets-left" class="h3">Bets to be translated:
-					<small class="text-muted" th:text="${queue}"></small>
-				</p>
-				<p th:unless="${queue}" class="no-bets h3">Waiting for new bets...</p>
-			</div>
-			
-			<!-- Panel on right of GUI -->
-			<div class="col-sm-8">
-				<div id="right-box">
-			
-					<!-- Upper right panel -->
-					<div class="row small-box img-rounded">
-						<div class="fields">
-							<form class="form" th:action="@{/translate}" th:method="post">
-								<div class="form-group row">
-								    <label for="race" class="col-sm-2 col-form-label">Race Time: </label>
-								    <div class="col-sm-10">
-								    	<input type="time" class="form-control" th:id="race" th:name="race" th:field="*{race.time}" th:autofocus="true"></input>
-								    </div>
-								</div>
-								<div class="form-group row">
-								    <label for="track" class="col-sm-2 col-form-label">Track:</label>
-								    <div class="col-sm-10">
-								    	<input type="text" class="form-control" th:id="track" th:name="track" placeholder="Cheltenham" th:field="${race.track}"></input>
-								    </div>
-								</div>
-								<div class="form-group row">
-									<label for="selection" class="col-sm-2 col-form-label">Selection: </label>
-									<div class="col-sm-10">
-										<input type="text" class="form-control" th:id="selection" th:name="selection" placeholder="Name/Number" th:field="*{bet.selection}"></input>								
+	<head>	
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"></link>
+		<link rel="stylesheet" type="text/css" href="/styles/main.css"></link>
+		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" 
+			  integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"></link>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.1.1/jquery-confirm.min.css"></link>
+	  	<title>Translate Bets</title>
+	</head>
+	<body>
+	
+	<div th:replace="fragments/header :: header">&nbsp;</div>
+	<div class="content">
+		<div class="container">
+			<div class="row">
+				<!-- Panel on left of GUI -->
+				<div class="col-sm-4 img-rounded" id="left-box">
+					<img th:if="${img}" th:src="${imgSrc}" id="bet-img"></img>
+					<p th:if="${queue}" id="bets-left" class="h3">Bets to be translated:
+						<small class="text-muted" th:text="${queue}"></small>
+					</p>
+					<p th:unless="${queue}" class="no-bets h3">Waiting for new bets...</p>
+				</div>
+				
+				<!-- Panel on right of GUI -->
+				<div class="col-sm-8">
+					<div id="right-box">
+				
+						<!-- Upper right panel -->
+						<div class="row small-box img-rounded">
+							<div class="fields">
+								<form class="form" th:action="@{/translate}" th:method="post">
+									<div class="form-group row">
+									    <label for="race" class="col-sm-2 col-form-label">Race Time: </label>
+									    <div class="col-sm-10">
+									    	<input type="time" class="form-control" th:id="race" th:name="race" th:field="*{race.time}" th:autofocus="true"></input>
+									    </div>
 									</div>
-							  	</div>
-							  	<div class="form-group row">
-									<label for="selection" class="col-sm-2 col-form-label">Odds: </label>
-									<div class="col-sm-10">
-										<input type="text" class="form-control" th:id="odds" th:name="odds" placeholder="11/4"></input>								
+									<div class="form-group row">
+									    <label for="track" class="col-sm-2 col-form-label">Track:</label>
+									    <div class="col-sm-10">
+									    	<input type="text" class="form-control" th:id="track" th:name="track" placeholder="Cheltenham" th:field="${race.track}"></input>
+									    </div>
 									</div>
-							  	</div>
-							  	<input type="hidden" name="BetID" th:field="${bet.betID}" th:value="${betID}"></input>
-							  	<div class="checkbox" id="check-ew">
-	    							<label>
-		      							<input type="checkbox" th:name="eachWay" th:field="${bet.eachWay}">Each-way</input>
-	    							</label>	
-	  							</div>
-							 	<button th:if="${img}" id="translateSubmit" type="submit" class="btn btn-primary pull-right">Submit</button>
-							 	<button th:unless="${img}" type="submit" class="btn btn-primary pull-right disabled" th:disabled="true">Submit</button>
-							</form>
+									<div class="form-group row">
+										<label for="selection" class="col-sm-2 col-form-label">Selection: </label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" th:id="selection" th:name="selection" placeholder="Name/Number" th:field="*{bet.selection}"></input>								
+										</div>
+								  	</div>
+								  	<div class="form-group row">
+										<label for="selection" class="col-sm-2 col-form-label">Odds: </label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" th:id="odds" th:name="odds" placeholder="11/4"></input>								
+										</div>
+								  	</div>
+								  	<input type="hidden" name="BetID" th:field="${bet.betID}" th:value="${betID}"></input>
+								  	<div class="checkbox" id="check-ew">
+		    							<label>
+			      							<input type="checkbox" th:name="eachWay" th:field="${bet.eachWay}">Each-way</input>
+		    							</label>	
+		  							</div>
+								 	<button th:if="${img}" id="translateSubmit" type="submit" class="btn btn-primary pull-right">Submit</button>
+								 	<button th:unless="${img}" type="submit" class="btn btn-primary pull-right disabled" th:disabled="true">Submit</button>
+								</form>
+							</div>
 						</div>
-					</div>
-					
-					<!-- Panel on bottom right of GUI -->
-					<div class="row small-box img-rounded">
-						<div th:if="${img}" class="fields">
-							<h4>Bet Details</h4>
-							<p class="h5">Betting Slip No:
-								<small class="text-muted" th:text="${bet.betID}"></small>
-							</p>
-							<p class="h5">Time Placed:
-								<small class="text-muted" th:text="${bet.timePlaced}"></small>
-							</p>
-							<p class="h3">Stake:
-								<small class="text-muted" th:text="${bet.stake}"></small>
-							</p>
+						
+						<!-- Panel on bottom right of GUI -->
+						<div class="row small-box img-rounded">
+							<div th:if="${img}" class="fields">
+								<h4>Bet Details</h4>
+								<p class="h5">Betting Slip No:
+									<small class="text-muted" th:text="${bet.betID}"></small>
+								</p>
+								<p class="h5">Time Placed:
+									<small class="text-muted" th:text="${bet.timePlaced}"></small>
+								</p>
+								<p class="h3">Stake:
+									<small class="text-muted" th:text="${bet.stake}"></small>
+								</p>
+							</div>
+							<div th:unless="${img}" class="fields">
+								<h4 class="no-bets-translate">No bets left to translate</h4>
+							</div>
+							<!-- to be completed -->
 						</div>
-						<div th:unless="${img}" class="fields">
-							<h4 class="no-bets-translate">No bets left to translate</h4>
-						</div>
-						<!-- to be completed -->
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
-
-<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
-<script src="/scripts/validation.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-</body>
+	
+	<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+	<script src="/scripts/validation.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.1.1/jquery-confirm.min.js"></script>
+	</body>
 </html>
