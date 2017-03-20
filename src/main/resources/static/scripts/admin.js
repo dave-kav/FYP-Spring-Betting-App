@@ -2,23 +2,23 @@ var alphaPattern = /^[A-z]+$/;
 var alphaNumPattern = /^\w+$/;
 
 var activeTab;
-	var url = window.location.href;
-	activeTab = url.split('?').pop().split('=').pop();
-	console.log(activeTab);
-	
-	if (activeTab == 2) {
-		$('#1').removeClass("active");
-		$('#l1').removeClass("active");
-		$('#2').addClass("active");
-		$('#l2').addClass("active");
-	}
-	
-	else if (activeTab == 3) {
-		$('#1').removeClass("active");
-		$('#l1').removeClass("active");
-		$('#3').addClass("active");
-		$('#l3').addClass("active");
-	}
+var url = window.location.href;
+activeTab = url.split('?').pop().split('=').pop();
+console.log(activeTab);
+
+if (activeTab == 2) {
+	$('#1').removeClass("active");
+	$('#l1').removeClass("active");
+	$('#2').addClass("active");
+	$('#l2').addClass("active");
+}
+
+else if (activeTab == 3) {
+	$('#1').removeClass("active");
+	$('#l1').removeClass("active");
+	$('#3').addClass("active");
+	$('#l3').addClass("active");
+}
 
 //validate add race form
 $("#addRace").click(function() {
