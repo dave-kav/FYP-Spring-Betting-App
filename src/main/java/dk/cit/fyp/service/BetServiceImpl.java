@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import dk.cit.fyp.domain.Bet;
+import dk.cit.fyp.domain.Horse;
 import dk.cit.fyp.domain.Race;
 import dk.cit.fyp.repo.BetDAO;
 
@@ -95,4 +96,41 @@ public class BetServiceImpl implements BetService {
 	public void offScreen(Bet bet) {
 		betRepo.offScreen(bet);
 	}
+	
+	@Override
+	public List<Bet> getWinBets(Race race) {
+		return betRepo.getWinBets(race);
+	}
+
+	@Override
+	public List<Bet> getEachWayBets(Race race) {
+		return betRepo.getEachWayBets(race);
+	}
+
+	@Override
+	public void settleBets(Race race) {
+		settleWin(race);
+		settleEachWay(race);
+		
+	}
+	
+	private void settleWin(Race race) {
+		List<Bet> bets = getWinBets(race);
+		
+		Horse winner = race.getWinner();
+		for (Bet b: bets) {
+			
+			if (Integer.parseInt(b.getSelection()) == winner.getSelectionID()) {
+				double winnings;
+				double stake = b.getStake();
+//				double odds = b.get 
+//				winnings = 
+			}
+		}
+	}
+	
+	private void settleEachWay(Race race) {
+		
+	}
+
 }

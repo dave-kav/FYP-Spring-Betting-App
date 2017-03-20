@@ -20,8 +20,8 @@ public class BetRowMapper implements RowMapper<Bet>{
 		Timestamp date = rs.getTimestamp("Time_placed");
 		String dateString = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy").format(date);
 		b.setTimePlaced(dateString);
-		b.setSelection(rs.getString("Selection"));
-		b.setRaceID(rs.getInt("Race_id"));
+		b.setSelection(rs.getString("Selection_id"));
+		b.setRace_id(rs.getInt("Race_id"));
 		b.setEachWay(rs.getBoolean("Each_way"));
 		b.setStake(rs.getFloat("Stake"));
 		b.setTranslated(rs.getBoolean("Translated"));
@@ -30,6 +30,7 @@ public class BetRowMapper implements RowMapper<Bet>{
 		b.setImagePath(rs.getString("Image"));
 		b.setMonitoredCustomer(rs.getBoolean("Monitored"));
 		b.setStatus(Status.valueOf(rs.getString("Status")));
+		b.setOdds(rs.getInt("Odds_numerator") + "/" + rs.getInt("Odds_denominator"));
 		
 		return b;
 	}

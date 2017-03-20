@@ -2,16 +2,21 @@ package dk.cit.fyp.domain;
 
 public class Horse {
 	
+	private int selectionID;
 	private String name;
 	// unique ID of race in which horse is running
 	private int raceID;
-	// used for calculating winnings
-	private int oddsEnumerator;
-	// used for calculating winnings
-	private int oddsDenominator;
 	// The horses assigned number within the race
 	private int number;
 	
+	public int getSelectionID() {
+		return selectionID;
+	}
+
+	public void setSelectionID(int selectionID) {
+		this.selectionID = selectionID;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -28,22 +33,6 @@ public class Horse {
 		this.raceID = raceID;
 	}
 
-	public int getOddsEnumerator() {
-		return oddsEnumerator;
-	}
-
-	public void setOddsEnumerator(int oddsEnumerator) {
-		this.oddsEnumerator = oddsEnumerator;
-	}
-
-	public int getOddsDenominator() {
-		return oddsDenominator;
-	}
-
-	public void setOddsDenominator(int oddsDenominator) {
-		this.oddsDenominator = oddsDenominator;
-	}
-
 	public int getNumber() {
 		return number;
 	}
@@ -54,7 +43,6 @@ public class Horse {
 	
 	@Override
 	public String toString() {
-		return "Horse [name=" + name + ", raceID=" + raceID + ", oddsEnumerator=" + oddsEnumerator
-				+ ", oddsDenominator=" + oddsDenominator + ", number=" + number + "]";
+		return "Horse [name=" + name + ", raceID=" + raceID + ", number=" + number + "]";
 	}
 }

@@ -37,16 +37,14 @@ public class JdbcHorseRepo implements HorseDAO {
 		String sql = "INSERT INTO Horses (Name, Race_id, odds_numerator, odds_denominator, number) "
 				+ "VALUES (?, ?, ?, ?, ?)";
 		
-		jdbcTemplate.update(sql, new Object[] {horse.getName(), horse.getRaceID(), 
-				horse.getOddsEnumerator(), horse.getOddsDenominator(), horse.getNumber()});
+		jdbcTemplate.update(sql, new Object[] {horse.getName(), horse.getRaceID(), horse.getNumber()});
 	}
 	
 	private void update(Horse horse) {
-		String sql = "UPDATE Horses SET Race_id = ?, odds_numerator = ?, odds_denominator = ?) "
+		String sql = "UPDATE Horses SET Race_id = ? "
 				+ "WHERE Name = ?)";
 		
-		jdbcTemplate.update(sql, new Object[] {horse.getRaceID(), horse.getOddsEnumerator(), 
-				horse.getOddsDenominator(), horse.getName()});
+		jdbcTemplate.update(sql, new Object[] {horse.getRaceID(),  horse.getName()});
 	}
 
 	@Override

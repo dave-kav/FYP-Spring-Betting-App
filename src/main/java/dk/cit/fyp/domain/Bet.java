@@ -11,11 +11,11 @@ public class Bet {
 	// E.g. horse that is being bet on
 	@NotNull
 	private String selection;
-	// particular race to which the selection and bet relate
-	private int raceID;
-	// amount being bet
+	private int Race_id;
+	//amount being bet
 	@DecimalMin("0.01")
 	private double stake;
+	private String odds;
 	//location of captured betting slip image
 	private String imagePath;
 	private boolean eachWay;
@@ -56,14 +56,14 @@ public class Bet {
 		this.selection = selection;
 	}
 	
-	public int getRaceID() {
-		return raceID;
+	public int getRace_id() {
+		return Race_id;
 	}
-	
-	public void setRaceID(int raceID) {
-		this.raceID = raceID;
+
+	public void setRace_id(int race_id) {
+		Race_id = race_id;
 	}
-	
+
 	public double getStake() {
 		return stake;
 	}
@@ -72,6 +72,14 @@ public class Bet {
 		this.stake = stake;
 	}
 	
+	public String getOdds() {
+		return odds;
+	}
+
+	public void setOdds(String odds) {
+		this.odds = odds;
+	}
+
 	public String getImagePath() {
 		return imagePath;
 	}
@@ -138,8 +146,7 @@ public class Bet {
 
 	@Override
 	public String toString() {
-		return "Bet [betID=" + betID + ", timePlaced=" + timePlaced + ", selection=" + selection + ", raceID=" + raceID
-				+ ", stake=" + stake + ", image=" + imagePath + ", eachWay=" + eachWay + ", translated=" + translated
+		return "Bet [betID=" + betID + ", timePlaced=" + timePlaced + ", selection=" + selection + ", stake=" + stake + ", odds=" + odds + ", image=" + imagePath + ", eachWay=" + eachWay + ", translated=" + translated
 				+ ", onlineBet=" + onlineBet + ", winnings=" + winnings + ", monitoredCustomer=" + monitoredCustomer
 				+ ", status=" + status + ", paid=" + paid + "]";
 	}

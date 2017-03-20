@@ -54,7 +54,7 @@
 								  	<div class="form-group row">
 										<label for="selection" class="col-sm-2 col-form-label">Odds: </label>
 										<div class="col-sm-10">
-											<input type="text" class="form-control" th:id="odds" th:name="odds" placeholder="11/4"></input>								
+											<input type="text" class="form-control" th:id="odds" th:name="odds" placeholder="11/4" th:field="*{bet.odds}"></input>								
 										</div>
 								  	</div>
 								  	<input type="hidden" name="BetID" th:field="${bet.betID}" th:value="${betID}"></input>

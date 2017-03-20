@@ -63,12 +63,20 @@ public class JdbcRaceRepo implements RaceDAO {
 	}
 	
 	private void update(Race race) {
-		String sql = "UPDATE Races SET Time = ?, Racetrack = ?, Runners = ?, Terms = ?, Places = ?"
-				+ "WHERE Race_id = ?";
+		String sql = "UPDATE Races SET Winner = ?, Place1 = ?, Place2 = ?, Place3 = ? WHERE Race_id = ?";
 		
-		jdbcTemplate.update(sql, new Object[] {race.getTime(), race.getTrack(), race.getRunners(), 
-											race.getTerms(), race.getPlaces(), race.getRaceID()});
+		
+		int[] places = {0,0,0};
+		if(race.getPlacedHorses().size() > 0) {
+			for (int i = 0; i < race.getPlacedHorses().size(); i++) {
+				places[i] = race.getPlacedHorses().get(i).getSelectionID();
+			}
+		}
+		
+		jdbcTemplate.update(sql, new Object[] {race.getWinner().getSelectionID(), 
+							places[0], places[1], places[2], race.getRaceID()});
 	}
+	
 
 	@Override
 	public List<Race> findAll() {

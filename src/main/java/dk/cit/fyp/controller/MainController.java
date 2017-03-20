@@ -95,22 +95,24 @@ public class MainController {
 		
 		Bet bet = betService.get(tempBet.getBetID());
 		betService.onScreen(bet);
-		bet.setSelection(tempBet.getSelection());
+		
+		String selection = tempBet.getSelection();
+		int selectionID;
+		try {
+			selectionID = Integer.parseInt(selection);
+			bet.setSelection(selectionID + "");
+		} catch (NumberFormatException e) {
+			selectionID = horseService.get(selection).get(0).getSelectionID();
+		}
+	 		
+		bet.setSelection(selectionID + "");
 		bet.setTranslated(true);
 		bet.setEachWay(tempBet.isEachWay());
+		bet.setOdds(tempBet.getOdds());
 		
-		logger.info("Race time: " + tempRace.getTime());
-		
-		List<Race> races = raceService.find(tempRace.getTime());
-		if (races.size() > 0) {
-			Race race = races.get(0);
-			bet.setRaceID(race.getRaceID());
-		}
-	
 		betService.save(bet);
 		
-		model = betService.getNext(model);				
-		return "translate";
+		return "redirect:/translate";
 	}
 		
 	@RequestMapping(value={"/upload"}, method=RequestMethod.GET)
@@ -400,21 +402,71 @@ public class MainController {
 		model.addAttribute("userName", principal.getName());
 		
 		Race race = raceService.get(raceID);		
-		model.addAttribute("race", race);
-		model.addAttribute("horses", horseService.getHorsesInRace(raceID));
-		logger.info(horseService.getHorsesInRace(raceID).size());
+		model.addAttribute("horses", horseService.getHorsesInRace(raceID)); 
+		model.addAttribute("race", race); 
 		
-		logger.info(race);
+		ArrayList<Horse> placedHorses = new ArrayList<>();
+		for (int i = 0; i < race.getPlaces() - 1; i++)
+			placedHorses.add(new Horse());
+		
+		RaceWrapper wrapper = new RaceWrapper();
+		wrapper.setRace(race);
+		wrapper.setHorseList(placedHorses);
+		wrapper.setWinner(new Horse());
+		model.addAttribute("wrapper", wrapper);
 		
 		return "race";
 	}
 	
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value={"/races/{raceID}"}, method=RequestMethod.POST)
-	public String settleRace(@PathVariable(value="raceID") int raceID, List<Horse> horses) {
+	public String settleRace(HttpServletRequest request, RedirectAttributes attributes, @PathVariable(value="raceID") int raceID, RaceWrapper wrapper) {
 		logger.info("POST request to '/races/" + raceID + "'");
-		logger.info(horses.get(0).getName());
 	
+		//redirect if no horse selected
+		if (wrapper.getWinner().getName().equals("0")) {
+			attributes.addFlashAttribute("errorMessage", "Invalid option selected - Please choose a horse");
+			return "redirect:/races/" + raceID;
+		}
+		
+		Horse winner = horseService.get(wrapper.getWinner().getName()).get(0);
+		Race race = raceService.get(wrapper.getRace().getRaceID());
+		
+		ArrayList<Horse> placedHorses = new ArrayList<>();
+		
+		if (race.getPlaces() > 1) {
+			//array for comparing selected indexes
+			ArrayList<Horse> allHorses = new ArrayList<>();
+			allHorses.add(winner);
+			
+			for (Horse place: wrapper.getHorseList()) {		
+				//redirect if no horse selected
+				if(place.getName().equals("0")) {
+					attributes.addFlashAttribute("errorMessage", "Invalid option selected - Please choose a horse");
+					return "redirect:/races/" + raceID;
+				}
+				
+				placedHorses.add(horseService.get(place.getName()).get(0));
+				allHorses.add(horseService.get(place.getName()).get(0));
+			}
+			
+			//check same indexes not selected
+			for (int i = 0; i < allHorses.size(); i++) {
+				for (int j = i + 1; j < allHorses.size(); j++ ) {
+					if(allHorses.get(i).getName().equals(allHorses.get(j).getName())) {
+						attributes.addFlashAttribute("errorMessage", "A horse can not be assigned multiple places");
+						return "redirect:/races/" + raceID;
+					}
+				}
+			}
+		}
+
+		race.setWinner(winner);
+		race.setPlacedHorses(placedHorses);
+		raceService.save(race);
+		betService.settleBets(race);
+		
+		attributes.addFlashAttribute("successSettleMessage", "All bets on " + race.getTime() + " at " + race.getTrack() + " now being settled");
 		return "redirect:/admin";
 	}
 }

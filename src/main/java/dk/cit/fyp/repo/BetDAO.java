@@ -3,6 +3,7 @@ package dk.cit.fyp.repo;
 import java.util.List;
 
 import dk.cit.fyp.domain.Bet;
+import dk.cit.fyp.domain.Race;
 
 public interface BetDAO {
 	
@@ -25,5 +26,9 @@ public interface BetDAO {
 	void onScreen(Bet bet);
 
 	void offScreen(Bet bet);
+
+	List<Bet> getWinBets(Race race);
+	
+	List<Bet> getEachWayBets(Race race);
 	
 }

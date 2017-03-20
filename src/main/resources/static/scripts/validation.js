@@ -1,6 +1,6 @@
 var oddsPattern = /\d+\/\d+/;
 var alphaPattern = /^[A-z]+$/;
-var alphaNumPattern = /^\w+$/;
+var alphaNumPattern = /^[-\w\s]+$/;
 var numPattern = /^\d*\.?\d*$/;
 
 //validate translate form
@@ -44,7 +44,7 @@ $("#translateSubmit").click(function() {
 		$("#selection").removeClass("error");
 	});
 	
-	if ($("#odds").val() == "") {
+	if ($("#odds").val() == "" || $("#odds").val() == "0/0") {
 		$("#odds").addClass("error");
 		errorFree = false;
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.ui.Model;
 
 import dk.cit.fyp.domain.Bet;
+import dk.cit.fyp.domain.Race;
 
 public interface BetService {
 
@@ -29,5 +30,10 @@ public interface BetService {
 	void onScreen(Bet bet);
 
 	void offScreen(Bet bet);
+
+	void settleBets(Race race);
 	
+	List<Bet> getWinBets(Race race);
+	
+	List<Bet> getEachWayBets(Race race);	
 }
