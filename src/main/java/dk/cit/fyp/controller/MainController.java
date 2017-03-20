@@ -385,7 +385,7 @@ public class MainController {
 			horseService.save(h);
 		}
 		
-		attributes.addFlashAttribute("successMessage", "New race added!");
+		attributes.addFlashAttribute("successRaceMessage", "New race added!");
 		return "redirect:/admin?tab=2";
 	}
 	
