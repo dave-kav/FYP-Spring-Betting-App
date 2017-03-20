@@ -7,7 +7,10 @@ var activeTab;
 	console.log(activeTab);
 	
 	if (activeTab == 2) {
-		
+		$('#1').removeClass("active");
+		$('#l1').removeClass("active");
+		$('#2').addClass("active");
+		$('#l2').addClass("active");
 	}
 	
 	else if (activeTab == 3) {

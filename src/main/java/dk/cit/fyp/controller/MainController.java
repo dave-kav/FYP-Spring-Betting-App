@@ -369,7 +369,7 @@ public class MainController {
 	
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value={"/races/add"}, method=RequestMethod.POST)
-	public String addRace(RaceWrapper wrapper) {
+	public String addRace(RaceWrapper wrapper, RedirectAttributes attributes) {
 		logger.info("POST request to '/races/add'");
 		logger.info(wrapper.getHorseList().get(0).getName());
 		logger.info(wrapper.getRace().getTrack());
@@ -384,8 +384,9 @@ public class MainController {
 			h.setNumber(number++);
 			horseService.save(h);
 		}
-				
-		return "redirect:/admin";
+		
+		attributes.addFlashAttribute("successMessage", "New race added!");
+		return "redirect:/admin?tab=2";
 	}
 	
 	/**
