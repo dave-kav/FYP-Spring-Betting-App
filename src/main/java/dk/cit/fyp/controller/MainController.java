@@ -109,6 +109,7 @@ public class MainController {
 		bet.setTranslated(true);
 		bet.setEachWay(tempBet.isEachWay());
 		bet.setOdds(tempBet.getOdds());
+		bet.setRaceID(raceService.find(tempRace.getTime()).get(0).getRaceID());
 		
 		betService.save(bet);
 		
@@ -223,7 +224,7 @@ public class MainController {
 		
 		model.addAttribute("imgSrc", imgSrc);
 		model.addAttribute("bet", bet);
-		model.addAttribute("race", new Race());
+		model.addAttribute("race", raceService.get(bet.getRaceID()));
 		
 		return "editBet";
 	}
@@ -375,8 +376,15 @@ public class MainController {
 	@RequestMapping(value={"/races/add"}, method=RequestMethod.POST)
 	public String addRace(RaceWrapper wrapper, RedirectAttributes attributes) {
 		logger.info("POST request to '/races/add'");
-		logger.info(wrapper.getHorseList().get(0).getName());
 		logger.info(wrapper.getRace().getTrack());
+		
+		for (Horse h: wrapper.getHorseList()) {
+			if (h.getName().equals("")) {
+				logger.info("blank name supplied, redirecting");
+				attributes.addFlashAttribute("blankName", "Add Race Failed: Please ensure that you enter a name for each horse");
+				return "redirect:/admin?tab=2";
+			}
+		}
 		
 		Race race = wrapper.getRace();
 		raceService.save(race);

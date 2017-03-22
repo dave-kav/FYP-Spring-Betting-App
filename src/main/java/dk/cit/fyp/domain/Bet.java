@@ -11,7 +11,7 @@ public class Bet {
 	// E.g. horse that is being bet on
 	@NotNull
 	private String selection;
-	private int Race_id;
+	private int RaceID;
 	//amount being bet
 	@DecimalMin("0.01")
 	private double stake;
@@ -56,12 +56,12 @@ public class Bet {
 		this.selection = selection;
 	}
 	
-	public int getRace_id() {
-		return Race_id;
+	public int getRaceID() {
+		return RaceID;
 	}
 
-	public void setRace_id(int race_id) {
-		Race_id = race_id;
+	public void setRaceID(int raceID) {
+		RaceID = raceID;
 	}
 
 	public double getStake() {

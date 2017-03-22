@@ -56,7 +56,7 @@ public class JdbcBetRepo implements BetDAO {
 		int numerator = Integer.parseInt(parts[0]);
 		int denominator = Integer.parseInt(parts[1]);
 				
-		jdbcTemplate.update(sql, new Object[] {bet.getSelection(), bet.getRace_id(), bet.getStake(), 
+		jdbcTemplate.update(sql, new Object[] {bet.getSelection(), bet.getRaceID(), bet.getStake(), 
 				bet.isTranslated(), bet.isOnlineBet(), bet.getWinnings(), bet.getImagePath(), 
 				bet.isMonitoredCustomer(), bet.isEachWay(), numerator, denominator, bet.getStatus().toString(), bet.getBetID()});
 	}
