@@ -2,6 +2,8 @@ package dk.cit.fyp.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.jdbc.core.RowMapper;
 
@@ -19,7 +21,12 @@ public class RaceRowMapper implements RowMapper<Race> {
 		r.setPlaces(rs.getInt("Places"));
 		r.setTerms(rs.getDouble("Terms"));
 		r.setRunners(rs.getInt("Runners"));
-		
+		r.setWinnerID(rs.getInt("Winner"));
+		List<Integer> places = new ArrayList<>();
+		places.add(rs.getInt("Place1"));
+		places.add(rs.getInt("Place2"));
+		places.add(rs.getInt("Place3"));
+		r.setPlacedHorseIDs(places);
 		return r;
 	}
 }

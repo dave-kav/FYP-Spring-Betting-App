@@ -6,6 +6,8 @@ import dk.cit.fyp.domain.Horse;
 
 public interface HorseDAO {
 	
+	Horse getByID(int selectionID);
+	
 	List<Horse> get(String name);
 	
 	void save(Horse horse);

@@ -14,7 +14,8 @@
 	<body>
 		<div th:replace="fragments/header :: header">&nbsp;</div>
 		<div class="container">
-			<div class="center-content">				
+			<div class="center-content">
+				<p th:if="${settleMessage}" th:text="${settleMessage}" class="text-danger text-center"></p>				
 				<p th:unless="${race.places} > 1" class="lead">Select winner</p>
 				<p th:if="${race.places} > 1" class="lead">Select winner and places</p>
 				<form class="form" th:action="@{/races/} + ${race.raceID}" th:method="post" th:object="${wrapper}">

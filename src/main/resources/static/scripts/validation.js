@@ -103,6 +103,21 @@ $("#editSubmit").click(function() {
 		$("#selection").removeClass("error");
 	});
 	
+	if ($("#odds").val() == "" || $("#odds").val() == "0/0") {
+		$("#odds").addClass("error");
+		errorFree = false;
+	}
+	
+	if (!oddsPattern.test($("#odds").val())) {
+		$("#odds").addClass("error");
+		errorFree = false;
+		$.dialog('Invalid Format entered for odds - please follow the format of number/number e.g. 2/1');
+	}
+	
+	$("#odds").change(function() {
+		$("#odds").removeClass("error");
+	});
+	
 	if (!errorFree)
 		event.preventDefault();
 });

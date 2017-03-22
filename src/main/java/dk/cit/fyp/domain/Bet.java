@@ -24,7 +24,7 @@ public class Bet {
 	// indicates whether bet was placed via app
 	private boolean onlineBet;
 	// amount returned if bet is a winner
-	private float winnings;
+	private double winnings;
 	// indicates whether bet has been placed by a customer of interest e.g. high staking customer
 	private boolean monitoredCustomer;
 	// indicates if bet needs to be settled, is winner or loser
@@ -112,11 +112,11 @@ public class Bet {
 		this.onlineBet = onlineBet;
 	}
 	
-	public float getWinnings() {
+	public double getWinnings() {
 		return winnings;
 	}
 	
-	public void setWinnings(float winnings) {
+	public void setWinnings(double winnings) {
 		this.winnings = winnings;
 	}
 	

@@ -20,7 +20,9 @@ public class Race {
 	@Min(1)
 	private int runners;
 	private Horse winner;
+	private int winnerID;
 	private List<Horse> placedHorses;
+	private List<Integer> placedHorseIDs;
 	
 	public int getRaceID() {
 		return raceID;
@@ -86,9 +88,27 @@ public class Race {
 		this.placedHorses = placedHorses;
 	}
 
+	public int getWinnerID() {
+		return winnerID;
+	}
+
+	public void setWinnerID(int winnerID) {
+		this.winnerID = winnerID;
+	}
+
+	public List<Integer> getPlacedHorseIDs() {
+		return placedHorseIDs;
+	}
+
+	public void setPlacedHorseIDs(List<Integer> placedHorseIDs) {
+		this.placedHorseIDs = placedHorseIDs;
+	}
+
 	@Override
 	public String toString() {
 		return "Race [raceID=" + raceID + ", time=" + time + ", track=" + track + ", places=" + places + ", terms="
 				+ terms + ", runners=" + runners + "]";
 	}
+
+
 }

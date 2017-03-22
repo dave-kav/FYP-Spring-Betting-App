@@ -14,6 +14,11 @@ public class HorseServiceImpl implements HorseService {
 
 	private HorseDAO horseRepo;
 	
+	@Override
+	public Horse getById(int selectionID) {
+		return horseRepo.getByID(selectionID);
+	}
+	
 	@Autowired
 	public HorseServiceImpl(HorseDAO horseRepo) {
 		this.horseRepo = horseRepo;

@@ -229,9 +229,11 @@ public class MainController {
 	}
 	
 	@RequestMapping(value={"/bets/{betID}"}, method=RequestMethod.POST)
-	public String updateBet(Bet bet) {
+	public String updateBet(HttpServletRequest request, Bet bet) {
 		logger.info("POST to /bets/'" + bet.getBetID() + "'");
 		logger.info(bet.toString());
+		logger.info(request.getParameter("timePlaced"));
+		
 		
 		betService.save(bet);
 		
@@ -398,10 +400,30 @@ public class MainController {
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value={"/races/{raceID}"}, method=RequestMethod.GET)
 	public String viewRace(Model model, Principal principal, @PathVariable(value="raceID") int raceID) {
+		Race race = raceService.get(raceID);
+		
+		//add message if race already settled
+		if (race.getWinnerID() != 0) {
+			race.setWinner(horseService.getById(race.getWinnerID()));
+			String message = "Race already settled! Winner: " + race.getWinner().getName();
+			if (race.getPlacedHorseIDs().size() > 0) {
+				if (race.getPlacedHorseIDs().get(0) != 0)
+					message += " Placed: ";
+				List<Horse> places = new ArrayList<>();
+				for (int i: race.getPlacedHorseIDs()) {
+					if (i != 0) {
+						Horse h = horseService.getById(i);
+						message += h.getName() + " ";
+					}
+				}
+				race.setPlacedHorses(places);
+			}
+			model.addAttribute("settleMessage", message);
+		}
+		
 		logger.info("GET request to '/races/" + raceID + "'");
 		model.addAttribute("userName", principal.getName());
 		
-		Race race = raceService.get(raceID);		
 		model.addAttribute("horses", horseService.getHorsesInRace(raceID)); 
 		model.addAttribute("race", race); 
 		

@@ -49,19 +49,16 @@ public class JdbcBetRepo implements BetDAO {
 	private void update(Bet bet) {
 		String sql = "UPDATE Bets SET Selection_id = ?, Race_id = ?, Stake = ?,"
 				+ "Translated = ?, Online_bet = ?, Winnings = ?, Image = ?, "
-				+ "Monitored = ?, Each_way = ?, Odds_numerator = ?, Odds_denominator = ? WHERE Bet_id = ?";
+				+ "Monitored = ?, Each_way = ?, Odds_numerator = ?, Odds_denominator = ?, Status = ? WHERE Bet_id = ?";
 		
 		String odds = bet.getOdds();
 		String[] parts = odds.split("/");
 		int numerator = Integer.parseInt(parts[0]);
 		int denominator = Integer.parseInt(parts[1]);
-		logger.info(numerator);
-		logger.info(denominator);
-		logger.info(bet.getSelection());
 				
 		jdbcTemplate.update(sql, new Object[] {bet.getSelection(), bet.getRace_id(), bet.getStake(), 
 				bet.isTranslated(), bet.isOnlineBet(), bet.getWinnings(), bet.getImagePath(), 
-				bet.isMonitoredCustomer(), bet.isEachWay(), numerator, denominator, bet.getBetID()});
+				bet.isMonitoredCustomer(), bet.isEachWay(), numerator, denominator, bet.getStatus().toString(), bet.getBetID()});
 	}
 	
 	@Override
@@ -120,13 +117,13 @@ public class JdbcBetRepo implements BetDAO {
 
 	@Override
 	public List<Bet> getWinBets(Race race) {
-		String sql = "SELECT * FROM Bets Where Each_way = 0 AND Translated = 1 AND Race_id = ?";
+		String sql = "SELECT * FROM Bets Where Each_way = 0 AND Translated = 1 AND Status = 'OPEN' AND Race_id = ?";
 		return jdbcTemplate.query(sql, new Object[] {race.getRaceID()}, new BetRowMapper());
 	}
 
 	@Override
 	public List<Bet> getEachWayBets(Race race) {
-		String sql = "SELECT * FROM Bets Where Each_way = 0 AND Translated = 0 AND Race_id = ?";
+		String sql = "SELECT * FROM Bets Where Each_way = 1 AND Translated = 1 AND Status = 'OPEN' AND Race_id = ?";
 		return jdbcTemplate.query(sql, new Object[] {race.getRaceID()}, new BetRowMapper());
 	}
 }

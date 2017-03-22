@@ -18,6 +18,12 @@ public class JdbcHorseRepo implements HorseDAO {
 	public JdbcHorseRepo(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
+	
+	@Override
+	public Horse getByID(int selectionID) {
+		String sql = "SELECT * FROM Horses WHERE Selection_id = ?";
+		return jdbcTemplate.queryForObject(sql, new Object [] {selectionID}, new HorseRowMapper());
+	}
 
 	@Override
 	public List<Horse> get(String name) {
@@ -58,4 +64,5 @@ public class JdbcHorseRepo implements HorseDAO {
 		String sql = "SELECT * FROM Horses WHERE Race_id = ?";		
 		return jdbcTemplate.query(sql, new Object[] {raceID}, new HorseRowMapper());
 	}
+
 }

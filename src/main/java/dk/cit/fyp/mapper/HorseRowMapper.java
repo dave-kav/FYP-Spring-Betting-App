@@ -16,7 +16,8 @@ public class HorseRowMapper implements RowMapper<Horse> {
 		h.setSelectionID(rs.getInt("Selection_id"));
 		h.setName(rs.getString("Name"));
 		h.setRaceID(rs.getInt("Race_id"));
-		h.setNumber(rs.getInt("number"));
+		h.setNumber(rs.getInt("Number"));
+		
 		
 		return h;
 	}
