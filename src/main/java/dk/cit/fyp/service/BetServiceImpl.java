@@ -19,7 +19,9 @@ import dk.cit.fyp.repo.BetDAO;
 public class BetServiceImpl implements BetService {
 	
 	private final static Logger logger = Logger.getLogger(BetServiceImpl.class);
+	@Autowired
 	private BetDAO betRepo;
+	@Autowired
 	private ImageService imgService;
 	
 	@Autowired

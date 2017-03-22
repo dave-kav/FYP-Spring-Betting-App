@@ -18,4 +18,6 @@ public interface HorseService {
 	
 	List<Horse> getRaceRunners(int runners);
 
+	List<Horse> getHorses();
+
 }

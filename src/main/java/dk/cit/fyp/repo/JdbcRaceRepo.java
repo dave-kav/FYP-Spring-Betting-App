@@ -1,5 +1,7 @@
 package dk.cit.fyp.repo;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,6 +10,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import dk.cit.fyp.domain.Race;
@@ -82,5 +85,32 @@ public class JdbcRaceRepo implements RaceDAO {
 	public List<Race> findAll() {
 		String sql = "SELECT * FROM Races";
 		return jdbcTemplate.query(sql, new RaceRowMapper());
+	}
+
+	@Override
+	public List<String> getTracks() {
+		String sql = "SELECT DISTINCT Racetrack FROM Races";
+		
+		return jdbcTemplate.query(sql, new RowMapper<String>(){
+
+			@Override
+			public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+				return rs.getString(1);
+			}
+		});
+	}
+	
+	@Override
+	public List<String> getTimes() {
+		String sql = "SELECT DISTINCT Time FROM Races ORDER BY Time";
+		
+		return jdbcTemplate.query(sql, new RowMapper<String>(){
+
+			@Override
+			public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+				return rs.getString(1);
+			}
+		});
+
 	}
 }

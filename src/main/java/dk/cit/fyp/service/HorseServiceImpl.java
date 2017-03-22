@@ -55,4 +55,9 @@ public class HorseServiceImpl implements HorseService {
 
 		return horses;
 	}
+
+	@Override
+	public List<Horse> getHorses() {
+		return horseRepo.getHorses();
+	}
 }

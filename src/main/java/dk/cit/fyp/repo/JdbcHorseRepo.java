@@ -65,4 +65,10 @@ public class JdbcHorseRepo implements HorseDAO {
 		return jdbcTemplate.query(sql, new Object[] {raceID}, new HorseRowMapper());
 	}
 
+	@Override
+	public List<Horse> getHorses() {
+		String sql = "SELECT * FROM Horses";
+		return jdbcTemplate.query(sql, new HorseRowMapper());
+	}
+
 }

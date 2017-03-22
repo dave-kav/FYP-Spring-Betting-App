@@ -16,4 +16,6 @@ public interface HorseDAO {
 
 	List<Horse> getHorsesInRace(int raceID);
 
+	List<Horse> getHorses();
+
 }

@@ -36,19 +36,28 @@
 									<div class="form-group row">
 									    <label for="race" class="col-sm-2 col-form-label">Race Time: </label>
 									    <div class="col-sm-10">
-									    	<input type="time" class="form-control" th:id="race" th:name="race" th:field="*{race.time}" th:autofocus="true"></input>
+									    	<input type="time" class="form-control" th:id="race" th:name="race" th:field="*{race.time}" th:autofocus="true" th:list="timesList"></input>
+									    	<datalist th:id="timesList">
+									    		<option th:each="time: ${times}" th:value="${time}" th:text="${time}"></option>
+									    	</datalist>
 									    </div>
 									</div>
 									<div class="form-group row">
 									    <label for="track" class="col-sm-2 col-form-label">Track:</label>
 									    <div class="col-sm-10">
-									    	<input type="text" class="form-control" th:id="track" th:name="track" placeholder="Cheltenham" th:field="${race.track}"></input>
+									    	<input type="text" class="form-control" th:id="track" th:name="track" placeholder="Cheltenham" th:field="${race.track}" th:list="tracksList"></input>
+									    	<datalist th:id="tracksList">
+									    		<option th:each="track: ${tracks}" th:value="${track}" th:text="${track}"></option>
+									    	</datalist>
 									    </div>
 									</div>
 									<div class="form-group row">
 										<label for="selection" class="col-sm-2 col-form-label">Selection: </label>
 										<div class="col-sm-10">
-											<input type="text" class="form-control" th:id="selection" th:name="selection" placeholder="Name/Number" th:field="*{bet.selection}"></input>								
+											<input type="text" class="form-control" th:id="selection" th:name="selection" placeholder="Name/Number" th:field="*{bet.selection}" th:list="horseList"></input>
+											<datalist th:id="horseList">
+												<option th:each="horse: ${horses}" th:value="${horse.name}" th:text="${horse.name}"></option>
+											</datalist>								
 										</div>
 								  	</div>
 								  	<div class="form-group row">

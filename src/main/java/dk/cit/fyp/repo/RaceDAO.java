@@ -14,4 +14,7 @@ public interface RaceDAO {
 
 	List<Race> findAll();
 
+	List<String> getTracks();
+
+	List<String> getTimes();
 }

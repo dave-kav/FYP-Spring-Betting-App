@@ -14,4 +14,8 @@ public interface RaceService {
 	
 	List<Race> findAll();
 
+	List<String> getTracks();
+	
+	List<String> getTimes();
+
 }

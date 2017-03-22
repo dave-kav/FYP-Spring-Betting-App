@@ -77,6 +77,10 @@ public class MainController {
 		
 		model = betService.getNext(model);
 		
+		model.addAttribute("tracks", raceService.getTracks());
+		model.addAttribute("horses", horseService.getHorses());
+		model.addAttribute("times", raceService.getTimes());
+		
 		return "translate";
 	}
 	
@@ -225,6 +229,10 @@ public class MainController {
 		model.addAttribute("imgSrc", imgSrc);
 		model.addAttribute("bet", bet);
 		model.addAttribute("race", raceService.get(bet.getRaceID()));
+		
+		model.addAttribute("tracks", raceService.getTracks());
+		model.addAttribute("horses", horseService.getHorses());
+		model.addAttribute("times", raceService.getTimes());
 		
 		return "editBet";
 	}
