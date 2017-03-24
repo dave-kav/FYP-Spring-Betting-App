@@ -9,6 +9,7 @@ $("#translateSubmit").click(function() {
 	var errorMessage = "";
 	var trackError = false;
 	var oddsError = false;
+	var selectionError = false;
 	
 	if ($("#race").val() == "") {
 		$("#race").addClass("error");
@@ -42,6 +43,7 @@ $("#translateSubmit").click(function() {
 		$("#selection").addClass("error");
 		errorFree = false;
 		errorMessage += "Please enter a valid selection.<br>";
+		selectionError = true;
 	}
 	
 	$("#selection").change(function() {
@@ -101,11 +103,13 @@ $("#translateSubmit").click(function() {
 	
 	var trackVal = $('#track').val();
 	var trackObj = $('#tracksList').find("option[value='" + trackVal + "']");
-	if (trackObj != null && trackObj.length > 0) {
-		console.log("valid selection");
-	} else {
-		errorFree = false;
-		errorMessage += "The track you entered is not a valid selection.<br>";
+	if () {
+		if (trackObj != null && trackObj.length > 0) {
+			console.log("valid selection");
+		} else {
+			errorFree = false;
+			errorMessage += "The track you entered is not a valid selection.<br>";
+		}
 	}
 	
 	$("#odds").change(function() {
