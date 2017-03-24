@@ -103,7 +103,7 @@ $("#translateSubmit").click(function() {
 	
 	var trackVal = $('#track').val();
 	var trackObj = $('#tracksList').find("option[value='" + trackVal + "']");
-	if () {
+	if (!selectionError) {
 		if (trackObj != null && trackObj.length > 0) {
 			console.log("valid selection");
 		} else {
