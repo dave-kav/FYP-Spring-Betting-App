@@ -105,7 +105,7 @@ $("#translateSubmit").click(function() {
 	
 	var trackVal = $('#track').val();
 	var trackObj = $('#tracksList').find("option[value='" + trackVal + "']");
-	if (!selectionError) {
+	if (!trackError) {
 		if (trackObj != null && trackObj.length > 0) {
 			console.log("valid selection");
 		} else {
@@ -134,6 +134,8 @@ $("#editSubmit").click(function() {
 	var errorMessage = "";
 	var trackError = false;
 	var oddsError = false;
+	var selectionError = false;
+	var timeError = false;
 	
 	if ($("#stake").val() == 0.0) {
 		$("#stake").addClass("error");
@@ -154,6 +156,7 @@ $("#editSubmit").click(function() {
 	if ($("#time").val() == "") {
 		$("#time").addClass("error");
 		errorFree = false;
+		timeError = true;
 		errorMessage += "Please enter a valid race time.<br>";
 	}
 	
@@ -183,6 +186,7 @@ $("#editSubmit").click(function() {
 		$("#selection").addClass("error");
 		errorFree = false;
 		errorMessage += "Please enter a valid selection.<br>";
+		selectionError = true;
 	}
 	
 	$("#selection").change(function() {
@@ -220,6 +224,43 @@ $("#editSubmit").click(function() {
 		if (!oddsError) 
 			errorMessage += "Value entered for odds cannot exceed 8 digits in length on either side of the fraction.<br>";
 	} 
+	
+	//validate that comboboxes contain valid values
+	var horseVal = $('#selection').val();
+	var horseObj = $('#horseList').find("option[value='" + horseVal + "']");
+	if (horseObj != null && horseObj.length > 0) {
+		console.log("valid selection");
+	} else {
+		if (!selectionError) {
+			errorFree = false;
+			errorMessage += "The horse you entered is not a valid selection.<br>";
+			$('#selection').addClass('error');
+		}
+	}
+	
+	var timeVal = $('#time').val();
+	var timeObj = $('#timesList').find("option[value='" + timeVal + "']");
+	if (timeObj != null && timeObj.length > 0) {
+		console.log("valid selection");
+	} else {
+		if (!timeError) {
+			errorFree = false;
+			errorMessage += "The time you entered is not a valid selection.<br>";
+			$('#time').addClass('error');
+		}
+	}
+	
+	var trackVal = $('#track').val();
+	var trackObj = $('#tracksList').find("option[value='" + trackVal + "']");
+	if (!selectionError) {
+		if (trackObj != null && trackObj.length > 0) {
+			console.log("valid selection");
+		} else {
+			errorFree = false;
+			errorMessage += "The track you entered is not a valid selection.<br>";
+			$('#track').addClass('error');
+		}
+	}
 	
 	if (!errorFree) {
 		event.preventDefault();

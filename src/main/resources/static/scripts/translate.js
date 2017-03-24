@@ -31,7 +31,6 @@ $('#selection').bind('input', function(){
 });
 
 $('#track').bind('input', function(){
-	console.log($('#track').val());
 	Promise.resolve($.ajax({
 		type: "GET",
 		dataType: "JSON",

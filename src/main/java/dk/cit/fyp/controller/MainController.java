@@ -227,9 +227,15 @@ public class MainController {
 		String imgSrc = imgService.getImageSource(bytes);
 		
 		model.addAttribute("imgSrc", imgSrc);
-		model.addAttribute("bet", bet);
-		model.addAttribute("race", raceService.get(bet.getRaceID()));
 		
+		if (bet.getRaceID() != 0)
+			model.addAttribute("race", raceService.get(bet.getRaceID()));
+		else
+			model.addAttribute("race", new Race());
+
+		Horse h = horseService.getById(Integer.parseInt(bet.getSelection()));
+		bet.setSelection(h.getName());
+		model.addAttribute("bet", bet);
 		model.addAttribute("tracks", raceService.getTracks());
 		model.addAttribute("horses", horseService.getHorses());
 		model.addAttribute("times", raceService.getTimes());
@@ -243,7 +249,20 @@ public class MainController {
 		logger.info(bet.toString());
 		logger.info(request.getParameter("timePlaced"));
 		
+		logger.info(bet.getSelection());
+		String selection = bet.getSelection();
+		int selectionID;
+		try {
+			selectionID = Integer.parseInt(selection);
+			bet.setSelection(selectionID + "");
+		} catch (NumberFormatException e) {
+			selectionID = horseService.get(selection).get(0).getSelectionID();
+		}
+	 		
+		bet.setSelection(selectionID + "");
+		logger.info(bet.getSelection());
 		
+		bet.setTranslated(true);
 		betService.save(bet);
 		
 		return "redirect:/bets/all";

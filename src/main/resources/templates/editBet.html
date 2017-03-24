@@ -19,7 +19,7 @@
 				
 				<!-- Panel on left of GUI -->
 				<div class="col-sm-4 img-rounded" id="left-box">
-					<img id="bet-img" th:if="${imgSrc}" th:src="${imgSrc}"></img>
+					<img id="bet-img" class="bet-img" th:if="${imgSrc}" th:src="${imgSrc}"></img>
 					
 					 
 					<div>
@@ -58,7 +58,7 @@
 									<div class="form-group row">
 									    <label for="race" class="col-sm-2 col-form-label">Race Time: </label>
 									    <div class="col-sm-10">
-									    	<input type="time" class="form-control" th:name="time" th:id="time" th:value="${race.time}" th:field="*{race.time}" th:list="timesList"></input>
+									    	<input type="time" class="form-control" th:id="time" th:name="time" th:value="${race.time}" th:field="*{race.time}" th:list="timesList"></input>
 									    	<datalist th:id="timesList">
 									    		<option th:each="time: ${times}" th:value="${time}" th:text="${time}"></option>
 									    	</datalist>
@@ -121,6 +121,7 @@
 	
 	<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
 	<script src="/scripts/validation.js"></script>
+	<script src="/scripts/translate.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.1.1/jquery-confirm.min.js"></script>
 	</body>
