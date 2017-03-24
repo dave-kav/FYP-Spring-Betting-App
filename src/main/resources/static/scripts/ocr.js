@@ -4,7 +4,7 @@ $(document).ready(function(){
 		type: 'GET',
 		url: 'https://ec2-34-250-24-17.eu-west-1.compute.amazonaws.com:443/ocr',
 		data: {img_data:file},
-		dataType: 'json',
+		dataType: 'jsonp',
 		success: function(result) {
 			console.log(result);
 		},
