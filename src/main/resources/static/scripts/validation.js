@@ -90,6 +90,7 @@ $("#translateSubmit").click(function() {
 	} else {
 		errorFree = false;
 		errorMessage += "The horse you entered is not a valid selection.<br>";
+		$('#selection').addClass('error');
 	}
 	
 	var timeVal = $('#time').val();
@@ -99,6 +100,7 @@ $("#translateSubmit").click(function() {
 	} else {
 		errorFree = false;
 		errorMessage += "The time you entered is not a valid selection.<br>";
+		$('#time').addClass('error');
 	}
 	
 	var trackVal = $('#track').val();
@@ -109,6 +111,7 @@ $("#translateSubmit").click(function() {
 		} else {
 			errorFree = false;
 			errorMessage += "The track you entered is not a valid selection.<br>";
+			$('#track').addClass('error');
 		}
 	}
 	
@@ -363,6 +366,25 @@ $("#customerSubmit").click(function(){
 	}
 });
 
+//preview image before upload
+$("#file").on('change', function() {
+	 if (typeof (FileReader) != "undefined") {
+		  var image_holder = $('#image-holder');
+		  image_holder.empty();
+		  
+		  var reader = new FileReader();
+		  reader.onload = function(e) {
+			  $("<img />", {
+                  "src": e.target.result,
+                  "class": "bet-img"
+              }).appendTo(image_holder);
+		  }
+		  image_holder.show();
+		  reader.readAsDataURL($(this)[0].files[0]);
+	  } else {
+		  console.log("FileReader undefined");
+	  };
+});
 
 //validate stake on upload button
 $("#uploadSubmit").click(function(){

@@ -19,7 +19,9 @@
 			
 			<!-- Panel on left of GUI -->
 			<div class="col-sm-4 img-rounded" id="left-box">
-				<img id="bet-img" th:if="${imgSrc}" th:src="${imgSrc}"></img>
+				<img id="bet-img" class="bet-img" th:if="${imgSrc}" th:src="${imgSrc}"></img>
+				<div id="image-holder">
+				</div>
 			</div>
 			
 			<!-- Panel on right of GUI -->
@@ -33,7 +35,7 @@
 							<form class="form" th:action="@{/upload}" method="post" enctype="multipart/form-data">
 								<div class="form-group">
 								    <label for="inputFile">Upload File</label>
-								    <input type="file" class="form-control-file" name="file" aria-describedby="fileHelp" th:autofocus="true"></input>
+								    <input type="file" class="form-control-file" th:name="file" th:id="file" aria-describedby="fileHelp" th:autofocus="true"></input>
 								    <small id="fileHelp" class="form-text text-muted">
 								    	Please select the betting slip image and press submit. 
 							    	</small>
