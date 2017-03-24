@@ -113,4 +113,17 @@ public class JdbcRaceRepo implements RaceDAO {
 		});
 
 	}
+
+	@Override
+	public List<String> getTimesByTrack(String track) {
+		String sql = "SELECT DISTINCT Time FROM Races WHERE Racetrack = ? ORDER BY Time";
+
+		return jdbcTemplate.query(sql, new RowMapper<String>(){
+
+			@Override
+			public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+				return rs.getString(1);
+			}
+		}, new Object[]{track});
+	}
 }

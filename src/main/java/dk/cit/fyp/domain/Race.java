@@ -23,6 +23,7 @@ public class Race {
 	private int winnerID;
 	private List<Horse> placedHorses;
 	private List<Integer> placedHorseIDs;
+	private List<Horse> allHorses;
 	
 	public int getRaceID() {
 		return raceID;
@@ -102,6 +103,14 @@ public class Race {
 
 	public void setPlacedHorseIDs(List<Integer> placedHorseIDs) {
 		this.placedHorseIDs = placedHorseIDs;
+	}
+
+	public List<Horse> getAllHorses() {
+		return allHorses;
+	}
+
+	public void setAllHorses(List<Horse> allHorses) {
+		this.allHorses = allHorses;
 	}
 
 	@Override

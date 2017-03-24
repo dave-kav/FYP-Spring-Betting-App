@@ -40,8 +40,8 @@ public class JdbcHorseRepo implements HorseDAO {
 	}
 	
 	private void add(Horse horse) {
-		String sql = "INSERT INTO Horses (Name, Race_id, odds_numerator, odds_denominator, number) "
-				+ "VALUES (?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO Horses (Name, Race_id, number) "
+				+ "VALUES (?, ?, ?)";
 		
 		jdbcTemplate.update(sql, new Object[] {horse.getName(), horse.getRaceID(), horse.getNumber()});
 	}

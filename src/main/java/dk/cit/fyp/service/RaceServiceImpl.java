@@ -71,4 +71,9 @@ public class RaceServiceImpl implements RaceService {
 	public List<String> getTimes() {
 		return raceRepo.getTimes();
 	}
+
+	@Override
+	public List<String> getTimesByTrack(String track) {
+		return raceRepo.getTimesByTrack(track);
+	}
 }

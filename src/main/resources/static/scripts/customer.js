@@ -27,13 +27,27 @@ $("#withdraw").click(function() {
 	
 	if ($("#amount").val() == "") {
 		$("#amount").addClass("error");
-		$.dialog('Please enter a valid amount');
+		$.dialog('Please enter a valid amount.');
+		errors = true;
+	}
+	
+	if ($("#amount").val() == 0) {
+		$("#amount").addClass("error");
+		if (!errors) {
+			$.dialog('0 is not a valid amount.');
+			errors = true;
+		}
+	}
+	
+	if ($("#amount").val() > 100000) {
+		$("#amount").addClass("error");
+		$.dialog('Transaction value cannot exceed €100,000.');
 		errors = true;
 	}
 	
 	if (!numPattern.test($("#amount").val())) {
 		$("#amount").addClass("error");
-		$.dialog('Please enter a valid amount');
+		$.dialog('Please enter a valid amount.');
 		errors = true;
 	}
 	
@@ -65,15 +79,24 @@ $("#deposit").click(function() {
 	
 	if ($("#amount").val() == "") {
 		$("#amount").addClass("error");
+		$.dialog('Please enter a valid amount.');
 		errors = true;
-		$.dialog('Please enter a valid amount');
 	}
 	
-	if (!numPattern.test($("#amount").val())) {
+	if ($("#amount").val() == 0) {
 		$("#amount").addClass("error");
-		$.dialog('Please enter a valid amount');
+		if (!errors) {
+			$.dialog('0 is not a valid amount.');
+			errors = true;
+		}
+	}
+	
+	if ($("#amount").val() > 100000) {
+		$("#amount").addClass("error");
+		$.dialog('Transaction value cannot exceed €100,000.');
 		errors = true;
 	}
+	
 	
 	$("#amount").change(function() {
 		$("#amount").removeClass("error");
@@ -99,30 +122,59 @@ $("#deposit").click(function() {
 
 //validate edit customer form
 $("#editCustomer").click(function() {
-	var errors = false;
+	var errorFree = true;
+	var errorMessage = "";
+	var firstNameError = false;
+	var lastNameError = false;
+	var userNameError = false;
+	var passwordError = false;
 	
 	if ($("#firstName").val() == "") {
 		$("#firstName").addClass("error");
-		errors = true;
+		errorFree = false;
+		firstNameError = true;
+		errorMessage += "Please enter a value for first name.<br>";
 	}
 	
 	if (!alphaPattern.test($("#firstName").val())) {
 		$("#firstName").addClass("error");
-		errors = true;
+		errorFree = false;
+		if (!firstNameError) {
+			firstNameError = true;
+			errorMessage += "First name can contain only letters.<br>";
+		}
+	}
+	
+	if ($("#firstName").val().length > 20) {
+		$("#firstName").addClass("error");
+		errorFree = false;
+		errorMessage += "First name cannot exceed 20 characters.<br>";
 	}
 	
 	$("#firstName").change(function() {
 		$("#firstName").removeClass("error");
 	});
-	
+
 	if ($("#lastName").val() == "") {
 		$("#lastName").addClass("error");
-		errors = true;
+		errorFree = false;
+		firstNameError = true;
+		errorMessage += "Please enter a value for last name.<br>";
 	}
 	
 	if (!alphaPattern.test($("#lastName").val())) {
 		$("#lastName").addClass("error");
-		errors = true;
+		errorFree = false;
+		if (!firstNameError) {
+			firstNameError = true;
+			errorMessage += "Last name can contain only letters.<br>";
+		}
+	}
+	
+	if ($("#lastName").val().length > 20) {
+		$("#lastName").addClass("error");
+		errorFree = false;
+		errorMessage += "Last name cannot exceed 20 characters.<br>";
 	}
 	
 	$("#lastName").change(function() {
@@ -131,28 +183,75 @@ $("#editCustomer").click(function() {
 	
 	if ($("#dob").val() == "") {
 		$("#dob").addClass("error");
-		errors = true;
+		errorFree = false;
+		errorMessage += "Please enter a value for 'Date of Birth'.<br>";
+	}
+	
+	//validate customer is over 18
+	var today = new Date();
+	var dob = new Date($("#dob").val());
+	var diff = Math.abs(today - dob);
+	var years = diff / 31536000000;
+	
+	if (years < 18) {
+		$("#dob").addClass("error");
+		errorFree = false;
+		errorMessage += "Customer is too young to open a betting account! Must be 18+<br>";
 	}
 	
 	$("#dob").change(function() {
 		$("#dob").removeClass("error");
 	});
+
+	if ($("#username").val() == "") {
+		$("#username").addClass("error");
+		errorFree = false;
+		userNameError = true;
+		errorMessage += "Please enter a value for username.<br>";
+	}
 	
+	if ($("#username").val().length > 24) {
+		$("#username").addClass("error");
+		errorFree = false;
+		if (!userNameError)  
+			errorMessage += "Username cannot exceed 24 characters.<br>";
+	}
+	
+	$("#username").change(function() {
+		$("#username").removeClass("error");
+	});
+
 	if ($("#password").val() == "") {
 		$("#password").addClass("error");
-		errors = true;
+		errorFree = false;
+		errorMessage += "Please enter a password.<br>";
+		passwordError = true;
 	}
-	
+
 	if ($("#password").val().length < 8) {
 		$("#password").addClass("error");
-		errors = true;
-		$.dialog('Password must be 8 characters in length or greater');
+		errorFree = false;
+		if (!passwordError) {
+			errorMessage += 'Password must be 8 characters in length or greater.<br>';
+			passwordError = true;
+		}
 	}
 	
+	if ($("#password").val().length > 100) {
+		$("#password").addClass("error");
+		errorFree = false;
+		errorMessage += 'Password cannot exceed 100 characters.<br>';
+	}
+
 	$("#password").change(function() {
 		$("#password").removeClass("error");
 	});
 	
-	if (errors)
+	if (!errorFree) {
 		event.preventDefault();
+		$.dialog({
+			title: 'Errors!',
+			content: errorMessage
+		});
+	}
 });

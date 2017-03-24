@@ -1,6 +1,7 @@
 var alphaPattern = /^[A-z]+$/;
 var alphaNumPattern = /^\w+$/;
 
+//parse URL parameter and set active tab
 var activeTab;
 var url = window.location.href;
 activeTab = url.split('?').pop().split('=').pop();
@@ -23,15 +24,32 @@ else if (activeTab == 3) {
 //validate add race form
 $("#addRace").click(function() {
 	var errors = false;
+	var errorMessage = "";
+	var trackError = false;
 	
 	if ($("#track").val() == "") {
 		$("#track").addClass("error");
 		errors = true;
+		trackError = true;
+		errorMessage += "Please enter a track name.<br>";
 	}
 	
 	if (!alphaPattern.test($("#track").val())) {
 		$("#track").addClass("error");
 		errors = true;
+		if (!trackError) {
+			trackError = true;
+			errorMessage += "Track name must contain only alphabetic characters.<br>";
+		}
+	}
+	
+	if ($("#track").val().length > 24){
+		$("#track").addClass("error");
+		errors = true;
+		if (!trackError) {
+			trackError = true;
+			errorMessage += "Track name must not exceed 24 characters in length.<br>";
+		}
 	}
 	
 	$("#track").change(function() {
@@ -41,6 +59,7 @@ $("#addRace").click(function() {
 	if ($("#time").val() == "") {
 		$("#time").addClass("error");
 		errors = true;
+		errorMessage += "Please enter a time.<br>";
 	}
 	
 	$("#time").change(function() {
@@ -50,29 +69,47 @@ $("#addRace").click(function() {
 	if ($("#runners").val() < 1) {
 		$("#runners").addClass("error");
 		errors = true;
-		$.dialog("Can't have a race with 0 runners");
+		errorMessage += "Can't have a race with 0 runners.<br>";
+	}
+	
+	if ($("#runners").val() > 40) {
+		$("#runners").addClass("error");
+		errors = true;
+		errorMessage += "Maximum runners in a race is 40.<br>";
 	}
 	
 	$("#runners").change(function() {
 		$("#runners").removeClass("error");
 	});
 	
-	if (errors)
+	if (errors) {
 		event.preventDefault();
+		$.dialog({
+			title: 'Errors!',
+			content: errorMessage
+		});
+	}
 });
 
 //validate add user form
 $("#addUser").click(function() {
 	var errors = false;
+	var errorMessage = "";
+	var userNameError = false;
+	var passwordError = false;
 	
 	if ($("#username").val() == "") {
 		$("#username").addClass("error");
 		errors = true;
+		userNameError = true;
+		errorMessage += "Please enter a value for username.<br>";
 	}
 	
-	if (!alphaNumPattern.test($("#username").val())) {
+	if ($("#username").val().length > 24) {
 		$("#username").addClass("error");
 		errors = true;
+		if (!userNameError)  
+			errorMessage += "Username cannot exceed 24 characters.<br>";
 	}
 	
 	$("#username").change(function() {
@@ -82,20 +119,36 @@ $("#addUser").click(function() {
 	if ($("#password").val() == "") {
 		$("#password").addClass("error");
 		errors = true;
+		errorMessage += "Please enter a password.<br>";
+		passwordError = true;
 	}
 
 	if ($("#password").val().length < 8) {
 		$("#password").addClass("error");
 		errors = true;
-		$.dialog('Password must be 8 characters in length or greater');
+		if (!passwordError) {
+			errorMessage += 'Password must be 8 characters in length or greater.<br>';
+			passwordError = true;
+		}
+	}
+	
+	if ($("#password").val().length > 100) {
+		$("#password").addClass("error");
+		errors = true;
+		errorMessage += 'Password cannot exceed 100 characters.<br>';
 	}
 
 	$("#password").change(function() {
 		$("#password").removeClass("error");
 	});
 	
-	if (errors)
-		event.preventDefault();	
+	if (errors) {
+		event.preventDefault();
+		$.dialog({
+			title: 'Errors!',
+			content: errorMessage
+		});
+	}
 });
 
 

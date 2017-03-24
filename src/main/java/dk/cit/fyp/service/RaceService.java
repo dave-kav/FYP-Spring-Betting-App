@@ -18,4 +18,6 @@ public interface RaceService {
 	
 	List<String> getTimes();
 
+	List<String> getTimesByTrack(String track);
+
 }

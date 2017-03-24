@@ -17,4 +17,6 @@ public interface RaceDAO {
 	List<String> getTracks();
 
 	List<String> getTimes();
+	
+	List<String> getTimesByTrack(String track);
 }
