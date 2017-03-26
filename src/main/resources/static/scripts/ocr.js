@@ -15,7 +15,7 @@ $(document).ready(function(){
 		
 		$.ajax({
 			type: 'POST',
-			url: 'ec2-34-250-24-17.eu-west-1.compute.amazonaws.com:8080/ocr',
+			url: 'https://ec2-34-250-24-17.eu-west-1.compute.amazonaws.com:8080/ocr',
 			//below line is for dev. only, remove in prod.
 //			url: 'http://localhost:8081/ocr',
 			dataType: 'json',
