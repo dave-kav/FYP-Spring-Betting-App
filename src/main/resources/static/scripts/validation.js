@@ -88,9 +88,11 @@ $("#translateSubmit").click(function() {
 	if (horseObj != null && horseObj.length > 0) {
 		console.log("valid selection");
 	} else {
-		errorFree = false;
-		errorMessage += "The horse you entered is not a valid selection.<br>";
-		$('#selection').addClass('error');
+		if (!selectionError) {
+			errorFree = false;
+			errorMessage += "The horse you entered is not a valid selection.<br>";
+			$('#selection').addClass('error');
+		}
 	}
 	
 	var timeVal = $('#time').val();
