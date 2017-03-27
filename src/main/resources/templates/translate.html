@@ -57,7 +57,7 @@
 										<div class="col-sm-10">
 											<input type="text" class="form-control" th:id="selection" th:name="selection" placeholder="Name/Number" th:field="*{bet.selection}" th:list="horseList"></input>
 											<datalist th:id="horseList">
-												<option th:each="horse: ${horses}" th:value="${horse.name}" th:text="${horse.name}"></option>
+												<option th:each="horse: ${horses}" th:value="${horse.name}" th:label="${horse.number}"></option>
 											</datalist>								
 										</div>
 								  	</div>

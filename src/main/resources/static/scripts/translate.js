@@ -1,19 +1,23 @@
 //set value of track field upon selection of time
 $('#time').bind('input', function(){
-	$('#track').val("");
-	$('#selection').val("");
-	Promise.resolve($.ajax({
-		type: "GET",
-		dataType: "JSON",
-		url: "/api/race/" + $('#time').val(),
-		success: function(data) {
-			$('#track').val(data.track);
-			$('#horseList').empty();
-			for (var i = 0; i < data.allHorses.length; i++) {
-				$('#horseList').append($("<option></option>").attr("value", data.allHorses[i].name));
-			}
-        }
-	}));
+	if ($('#time').val() != "") {
+		$('#track').val("");
+		$('#selection').val("");
+		Promise.resolve($.ajax({
+			type: "GET",
+			dataType: "JSON",
+			url: "/api/race/" + $('#time').val(),
+			success: function(data) {
+				$('#track').val(data.track);
+				$('#horseList').empty();
+				for (var i = 0; i < data.allHorses.length; i++) {
+					$('#horseList').append($("<option></option>")
+							.attr("value", data.allHorses[i].name)
+							.attr("label", data.allHorses[i].number));
+				}
+	        }
+		}));
+	}
 });
 
 //set value of time and race upon selection of horse
@@ -44,7 +48,9 @@ $('#track').bind('input', function(){
 			}
 			$('#horseList').empty();
 			for (var i = 0; i < data.times.length; i++) {
-				$('#horseList').append($("<option></option>").attr("value", data.horses[i]));
+				$('#horseList').append($("<option></option>")
+						       .attr("value", data.allHorses[i].name)
+						       .attr("label", data.allHorses[i].number));
 			}
         }
 	}));
