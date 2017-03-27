@@ -56,10 +56,15 @@ public class BetServiceImpl implements BetService {
 		if (bets.size() != 0) {
 			Bet bet = bets.get(0);
 			logger.info("Loading image for bet_id " + bet.getBetID());
-			byte[] bytes = imgService.getBytes(bet.getImagePath());
-			String imgSrc = imgService.getImageSource(bytes);
-			
-			model.addAttribute("imgSrc", imgSrc);
+			String imgSrc = "";
+			try {
+				byte[] bytes = imgService.getBytes(bet.getImagePath());
+				imgSrc = imgService.getImageSource(bytes);
+				model.addAttribute("imgSrc", imgSrc);
+			} catch (NullPointerException e) {
+				logger.error("Image file not found in server");
+			}
+			 
 			model.addAttribute("img", true);
 			model.addAttribute("bet", bet);
 			model.addAttribute("race", new Race());

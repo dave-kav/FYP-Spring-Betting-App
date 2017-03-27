@@ -222,11 +222,14 @@ public class MainController {
 		
 		int betIDint = Integer.parseInt(betID);
 		Bet bet = betService.get(betIDint);
-
-		byte[] bytes = imgService.getBytes(bet.getImagePath());
-		String imgSrc = imgService.getImageSource(bytes);
-		
-		model.addAttribute("imgSrc", imgSrc);
+		String imgSrc = "";
+		try {
+			byte[] bytes = imgService.getBytes(bet.getImagePath());
+			imgSrc = imgService.getImageSource(bytes);	
+			model.addAttribute("imgSrc", imgSrc);
+		} catch (NullPointerException e) {
+			logger.error("Image not found in server!");
+		}
 		
 		if (bet.getRaceID() != 0)
 			model.addAttribute("race", raceService.get(bet.getRaceID()));
