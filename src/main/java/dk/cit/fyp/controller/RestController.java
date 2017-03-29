@@ -1,5 +1,6 @@
 package dk.cit.fyp.controller;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -127,14 +128,37 @@ public class RestController {
 	
 	@RequestMapping(value={"/api/signup"}, method=RequestMethod.POST)
 	@ResponseBody
-	public Customer appSignup(HttpServletRequest request) {
-		logger.info("POST to '/api/login'");
+	public String appSignup(HttpServletRequest request) {
+		logger.info("POST to '/api/signup'");
+		String firstName = request.getParameter("firstName");
+		logger.info(request.getParameter("firstName"));
+		String lastName = request.getParameter("lastName");
+		logger.info(request.getParameter("lastName"));
 		String username = request.getParameter("username");
+		logger.info(request.getParameter("username"));
 		String password = request.getParameter("password");
+		logger.info(request.getParameter("password"));
+		String dob = request.getParameter("dob");
+		logger.info(request.getParameter("dob"));
 		
-		Customer customer = null; 
- 
+		if (customerService.get(username).size() > 0) {
+			jsonObj.addProperty("result", "error");
+			jsonObj.addProperty("error", "Username already taken");
+			logger.info("returning error");
+			return jsonObj.toString();
+		}
 		
-		return customer;
+		Customer customer = new Customer();
+		customer.setFirstName(firstName);
+		customer.setLastName(lastName);
+		customer.setUsername(username);
+		//TODO check if over 18 and return error if not
+		customer.setDOB(Date.valueOf(dob));
+		customer.setPassword(password);
+		
+		customerService.save(customer);
+		
+		jsonObj.addProperty("result", "ok");
+		return jsonObj.toString();
 	}
 }
