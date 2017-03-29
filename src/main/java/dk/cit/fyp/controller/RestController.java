@@ -1,6 +1,9 @@
 package dk.cit.fyp.controller;
 
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -131,34 +134,51 @@ public class RestController {
 	public String appSignup(HttpServletRequest request) {
 		logger.info("POST to '/api/signup'");
 		String firstName = request.getParameter("firstName");
-		logger.info(request.getParameter("firstName"));
 		String lastName = request.getParameter("lastName");
-		logger.info(request.getParameter("lastName"));
 		String username = request.getParameter("username");
-		logger.info(request.getParameter("username"));
 		String password = request.getParameter("password");
-		logger.info(request.getParameter("password"));
 		String dob = request.getParameter("dob");
-		logger.info(request.getParameter("dob"));
 		
 		if (customerService.get(username).size() > 0) {
+			
 			jsonObj.addProperty("result", "error");
 			jsonObj.addProperty("error", "Username already taken");
 			logger.info("returning error");
+			
+			return jsonObj.toString();
+			
+		} else {
+			
+			Customer customer = new Customer();
+			customer.setFirstName(firstName);
+			customer.setLastName(lastName);
+			customer.setUsername(username);
+			customer.setPassword(password);
+
+			//parse date
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		    java.util.Date parsed = null;
+		    
+		    try {
+		        parsed = sdf.parse(dob);
+		    } catch (ParseException e1) {
+		    	
+		    	jsonObj.addProperty("result", "error");
+				jsonObj.addProperty("error", "Sorry, unable to sign-up at present!");
+				logger.info("returning error");
+				
+				return jsonObj.toString();
+		    }
+		    
+		    java.sql.Date data = new java.sql.Date(parsed.getTime());
+			customer.setDOB(data);
+			
+			customerService.save(customer);
+			
+			logger.info("Customer Added!");
+			
+			jsonObj.addProperty("result", "ok");
 			return jsonObj.toString();
 		}
-		
-		Customer customer = new Customer();
-		customer.setFirstName(firstName);
-		customer.setLastName(lastName);
-		customer.setUsername(username);
-		//TODO check if over 18 and return error if not
-		customer.setDOB(Date.valueOf(dob));
-		customer.setPassword(password);
-		
-		customerService.save(customer);
-		
-		jsonObj.addProperty("result", "ok");
-		return jsonObj.toString();
 	}
 }
