@@ -138,6 +138,7 @@ public class RestController {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String dob = request.getParameter("dob");
+		logger.info("Date of Birth: " + dob);
 		
 		if (customerService.get(username).size() > 0) {
 			
@@ -161,7 +162,9 @@ public class RestController {
 		    
 		    try {
 		        parsed = sdf.parse(dob);
-		    } catch (ParseException e1) {
+		        logger.info(parsed.toString());
+		    } catch (ParseException e) {
+		    	e.printStackTrace();
 		    	
 		    	jsonObj.addProperty("result", "error");
 				jsonObj.addProperty("error", "Sorry, unable to sign-up at present!");
