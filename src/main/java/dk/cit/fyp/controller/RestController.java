@@ -3,6 +3,8 @@ package dk.cit.fyp.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -93,5 +95,36 @@ public class RestController {
 		JsonElement horseJson = gson.toJsonTree(horses);
 		jsonObj.add("horses", horseJson);	
 		return jsonObj.toString();
+	}
+	
+	@RequestMapping(value={"/api/login"}, method=RequestMethod.POST)
+	@ResponseBody
+	public Customer appLogin(HttpServletRequest request) {
+		logger.info("POST to '/api/login'");
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		
+		Customer customer = null; 
+		if (customerService.get(username).size() > 0) {
+			customer = customerService.get(username).get(0);
+
+			if (!customer.getPassword().equals(password))
+				return null;
+		}
+		
+		return customer;
+	}
+	
+	@RequestMapping(value={"/api/signup"}, method=RequestMethod.POST)
+	@ResponseBody
+	public Customer appSignup(HttpServletRequest request) {
+		logger.info("POST to '/api/login'");
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		
+		Customer customer = null; 
+ 
+		
+		return customer;
 	}
 }
