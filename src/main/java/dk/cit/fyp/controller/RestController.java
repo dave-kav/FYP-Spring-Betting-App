@@ -176,15 +176,9 @@ public class RestController {
 		    java.sql.Date data = new java.sql.Date(parsed.getTime());
 			customer.setDOB(data);
 			
-			new Thread(new Runnable() {
-
-				@Override
-				public void run() {
-					customerService.save(customer);
-					logger.info("Customer Added!");
-				}
-				
-			}).start();
+			customerService.save(customer);
+			
+			logger.info("Customer Added!");
 			
 			jsonObj.addProperty("result", "ok");
 			return jsonObj.toString();
