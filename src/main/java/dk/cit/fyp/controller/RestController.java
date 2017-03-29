@@ -101,6 +101,8 @@ public class RestController {
 	@ResponseBody
 	public Customer appLogin(HttpServletRequest request) {
 		logger.info("POST to '/api/login'");
+		logger.info(request.getParameter("username"));
+		logger.info(request.getParameter("password"));
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		
@@ -108,8 +110,11 @@ public class RestController {
 		if (customerService.get(username).size() > 0) {
 			customer = customerService.get(username).get(0);
 
-			if (!customer.getPassword().equals(password))
+			if (!customer.getPassword().equals(password)) {
+				logger.info(customer.getPassword());
 				return null;
+			}
+				
 		}
 		
 		return customer;
