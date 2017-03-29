@@ -99,10 +99,8 @@ public class RestController {
 	
 	@RequestMapping(value={"/api/login"}, method=RequestMethod.POST)
 	@ResponseBody
-	public Customer appLogin(HttpServletRequest request) {
+	public String appLogin(HttpServletRequest request) {
 		logger.info("POST to '/api/login'");
-		logger.info(request.getParameter("username"));
-		logger.info(request.getParameter("password"));
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		
@@ -111,13 +109,20 @@ public class RestController {
 			customer = customerService.get(username).get(0);
 
 			if (!customer.getPassword().equals(password)) {
-				logger.info(customer.getPassword());
-				return null;
+				jsonObj.addProperty("result", "error");
+				jsonObj.addProperty("error", "Invalid username/password");
+				jsonObj.toString();
 			}
-				
+		} else {
+			jsonObj.addProperty("result", "error");
+			jsonObj.addProperty("error", "Invalid username/password");
+			jsonObj.toString();
 		}
 		
-		return customer;
+		JsonElement customerJson = gson.toJsonTree(customer, Customer.class);
+		jsonObj.addProperty("result", "ok");
+		jsonObj.add("customer", customerJson);
+		return jsonObj.toString();
 	}
 	
 	@RequestMapping(value={"/api/signup"}, method=RequestMethod.POST)
