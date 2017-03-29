@@ -144,7 +144,7 @@ public class RestController {
 			
 			jsonObj.addProperty("result", "error");
 			jsonObj.addProperty("error", "Username already taken");
-			logger.info("returning error");
+			logger.info("returning error: username taken");
 			
 			return jsonObj.toString();
 			
@@ -176,9 +176,15 @@ public class RestController {
 		    java.sql.Date data = new java.sql.Date(parsed.getTime());
 			customer.setDOB(data);
 			
-			customerService.save(customer);
-			
-			logger.info("Customer Added!");
+			new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					customerService.save(customer);
+					logger.info("Customer Added!");
+				}
+				
+			}).start();
 			
 			jsonObj.addProperty("result", "ok");
 			return jsonObj.toString();
