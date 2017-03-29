@@ -111,12 +111,12 @@ public class RestController {
 			if (!customer.getPassword().equals(password)) {
 				jsonObj.addProperty("result", "error");
 				jsonObj.addProperty("error", "Invalid username/password");
-				jsonObj.toString();
+				return jsonObj.toString();
 			}
 		} else {
 			jsonObj.addProperty("result", "error");
 			jsonObj.addProperty("error", "Invalid username/password");
-			jsonObj.toString();
+			return jsonObj.toString();
 		}
 		
 		JsonElement customerJson = gson.toJsonTree(customer, Customer.class);
