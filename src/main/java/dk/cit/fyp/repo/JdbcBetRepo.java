@@ -49,7 +49,7 @@ public class JdbcBetRepo implements BetDAO {
 	private void update(Bet bet) {
 		String sql = "UPDATE Bets SET Selection_id = ?, Race_id = ?, Stake = ?,"
 				+ "Translated = ?, Online_bet = ?, Winnings = ?, Image = ?, "
-				+ "Monitored = ?, Each_way = ?, Odds_numerator = ?, Odds_denominator = ?, Status = ? WHERE Bet_id = ?";
+				+ "Customer_id = ?, Each_way = ?, Odds_numerator = ?, Odds_denominator = ?, Status = ? WHERE Bet_id = ?";
 		
 		String odds = bet.getOdds();
 		String[] parts = odds.split("/");
@@ -58,7 +58,22 @@ public class JdbcBetRepo implements BetDAO {
 				
 		jdbcTemplate.update(sql, new Object[] {bet.getSelection(), bet.getRaceID(), bet.getStake(), 
 				bet.isTranslated(), bet.isOnlineBet(), bet.getWinnings(), bet.getImagePath(), 
-				bet.isMonitoredCustomer(), bet.isEachWay(), numerator, denominator, bet.getStatus().toString(), bet.getBetID()});
+				bet.getCustomerID(), bet.isEachWay(), numerator, denominator, bet.getStatus().toString(), bet.getBetID()});
+	}
+	
+	public void saveRest(Bet bet) {
+		String sql = "INSERT INTO Bets (Stake, Online_bet, Image, Selection_id, Race_id, Stake, Translated, Winnings, Customer_id, "
+				+ "Each_way, Odds_numerator, Odds_denominator) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		
+		String odds = bet.getOdds();
+		String[] parts = odds.split("/");
+		int numerator = Integer.parseInt(parts[0]);
+		int denominator = Integer.parseInt(parts[1]);
+		
+		jdbcTemplate.update(sql, new Object[]{bet.getStake(), true, null, bet.getSelection(), bet.getRaceID(), bet.getStake(), true,
+				bet.getWinnings(), bet.getCustomerID(), bet.isEachWay(), numerator, denominator});
+		
+		logger.info("Added online bet to database.");
 	}
 	
 	@Override
@@ -125,5 +140,11 @@ public class JdbcBetRepo implements BetDAO {
 	public List<Bet> getEachWayBets(Race race) {
 		String sql = "SELECT * FROM Bets Where Each_way = 1 AND Translated = 1 AND Status = 'OPEN' AND Race_id = ?";
 		return jdbcTemplate.query(sql, new Object[] {race.getRaceID()}, new BetRowMapper());
+	}
+	
+	@Override
+	public List<Bet> getCustomerBets(String customerID) {
+		String sql = "SELECT * FROM Bets WHERE Customer_id = ?";
+		return jdbcTemplate.query(sql, new Object[] {customerID}, new BetRowMapper());
 	}
 }

@@ -89,7 +89,6 @@ public class MainController {
 							Race tempRace, BindingResult bindingResult) {
 	
 		if (bindingResult.hasErrors()) {
-			//TODO Add flash attributes
 			return "redirect:/translate";
 		}
 		
@@ -386,8 +385,6 @@ public class MainController {
 	public String addHorses(Model model, Principal principal, @Valid Race tempRace, BindingResult bindingResult) {
 		logger.info("POST request to '/races'");
 		if (bindingResult.hasErrors()) {
-			//TODO Add flash attributes
-			//TODO Add active tab attribute to html
 			logger.info("Error: redirecting");
 			return "redirect:/admin";
 		}

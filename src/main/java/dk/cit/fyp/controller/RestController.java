@@ -1,7 +1,5 @@
 package dk.cit.fyp.controller;
 
-import java.sql.Date;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,6 +22,7 @@ import com.google.gson.JsonObject;
 import dk.cit.fyp.domain.Customer;
 import dk.cit.fyp.domain.Horse;
 import dk.cit.fyp.domain.Race;
+import dk.cit.fyp.service.BetService;
 import dk.cit.fyp.service.CustomerService;
 import dk.cit.fyp.service.HorseService;
 import dk.cit.fyp.service.RaceService;
@@ -37,6 +36,8 @@ public class RestController {
 	RaceService raceService;
 	@Autowired
 	HorseService horseService;
+	@Autowired
+	BetService betService;
 	
 	private final static Logger logger = Logger.getLogger(RestController.class);
 	private JsonObject jsonObj = new JsonObject();
@@ -126,6 +127,9 @@ public class RestController {
 		JsonElement customerJson = gson.toJsonTree(customer, Customer.class);
 		jsonObj.addProperty("result", "ok");
 		jsonObj.add("customer", customerJson);
+		
+		JsonElement bets = gson.toJsonTree(betService.getCustomerBets(customer.getUsername()));
+		jsonObj.add("bets", bets);
 		return jsonObj.toString();
 	}
 	
@@ -167,7 +171,7 @@ public class RestController {
 		    	e.printStackTrace();
 		    	
 		    	jsonObj.addProperty("result", "error");
-				jsonObj.addProperty("error", "Sorry, unable to sign-up at present!");
+				jsonObj.addProperty("error", "Date of Birth must be in format DD/MM/YYYY");
 				logger.info("returning error");
 				
 				return jsonObj.toString();

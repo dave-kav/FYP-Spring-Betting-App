@@ -231,4 +231,9 @@ public class BetServiceImpl implements BetService {
 			}
 		}
 	}
+
+	@Override
+	public List<Bet> getCustomerBets(String customerID) {
+		return betRepo.getCustomerBets(customerID);
+	}
 }

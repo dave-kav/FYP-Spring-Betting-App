@@ -35,5 +35,7 @@ public interface BetService {
 	
 	List<Bet> getWinBets(Race race);
 	
-	List<Bet> getEachWayBets(Race race);	
+	List<Bet> getEachWayBets(Race race);
+	
+	List<Bet> getCustomerBets(String customerID);
 }

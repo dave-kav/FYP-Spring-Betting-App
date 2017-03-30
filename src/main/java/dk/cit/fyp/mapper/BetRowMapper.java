@@ -28,7 +28,7 @@ public class BetRowMapper implements RowMapper<Bet>{
 		b.setOnlineBet(rs.getBoolean("Online_bet"));
 		b.setWinnings(rs.getFloat("Winnings"));
 		b.setImagePath(rs.getString("Image"));
-		b.setMonitoredCustomer(rs.getBoolean("Monitored"));
+		b.setCustomerID(rs.getString("Customer_id"));
 		b.setStatus(Status.valueOf(rs.getString("Status")));
 		b.setOdds(rs.getInt("Odds_numerator") + "/" + rs.getInt("Odds_denominator"));
 		

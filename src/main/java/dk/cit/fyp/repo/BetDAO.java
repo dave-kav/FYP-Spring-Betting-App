@@ -31,4 +31,6 @@ public interface BetDAO {
 	
 	List<Bet> getEachWayBets(Race race);
 	
+	List<Bet> getCustomerBets(String customerID);
+	
 }

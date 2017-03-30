@@ -25,12 +25,12 @@ public class Bet {
 	private boolean onlineBet;
 	// amount returned if bet is a winner
 	private double winnings;
-	// indicates whether bet has been placed by a customer of interest e.g. high staking customer
-	private boolean monitoredCustomer;
 	// indicates if bet needs to be settled, is winner or loser
 	private Status status;
 	//indicates if bet has been paid out or not
 	private boolean paid;
+	//for online bets
+	private String customerID;
 	
 	public int getBetID() {
 		return betID;
@@ -120,14 +120,6 @@ public class Bet {
 		this.winnings = winnings;
 	}
 	
-	public boolean isMonitoredCustomer() {
-		return monitoredCustomer;
-	}
-	
-	public void setMonitoredCustomer(boolean monitoredCustomer) {
-		this.monitoredCustomer = monitoredCustomer;
-	}
-	
 	public Status getStatus() {
 		return status;
 	}
@@ -144,10 +136,19 @@ public class Bet {
 		this.paid = paid;
 	}
 
+	public String getCustomerID() {
+		return customerID;
+	}
+
+	public void setCustomerID(String customerID) {
+		this.customerID = customerID;
+	}
+
 	@Override
 	public String toString() {
-		return "Bet [betID=" + betID + ", timePlaced=" + timePlaced + ", selection=" + selection + ", stake=" + stake + ", odds=" + odds + ", image=" + imagePath + ", eachWay=" + eachWay + ", translated=" + translated
-				+ ", onlineBet=" + onlineBet + ", winnings=" + winnings + ", monitoredCustomer=" + monitoredCustomer
-				+ ", status=" + status + ", paid=" + paid + "]";
+		return "Bet [betID=" + betID + ", timePlaced=" + timePlaced + ", selection=" + selection + ", RaceID=" + RaceID
+				+ ", stake=" + stake + ", odds=" + odds + ", imagePath=" + imagePath + ", eachWay=" + eachWay
+				+ ", translated=" + translated + ", onlineBet=" + onlineBet + ", winnings=" + winnings + ", status="
+				+ status + ", paid=" + paid + ", customerID=" + customerID + "]";
 	}
 }
