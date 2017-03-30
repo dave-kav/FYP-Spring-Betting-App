@@ -188,4 +188,13 @@ public class RestController {
 			return jsonObj.toString();
 		}
 	}
+	
+	@RequestMapping(value={"/api/bets/{username}"}, method=RequestMethod.POST)
+	@ResponseBody
+	public String getCustomerBets(HttpServletRequest request, @PathVariable(value="username") String username) {
+		JsonElement bets = gson.toJsonTree(betService.getCustomerBets(username));
+		jsonObj.addProperty("result", "ok");
+		jsonObj.add("bets", bets);
+		return jsonObj.toString();
+	}
 }
