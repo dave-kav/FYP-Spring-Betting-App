@@ -211,19 +211,15 @@ public class RestController {
 		}
 	}
 	
-	@RequestMapping(value={"/api/bets/{username}"}, method=RequestMethod.POST)
+	@RequestMapping(value={"/api/raceInfo"}, method=RequestMethod.GET)
 	@ResponseBody
-	public String getCustomerBets(HttpServletRequest request, @PathVariable(value="username") String username) {
-		List<Bet> bets = betService.getCustomerBets(username);
-		
-		for (Bet b: bets) {
-			b.setHorse(horseService.getById(Integer.parseInt(b.getSelection())));
+	public List<Race> getRaceInfo() {
+		List<Race> allRaces = raceService.findAll();
+		for (Race r: allRaces) {
+			r.setAllHorses(horseService.getHorsesInRace(r.getRaceID()));
 		}
 		
-		JsonElement betsJson = gson.toJsonTree(bets);
-		jsonObj.add("bets", betsJson);
-		
-		jsonObj.addProperty("result", "ok");
-		return jsonObj.toString();
+		return allRaces;
 	}
+	
 }
