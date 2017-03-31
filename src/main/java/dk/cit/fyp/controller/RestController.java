@@ -130,6 +130,7 @@ public class RestController {
 		List<Bet> bets = betService.getCustomerBets(username);
 		for (Bet b: bets) {
 			b.setHorse(horseService.getById(Integer.parseInt(b.getSelection())));
+			b.setRace(raceService.get(b.getRaceID()));
 		}
 		
 		customer.setBets(bets);
