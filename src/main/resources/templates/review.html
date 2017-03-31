@@ -27,7 +27,6 @@
 						<th>Status</th>
 						<th>Winnings</th>
 						<th>Paid</th>
-						<th>Monitored</th>
 						<th>How Placed</th>
 					</tr>
 				</thead>
@@ -50,11 +49,7 @@
 							<td th:switch="${bet.paid}">
 								<span th:case="true">Yes</span>
 								<span th:case="false">No</span>
-							</td>						
-							<td th:switch="${bet.monitoredCustomer}">
-								<span th:case="true">Yes</span>
-								<span th:case="false">No</span>
-							</td>
+							</td>												
 							<td th:switch="${bet.onlineBet}">
 								<span th:case="true">Online</span>
 								<span th:case="false">In store</span>
