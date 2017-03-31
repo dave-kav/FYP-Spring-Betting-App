@@ -1,6 +1,7 @@
 package dk.cit.fyp.domain;
 
 import java.sql.Date;
+import java.util.List;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -21,6 +22,7 @@ public class Customer {
 	private Date DOB;
 	@Min(0)
 	private double credit;
+	List<Bet> bets;
 	
 	public String getUsername() {
 		return username;
@@ -70,6 +72,14 @@ public class Customer {
 		this.credit = credit;
 	}
 	
+	public List<Bet> getBets() {
+		return bets;
+	}
+
+	public void setBets(List<Bet> bets) {
+		this.bets = bets;
+	}
+
 	@Override
 	public String toString() {
 		return "Customer [username=" + username + ", password=" + password + ", firstName=" + firstName + ", lastName="

@@ -125,12 +125,17 @@ public class RestController {
 			return jsonObj.toString();
 		}
 		
-		JsonElement customerJson = gson.toJsonTree(customer, Customer.class);
 		jsonObj.addProperty("result", "ok");
-		jsonObj.add("customer", customerJson);
+			
+		List<Bet> bets = betService.getCustomerBets(username);
+		for (Bet b: bets) {
+			b.setHorse(horseService.getById(Integer.parseInt(b.getSelection())));
+		}
 		
-		JsonElement bets = gson.toJsonTree(betService.getCustomerBets(customer.getUsername()));
-		jsonObj.add("bets", bets);
+		customer.setBets(bets);
+		
+		JsonElement customerJson = gson.toJsonTree(customer, Customer.class);
+		jsonObj.add("customer", customerJson);
 		return jsonObj.toString();
 	}
 	
@@ -200,8 +205,9 @@ public class RestController {
 		}
 		
 		JsonElement betsJson = gson.toJsonTree(bets);
-		jsonObj.addProperty("result", "ok");
 		jsonObj.add("bets", betsJson);
+		
+		jsonObj.addProperty("result", "ok");
 		return jsonObj.toString();
 	}
 }
