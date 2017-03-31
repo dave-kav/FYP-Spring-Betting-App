@@ -214,10 +214,13 @@ public class RestController {
 	@RequestMapping(value={"/api/raceInfo"}, method=RequestMethod.GET)
 	@ResponseBody
 	public String getRaceInfo() {
+		
 		List<Race> allRaces = raceService.findAll();
+		
 		for (Race r: allRaces) {
 			r.setAllHorses(horseService.getHorsesInRace(r.getRaceID()));
 		}
+		
 		jsonObj.addProperty("result", "ok");
 		jsonObj.add("races", gson.toJsonTree(allRaces));
 		return jsonObj.toString();
