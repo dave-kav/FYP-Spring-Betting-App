@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import dk.cit.fyp.domain.Bet;
 import dk.cit.fyp.domain.Customer;
 import dk.cit.fyp.domain.Horse;
 import dk.cit.fyp.domain.Race;
@@ -192,9 +193,15 @@ public class RestController {
 	@RequestMapping(value={"/api/bets/{username}"}, method=RequestMethod.POST)
 	@ResponseBody
 	public String getCustomerBets(HttpServletRequest request, @PathVariable(value="username") String username) {
-		JsonElement bets = gson.toJsonTree(betService.getCustomerBets(username));
+		List<Bet> bets = betService.getCustomerBets(username);
+		
+		for (Bet b: bets) {
+			b.setHorse(horseService.getById(Integer.parseInt(b.getSelection())));
+		}
+		
+		JsonElement betsJson = gson.toJsonTree(bets);
 		jsonObj.addProperty("result", "ok");
-		jsonObj.add("bets", bets);
+		jsonObj.add("bets", betsJson);
 		return jsonObj.toString();
 	}
 }

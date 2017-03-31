@@ -31,6 +31,7 @@ public class Bet {
 	private boolean paid;
 	//for online bets
 	private String customerID;
+	private Horse horse;
 	
 	public int getBetID() {
 		return betID;
@@ -142,6 +143,14 @@ public class Bet {
 
 	public void setCustomerID(String customerID) {
 		this.customerID = customerID;
+	}
+
+	public Horse getHorse() {
+		return horse;
+	}
+
+	public void setHorse(Horse horse) {
+		this.horse = horse;
 	}
 
 	@Override
