@@ -8,6 +8,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
+import org.joda.time.Years;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -149,7 +153,6 @@ public class RestController {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String dob = request.getParameter("dob");
-		logger.info("Date of Birth: " + dob);
 		
 		if (customerService.get(username).size() > 0) {
 			
@@ -166,7 +169,7 @@ public class RestController {
 			customer.setLastName(lastName);
 			customer.setUsername(username);
 			customer.setPassword(password);
-
+			
 			//parse date
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		    java.util.Date parsed = null;
@@ -185,7 +188,19 @@ public class RestController {
 		    }
 		    
 		    java.sql.Date data = new java.sql.Date(parsed.getTime());
-			customer.setDOB(data);
+			customer.setDOB(data);		    
+		    
+		    //jodatime date format to check if customer is over 18
+		    DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy");
+		    DateTime dt = formatter.parseDateTime(dob);
+		    		    
+		    if (Years.yearsBetween(dt, new DateTime()).getYears() < 18) {
+		    	jsonObj.addProperty("result", "error");
+				jsonObj.addProperty("error", "Customer must be 18 years +");
+				logger.info("returning error");
+				
+				return jsonObj.toString();
+		    }
 			
 			customerService.save(customer);
 			
