@@ -8,6 +8,12 @@ import org.springframework.jdbc.core.RowMapper;
 
 import dk.cit.fyp.domain.User;
 
+/**
+ * Convert jdbc result set into User objects.
+ * 
+ * @author Dave Kavanagh
+ *
+ */
 public class UserRowMapper implements RowMapper<User> {
 
 	@Override
@@ -19,9 +25,7 @@ public class UserRowMapper implements RowMapper<User> {
 		
 		boolean admin = rs.getString("authority").equals("ADMIN") ? true : false;
 		e.setAdmin(admin);
-		
-		Logger.getInstance(UserRowMapper.class).info(e.toString());
-		
+				
 		return e;
 	}
 }

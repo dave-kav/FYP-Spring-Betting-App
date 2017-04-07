@@ -16,7 +16,7 @@ public class ImageServiceImpl implements ImageService {
 	private static String last_file;
 
 	/**
-	 * Takes in a filePath and returns the file as bytes 
+	 * Takes in a filePath and returns the file as bytes.
 	 */
 	@Override
 	public byte[] getBytes(String filePath) {

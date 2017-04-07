@@ -1,5 +1,11 @@
 package dk.cit.fyp.domain;
 
+/**
+ * Horse entity.
+ * 
+ * @author Dave Kavanagh
+ *
+ */
 public class Horse {
 	
 	private int selectionID;

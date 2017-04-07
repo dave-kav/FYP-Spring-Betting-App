@@ -7,6 +7,12 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+/**
+ * Race entity.
+ * 
+ * @author Dave Kavanagh
+ *
+ */
 public class Race {
 	
 	private int raceID;

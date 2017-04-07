@@ -10,6 +10,12 @@ import org.springframework.jdbc.core.RowMapper;
 import dk.cit.fyp.domain.Bet;
 import dk.cit.fyp.domain.Status;
 
+/**
+ * Convert jdbc resultset into Bet objects.
+ * 
+ * @author Dave Kavanagh
+ *
+ */
 public class BetRowMapper implements RowMapper<Bet>{
 
 	@Override

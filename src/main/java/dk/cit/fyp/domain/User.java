@@ -1,5 +1,11 @@
 package dk.cit.fyp.domain;
 
+/**
+ * User of web-application
+ * 
+ * @author Dave Kavanagh
+ *
+ */
 public class User {
 	
 	private int id;

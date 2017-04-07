@@ -38,6 +38,13 @@ import dk.cit.fyp.service.RaceService;
 import dk.cit.fyp.service.UserService;
 import dk.cit.fyp.wrapper.RaceWrapper;
 
+/**
+ * Primary controller of Betting Application. Performs background processing,
+ * orchestrates data, serves interfaces.
+ * 
+ * @author Dave Kavanagh
+ *
+ */
 @Controller
 public class MainController {
 	
@@ -56,19 +63,37 @@ public class MainController {
 	
 	private final static Logger logger = Logger.getLogger(MainController.class);
 	
+	/**
+	 * Display login page.
+	 * 
+	 * @return Login page.
+	 */
 	@RequestMapping(value={"/login"}, method=RequestMethod.GET)
 	public String showLoginPage() {
 		logger.info("GET request to '/login'");
 		return "login";
 	}
 	
+	/**
+	 * Handle failed login, display login page with error.
+	 * 
+	 * @param attributes RedirectAttributes object used to pass error message. 
+	 * @return Login page.
+	 */
 	@RequestMapping(value={"/login-error"}, method=RequestMethod.GET)
-	public String failedLogin(Model model, RedirectAttributes attributes) {
+	public String failedLogin(RedirectAttributes attributes) {
 		logger.info("GET request to '/login-error'");
 		attributes.addFlashAttribute("loginError", true);
 		return "redirect:login";
 	}
 	
+	/**
+	 * Display the translate page to the user. 
+	 * 
+	 * @param model Model object used to pass data to client side for display.
+	 * @param principal Principal object user to obtain logged in user details.
+	 * @return Translate page.
+	 */
 	@RequestMapping(value={"/", "/translate", "/home"}, method=RequestMethod.GET)
 	public String showTranslatePage(Model model, Principal principal) {
 		User user = userService.get(principal.getName()).get(0);
@@ -86,9 +111,18 @@ public class MainController {
 		return "translate";
 	}
 	
+	/**
+	 * Process translation of bet, verifying fields and saving to the database.
+	 * 
+	 * @param model Model object used to pass data to client side for display.
+	 * @param principal Principal object user to obtain logged in user details.
+	 * @param tempBet Bet object to be translated and saved to DB
+	 * @param tempRace Race object used to aid translation.
+	 * @param bindingResult BindingResult object used to validate errors.
+	 * @return Redirect to translate page once done.
+	 */
 	@RequestMapping(value={"/translate"}, method=RequestMethod.POST)
-	public String translate(Model model, Principal principal, Bet tempBet, 
-							Race tempRace, BindingResult bindingResult) {
+	public String translate(Model model, Principal principal, Bet tempBet, Race tempRace, BindingResult bindingResult) {
 	
 		if (bindingResult.hasErrors()) {
 			return "redirect:/translate";
@@ -101,6 +135,7 @@ public class MainController {
 		Bet bet = betService.get(tempBet.getBetID());
 		betService.onScreen(bet);
 		
+		//map from horse name/number to selection id
 		String selection = tempBet.getSelection();
 		int selectionID;
 		try {
@@ -110,6 +145,7 @@ public class MainController {
 			selectionID = horseService.get(selection).get(0).getSelectionID();
 		}
 	 		
+		//set dependent fields and save to DB
 		bet.setSelection(selectionID + "");
 		bet.setTranslated(true);
 		bet.setEachWay(tempBet.isEachWay());
@@ -120,6 +156,13 @@ public class MainController {
 		return "redirect:/translate";
 	}
 		
+	/**
+	 * Display interface for uploading image.
+	 * 
+	 * @param model Model object used to pass data to client side for display.
+	 * @param principal Principal object user to obtain logged in user details.
+	 * @return Upload interface.
+	 */
 	@RequestMapping(value={"/upload"}, method=RequestMethod.GET)
 	public String showUploadPage(Model model, Principal principal) {
 		logger.info("GET request to '/upload'");
@@ -130,12 +173,18 @@ public class MainController {
 	
 	/**
 	 * This function retrieves an image from a POST, saves the image to file-system and 
-	 * returns the encoded image to be displayed on the front-end. The image is the saved 
-	 * to the database as a new bet. 
+	 * returns the encoded image to be displayed on the front-end. The image is then saved 
+	 * to the database as a new bet.
+	 * 
+	 * @param model Model object used to pass data to client side for display.
+	 * @param principal Principal object user to obtain logged in user details.
+	 * @param file Multipart file object used to retrieve selected file.
+	 * @param session HTTPSession object.
+	 * @param attributes RedirectAttributes object used to pass error message. 
+	 * @return
 	 */
 	@RequestMapping(value={"/upload"}, method=RequestMethod.POST)
-	public String uploadImage(Model model, Principal principal, 
-			@RequestParam MultipartFile file,HttpSession session, 
+	public String uploadImage(Model model, Principal principal, @RequestParam MultipartFile file,HttpSession session, 
 			RedirectAttributes attributes) {
 		
 		logger.info("POST request to '/upload'");
@@ -151,7 +200,6 @@ public class MainController {
         	attributes.addFlashAttribute("noFile", "Please select a file.");
         	return "redirect:upload";
         } 
-        
         if (!fileName.endsWith(".jpg")) {
         	throw new MultipartException(fileName);
         }
@@ -171,31 +219,35 @@ public class MainController {
         
         // encode bytes for display
         String imgSrc = imgService.getImageSource(bytes);
-        
 		model.addAttribute("bet", new Bet());
 		model.addAttribute("imgSrc", imgSrc);
 
 		//temporary store for display 
         String filePath = path  + fileName;
-        logger.info(filePath);
 		imgService.storeLastImgPath(filePath); 
 		
         return "upload";  
 	}
 	
+	/**
+	 * Used to process uploaded image, saving new bet to database.
+	 * 
+	 * @param model Model object used to pass data to client side for display.
+	 * @param principal Principal object user to obtain logged in user details.
+	 * @param bet New Bet object to be added and saved to database.
+	 * @param bindingResult BindingResult object used to validate errors.
+	 * @param attributes RedirectAttributes object used to pass error message.
+	 * @return Redirect to upload page.
+	 */
 	@RequestMapping(value={"/confirmUpload"}, method=RequestMethod.POST)
-	public String confirmUpload(Model model, Principal principal, Bet bet, 
-			BindingResult bindingResult, RedirectAttributes attributes) {		
+	public String confirmUpload(Model model, Principal principal, Bet bet, BindingResult bindingResult, RedirectAttributes attributes) {		
 		if (bindingResult.hasErrors())
 			return "redirect:/upload";
 		
 		model.addAttribute("userName", principal.getName());
 		model.addAttribute("uploadPage", true);
 		
-		logger.info(bet.getStake());
-		String imagePath = imgService.getLastImagePath();
-		logger.info(imagePath);
-		
+		String imagePath = imgService.getLastImagePath();		
 		bet.setImagePath(imagePath);
 		betService.save(bet);
 		
@@ -203,6 +255,13 @@ public class MainController {
         return "redirect:upload";  
 	}
 	
+	/**
+	 * Display interface where user can review list of all bets in system.
+	 * 
+	 * @param model Model object used to pass data to client side for display.
+	 * @param principal Principal object user to obtain logged in user details.
+	 * @return Review bets interface.
+	 */
 	@RequestMapping(value={"/bets/all"}, method=RequestMethod.GET)
 	public String showReviewPage(Model model, Principal principal) {
 		logger.info("GET request to '/review'");
@@ -214,14 +273,25 @@ public class MainController {
 		return "review";
 	}
 	
+	/**
+	 * Show details of an individual bet.
+	 * 
+	 * @param model Model object used to pass data to client side for display.
+	 * @param principal Principal object user to obtain logged in user details.
+	 * @param betID Unique identifying number of the bet to be displayed.
+	 * @return Bet details interface.
+	 */
 	@RequestMapping(value={"/bets/{betID}"}, method=RequestMethod.GET)
 	public String showBet(Model model, Principal principal, @PathVariable(value="betID") String betID) {
 		logger.info("GET request to '/bets/'" + betID);
 		model.addAttribute("userName", principal.getName());
 		model.addAttribute("reviewPage", true);
 		
+		// get bet from repo using betID
 		int betIDint = Integer.parseInt(betID);
 		Bet bet = betService.get(betIDint);
+		
+		//encode image for display
 		String imgSrc = "";
 		try {
 			byte[] bytes = imgService.getBytes(bet.getImagePath());
@@ -231,6 +301,7 @@ public class MainController {
 			logger.error("Image not found in server!");
 		}
 		
+		//If bet has been translated already race info for the bet is added
 		if (bet.getRaceID() != 0)
 			model.addAttribute("race", raceService.get(bet.getRaceID()));
 		else
@@ -241,9 +312,10 @@ public class MainController {
 			h = horseService.getById(Integer.parseInt(bet.getSelection()));
 			bet.setSelection(h.getName());
 		} catch (NumberFormatException e) {
-			
+			logger.error("Horse not found for this bet: ID: " + bet.getSelection());
 		}
 		
+		// add bet to model, along with horse, race and time info for edit translate purposes
 		model.addAttribute("bet", bet);
 		model.addAttribute("tracks", raceService.getTracks());
 		model.addAttribute("horses", horseService.getHorses());
@@ -252,13 +324,17 @@ public class MainController {
 		return "editBet";
 	}
 	
+	/**
+	 * Process update bet request.
+	 * @param request HttpServletRequest object to retrieve hidden input form values.
+	 * @param bet Bet object to be updated.
+	 * @return Redirect to 'review bets' page.
+	 */
 	@RequestMapping(value={"/bets/{betID}"}, method=RequestMethod.POST)
 	public String updateBet(HttpServletRequest request, Bet bet) {
 		logger.info("POST to /bets/'" + bet.getBetID() + "'");
-		logger.info(bet.toString());
-		logger.info(request.getParameter("timePlaced"));
-		
-		logger.info(bet.getSelection());
+
+		//map from horse name/number to selection id
 		String selection = bet.getSelection();
 		int selectionID;
 		try {
@@ -268,15 +344,20 @@ public class MainController {
 			selectionID = horseService.get(selection).get(0).getSelectionID();
 		}
 	 		
-		bet.setSelection(selectionID + "");
-		logger.info(bet.getSelection());
-		
+		bet.setSelection(selectionID + "");		
 		bet.setTranslated(true);
 		betService.save(bet);
 		
 		return "redirect:/bets/all";
 	}
 	
+	/**
+	 * Display customer management interface.
+	 * 
+	 * @param model Model object used to pass data to client side for display.
+	 * @param principal Principal object user to obtain logged in user details.
+	 * @return Customer interface.
+	 */
 	@RequestMapping(value={"/customers"}, method=RequestMethod.GET)
 	public String showCustomerPage(Model model, Principal principal) {
 		logger.info("GET request to '/customers'");
@@ -288,34 +369,48 @@ public class MainController {
 		return "customers";
 	}
 	
+	/**
+	 * Add new customer record to the database.
+	 * 
+	 * @param customer Customer object to be added to database.
+	 * @param bindingResult BindingResult object used to validate errors.
+	 * @return Redirect to customer interface.
+	 */
 	@RequestMapping(value={"/customers"}, method=RequestMethod.POST)
 	public String addCustomer(Customer customer, BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-			for (ObjectError e: bindingResult.getAllErrors()) {
-				logger.info(e.toString());
-			}
-			
+		if (bindingResult.hasErrors())
 			return "redirect:/customers";
-		}
 		
 		logger.info("POST request to '/customers'");
-		logger.info(customer.toString());
 		customerService.save(customer);
 				
-		return "redirect:customers";
-		
+		return "redirect:customers";		
 	}
 	
-	@RequestMapping(value={"/customers/{username}"}, method=RequestMethod.GET)
-	public String editCustomer(Model model, Principal principal, @PathVariable(value="username") String username) {
-		logger.info("GET request to '/customers'");
+	/**
+	 * Display interface to edit customer account or update balance.
+	 * 
+	 * @param model Model object used to pass data to client side for display.
+	 * @param principal Principal object user to obtain logged in user details.
+	 * @param username String value representing the customer's username.
+	 * @return editCustomer interface.
+	 */
+	@RequestMapping(value={"/customers/{customer}"}, method=RequestMethod.GET)
+	public String editCustomer(Model model, Principal principal, @PathVariable(value="customer") String customer) {
+		logger.info("GET request to '/customers/" + customer + "'");
 		model.addAttribute("userName", principal.getName());
 		
-		model.addAttribute("customer", customerService.get(username).get(0));
+		model.addAttribute("customer", customerService.get(customer).get(0));
 		
 		return "editCustomer";
 	}
 	
+	/**
+	 * Process update to customer account info.
+	 * 
+	 * @param customer Customer object to be update and saved.
+	 * @return Redirect to customer management interface.
+	 */
 	@RequestMapping(value={"/customers/{username}"}, method=RequestMethod.POST)
 	public String updateCustomer(Customer customer) {
 		logger.info("POST request to '/customers/'" + customer.getUsername());
@@ -325,6 +420,14 @@ public class MainController {
 		return "redirect:/customers";
 	}
 	
+	/**
+	 * Update customer's account balance.
+	 * 
+	 * @param request HttpServletRequest object used to obtain hidden input fields.
+	 * @param username String value representing the customer's username.
+	 * @param attributes RedirectAttributes object used to pass error message.
+	 * @return Redirect to edit customer details interface.
+	 */
 	@RequestMapping(value={"/balance/{username}"}, method=RequestMethod.POST)
 	public String updateBalance(HttpServletRequest request, @PathVariable(value="username") String username, 
 			RedirectAttributes attributes) {
@@ -334,12 +437,14 @@ public class MainController {
 		String amountString = request.getParameter("amount");
 		double amount = Double.parseDouble(amountString);
 
+		// process deposit
 		if (request.getParameter("deposit") != null) {
 			customer.setCredit(customer.getCredit() + amount);
 			customerService.save(customer);
 			attributes.addFlashAttribute("successMessage", "New account balance: " + customer.getCredit());
 			return "redirect:/customers/" + username;
 		}
+		// process withdrawal
 		else if (request.getParameter("withdraw") != null) {
 			if (customer.getCredit() >= amount) {
 				customer.setCredit(customer.getCredit() - amount);
@@ -347,11 +452,13 @@ public class MainController {
 				attributes.addFlashAttribute("successMessage", "New account balance: " + customer.getCredit());
 				return "redirect:/customers/" + username;
 			}
+			// not enough credit
 			else {
 				attributes.addFlashAttribute("errorMessage", "Insufficient Credit - Max withdrawal: " + customer.getCredit());
 				return "redirect:/customers/" + username;
 			}
 		}
+		// an error occurred
 		else {
 			logger.info("deposit/withdrawal not found");
 			attributes.addFlashAttribute("errorMessage", "Sorry, an error occurred...");
@@ -359,6 +466,13 @@ public class MainController {
 		}
 	}
 
+	/**
+	 * Display admin interface, only available to admin users.
+	 * 
+	 * @param model Model object used to pass data to client side for display.
+	 * @param principal Principal object user to obtain logged in user details.
+	 * @return Admin interface.
+	 */
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value={"/admin"}, method=RequestMethod.GET)
 	public String showAdminPage(Model model, Principal principal) {
@@ -366,6 +480,7 @@ public class MainController {
 		model.addAttribute("userName", principal.getName());
 		model.addAttribute("adminPage", true);
 		
+		// Domain objects necessary for addition of user/races and settling of races.
 		model.addAttribute("user", new User());
 		model.addAttribute("tempRace", new Race());
 		model.addAttribute("allRaces", raceService.findAll());
@@ -373,6 +488,13 @@ public class MainController {
 		return "admin";
 	}
 	
+	/**
+	 * Process addition of new system user and saves to database.
+	 * 
+	 * @param user User to be added to database.
+	 * @param attributes RedirectAttributes object used to pass error message.
+	 * @return Redirect to admin interface, tab 3.
+	 */
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value={"/users"}, method=RequestMethod.POST)
 	public String addUser(User user, RedirectAttributes attributes) {
@@ -387,6 +509,15 @@ public class MainController {
 		return "redirect:/admin?tab=3";
 	}
 	
+	/**
+	 * Return horses interface for adding horses to a new race.
+	 * 
+	 * @param model Model object used to pass data to client side for display.
+	 * @param principal Principal object user to obtain logged in user details.
+	 * @param tempRace Race object that indicates the number of runners.
+	 * @param bindingResult BindingResult object used to validate errors.
+	 * @return Add horses interface.
+	 */
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value={"/races"}, method=RequestMethod.POST)
 	public String addHorses(Model model, Principal principal, @Valid Race tempRace, BindingResult bindingResult) {
@@ -402,15 +533,23 @@ public class MainController {
 		wrapper.setHorseList((ArrayList<Horse>) horses);
 		wrapper.setRace(tempRace);
 		model.addAttribute("wrapper", wrapper);
+		
 		return "horses";
 	}
 	
+	/**
+	 * Process addition of new race and save to database.
+	 * 
+	 * @param wrapper RaceWrapper object used to manage Race object and List of Horse objects.
+	 * @param attributes RedirectAttributes object used to pass error message.
+	 * @return Redirect to admin interface, tab 2.
+	 */
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value={"/races/add"}, method=RequestMethod.POST)
 	public String addRace(RaceWrapper wrapper, RedirectAttributes attributes) {
 		logger.info("POST request to '/races/add'");
-		logger.info(wrapper.getRace().getTrack());
 		
+		// validate all fields have been filled correctly 
 		for (Horse h: wrapper.getHorseList()) {
 			if (h.getName().equals("")) {
 				logger.info("blank name supplied, redirecting");
@@ -419,10 +558,12 @@ public class MainController {
 			}
 		}
 		
+		// save race object and obtain raceID
 		Race race = wrapper.getRace();
 		raceService.save(race);
 		int raceID = raceService.find(race.getTime()).get(0).getRaceID();		
 		
+		// assign horses and their numbers to the race.
 		int number = 1;
 		for (Horse h: wrapper.getHorseList()) {
 			h.setRaceID(raceID);
@@ -435,8 +576,12 @@ public class MainController {
 	}
 	
 	/**
-	 * Load individual race in order to settle. Save settled race details in database.
-	 * Trigger settling of all bets related to the race on separate thread.
+	 * Load Race details interface to facilitate 'settling' of race. 
+	 *
+	 * @param model Model object used to pass data to client side for display.
+	 * @param principal Principal object user to obtain logged in user details.
+	 * @param raceID integer value representing the ID of the race to be settled.
+	 * @return Race details interface.
 	 */
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value={"/races/{raceID}"}, method=RequestMethod.GET)
@@ -463,8 +608,7 @@ public class MainController {
 		}
 		
 		logger.info("GET request to '/races/" + raceID + "'");
-		model.addAttribute("userName", principal.getName());
-		
+		model.addAttribute("userName", principal.getName());		
 		model.addAttribute("horses", horseService.getHorsesInRace(raceID)); 
 		model.addAttribute("race", race); 
 		
@@ -481,6 +625,15 @@ public class MainController {
 		return "race";
 	}
 	
+	/**
+	 * Process 'settling' of race. Save details to database.
+	 * 
+	 * @param request HttpServletRequest used to obtain hidden input fields.
+	 * @param attributes RedirectAttributes object used to pass error message.
+	 * @param raceID integer value representing the ID of the race to be settled.
+	 * @param wrapper RaceWrapper object used to manage Race object and List of Horse objects.
+	 * @return Redirect to admin interface.
+	 */
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value={"/races/{raceID}"}, method=RequestMethod.POST)
 	public String settleRace(HttpServletRequest request, RedirectAttributes attributes, @PathVariable(value="raceID") int raceID, RaceWrapper wrapper) {

@@ -7,6 +7,12 @@ import org.springframework.jdbc.core.RowMapper;
 
 import dk.cit.fyp.domain.Customer;
 
+/**
+ * Convert jdbc result set into Customer objects.
+ * 
+ * @author Dave Kavanagh
+ *
+ */
 public class CustomerRowMapper implements RowMapper<Customer> {
 
 	@Override

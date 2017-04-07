@@ -2,7 +2,6 @@ package dk.cit.fyp.repo;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -14,7 +13,7 @@ import dk.cit.fyp.mapper.CustomerRowMapper;
 public class JdbcCustomerRepo implements CustomerDAO {
 	
 	private JdbcTemplate jdbcTemplate;
-	private final static Logger logger = Logger.getLogger(JdbcCustomerRepo.class);
+	
 	@Autowired
 	public JdbcCustomerRepo(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;

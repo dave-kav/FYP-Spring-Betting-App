@@ -32,6 +32,13 @@ import dk.cit.fyp.service.CustomerService;
 import dk.cit.fyp.service.HorseService;
 import dk.cit.fyp.service.RaceService;
 
+/**
+ * Restful style web interface used to provide data to web application via ajax
+ * but primarily to supply user and race information to mobile app.
+ * 
+ * @author Dave Kavanagh
+ *
+ */
 @Controller
 public class RestController {
 	
@@ -47,7 +54,13 @@ public class RestController {
 	private final static Logger logger = Logger.getLogger(RestController.class);
 	private JsonObject jsonObj = new JsonObject();
 	private Gson gson = new Gson();
-			
+		
+	/**
+	 * Get customer account information.
+	 * 
+	 * @param username String username.
+	 * @return JSON format customer account info.
+	 */
 	@RequestMapping(value={"/api/account/{username}"}, method=RequestMethod.GET)
 	@ResponseBody 
 	public Customer getAccountInfo(@PathVariable(value="username") String username) {
@@ -56,6 +69,12 @@ public class RestController {
 		return customer;
 	}
 	
+	/**
+	 * Get information regarding a given race time.
+	 * 
+	 * @param time String value representing the time of the raced.
+	 * @return JSON format race information.
+	 */
 	@RequestMapping(value={"/api/race/{time}"}, method=RequestMethod.GET)
 	@ResponseBody 
 	public Race getRace(@PathVariable(value="time") String time) {
@@ -71,6 +90,12 @@ public class RestController {
 		return race;
 	}
 	
+	/**
+	 * Get race information in which a given horse is running.
+	 * 
+	 * @param name String representing the horse's name.
+	 * @return JSON format race information.
+	 */
 	@RequestMapping(value={"/api/race/horse/{horse}"}, method=RequestMethod.GET)
 	@ResponseBody 
 	public Race getRaceByHorse(@PathVariable(value="horse") String name) {
@@ -87,6 +112,12 @@ public class RestController {
 		return race;
 	}
 	
+	/**
+	 * Get all races times for a given track name
+	 * 
+	 * @param track String representing the track's name.
+	 * @return JSON format race time details.
+	 */
 	@RequestMapping(value={"/api/race/track/{track}"}, method=RequestMethod.GET)
 	@ResponseBody 
 	public String getRacesByTrack(@PathVariable(value="track") String track) {	
@@ -107,6 +138,12 @@ public class RestController {
 		return jsonObj.toString();
 	}
 	
+	/**
+	 * Handle login from mobile app.
+	 * 
+	 * @param request HttpServletRequest used to obtain credentials. 
+	 * @return JSON format customer info if successful login, error otherwise.
+	 */
 	@RequestMapping(value={"/api/login"}, method=RequestMethod.POST)
 	@ResponseBody
 	public String appLogin(HttpServletRequest request) {
@@ -115,6 +152,7 @@ public class RestController {
 		String password = request.getParameter("password");
 		
 		Customer customer = null; 
+		// if incorrect username or password
 		if (customerService.get(username).size() > 0) {
 			customer = customerService.get(username).get(0);
 
@@ -130,7 +168,7 @@ public class RestController {
 		}
 		
 		jsonObj.addProperty("result", "ok");
-			
+		// add customer bet info
 		List<Bet> bets = betService.getCustomerBets(username);
 		for (Bet b: bets) {
 			b.setHorse(horseService.getById(Integer.parseInt(b.getSelection())));
@@ -144,6 +182,12 @@ public class RestController {
 		return jsonObj.toString();
 	}
 	
+	/**
+	 * Handle sign-up via mobile app.
+	 * 
+	 * @param request HttpServletRequest used to obtain credentials.
+	 * @return JSON containing error or success message
+	 */
 	@RequestMapping(value={"/api/signup"}, method=RequestMethod.POST)
 	@ResponseBody
 	public String appSignup(HttpServletRequest request) {
@@ -154,6 +198,7 @@ public class RestController {
 		String password = request.getParameter("password");
 		String dob = request.getParameter("dob");
 		
+		// if username exists already
 		if (customerService.get(username).size() > 0) {
 			
 			jsonObj.addProperty("result", "error");
@@ -164,6 +209,7 @@ public class RestController {
 			
 		} else {
 			
+			// get fields and build Customer object 
 			Customer customer = new Customer();
 			customer.setFirstName(firstName);
 			customer.setLastName(lastName);
@@ -203,7 +249,6 @@ public class RestController {
 		    }
 			
 			customerService.save(customer);
-			
 			logger.info("Customer Added!");
 			
 			jsonObj.addProperty("result", "ok");
@@ -211,6 +256,11 @@ public class RestController {
 		}
 	}
 	
+	/**
+	 * Get info for all races.
+	 * 
+	 * @return JSON race info.
+	 */
 	@RequestMapping(value={"/api/raceInfo"}, method=RequestMethod.GET)
 	@ResponseBody
 	public String getRaceInfo() {

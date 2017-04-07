@@ -5,6 +5,12 @@ import java.util.ArrayList;
 import dk.cit.fyp.domain.Horse;
 import dk.cit.fyp.domain.Race;
 
+/**
+ * Wrapper class used to hold a Race object and List of Horse objects.
+ * 
+ * @author Dave Kavanagh
+ *
+ */
 public class RaceWrapper {
 
 	private Horse winner;

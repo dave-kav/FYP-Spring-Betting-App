@@ -7,6 +7,12 @@ import org.springframework.security.authentication.event.InteractiveAuthenticati
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+/**
+ * Logs security login events.
+ * 
+ * @author Dave Kavanagh
+ *
+ */
 @Component
 public class AuthenticationEventListener implements ApplicationListener<AbstractAuthenticationEvent> {
 

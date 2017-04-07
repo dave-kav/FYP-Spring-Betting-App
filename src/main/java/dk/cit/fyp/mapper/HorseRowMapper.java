@@ -7,6 +7,12 @@ import org.springframework.jdbc.core.RowMapper;
 
 import dk.cit.fyp.domain.Horse;
 
+/**
+ * Convert jdbc result set into Horse objects.
+ * 
+ * @author Dave Kavanagh
+ *
+ */
 public class HorseRowMapper implements RowMapper<Horse> {
 
 	@Override
@@ -17,7 +23,6 @@ public class HorseRowMapper implements RowMapper<Horse> {
 		h.setName(rs.getString("Name"));
 		h.setRaceID(rs.getInt("Race_id"));
 		h.setNumber(rs.getInt("Number"));
-		
 		
 		return h;
 	}

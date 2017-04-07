@@ -1,0 +1,11 @@
+dk.cit.fyp
+dk.cit.fyp.bean
+dk.cit.fyp.config
+dk.cit.fyp.controller
+dk.cit.fyp.domain
+dk.cit.fyp.interceptor
+dk.cit.fyp.mapper
+dk.cit.fyp.repo
+dk.cit.fyp.security
+dk.cit.fyp.service
+dk.cit.fyp.wrapper

@@ -3,6 +3,12 @@ package dk.cit.fyp.domain;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Bet entity.
+ * 
+ * @author Dave Kavanagh
+ *
+ */
 public class Bet {
 	
 	// Unique number auto-assigned to each bet via DB
@@ -31,6 +37,7 @@ public class Bet {
 	private boolean paid;
 	//for online bets
 	private String customerID;
+	// below references for REST mappings
 	private Horse horse;
 	private Race race;
 	

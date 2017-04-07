@@ -9,6 +9,12 @@ import org.springframework.jdbc.core.RowMapper;
 
 import dk.cit.fyp.domain.Race;
 
+/**
+ * Convert jdbc result set into Race objects.
+ * 
+ * @author Dave Kavanagh
+ *
+ */
 public class RaceRowMapper implements RowMapper<Race> {
 
 	@Override

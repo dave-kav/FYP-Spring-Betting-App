@@ -8,6 +8,12 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
+/**
+ * Customer entity.
+ * 
+ * @author Dave Kavanagh
+ *
+ */
 public class Customer {
 	
 	@NotNull

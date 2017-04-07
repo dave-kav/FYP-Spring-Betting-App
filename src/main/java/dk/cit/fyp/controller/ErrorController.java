@@ -1,4 +1,4 @@
-/*package dk.cit.fyp.controller;
+package dk.cit.fyp.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -8,6 +8,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+/**
+ * Used in displaying custom error messages to user
+ * 
+ * @author Dave Kavanagh
+ *
+ */
 @Controller
 public class ErrorController {
 	
@@ -48,5 +54,3 @@ public class ErrorController {
     }
 
 }
-
-*/

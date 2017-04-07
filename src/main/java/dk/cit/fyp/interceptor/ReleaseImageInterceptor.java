@@ -16,6 +16,14 @@ import dk.cit.fyp.domain.Bet;
 import dk.cit.fyp.domain.User;
 import dk.cit.fyp.service.BetService;
 
+/**
+ * User to manage untranslated bet queue. Intercepts HTTP requests, 
+ * removes user from queue mapping if they leave translate page so that
+ * untranslated bet is restored to the queue.
+ * 
+ * @author Dave Kavanagh
+ *
+ */
 @Component
 public class ReleaseImageInterceptor implements HandlerInterceptor {
 
@@ -28,6 +36,7 @@ public class ReleaseImageInterceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		// obtain logged in user
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String username;
 		Bet bet = null;
@@ -36,18 +45,18 @@ public class ReleaseImageInterceptor implements HandlerInterceptor {
 		} else {
 			username = principal.toString();
 		}
-		logger.info(username);
 		
-
-		if (userBetBean.getUserBetMap().containsKey(username)) {
-			bet = userBetBean.getUserBetMap().get(username);
+		// find bet in queue mapped to current user
+		if (userBetBean.contains(username)) {
+			bet = userBetBean.getBet(username);
 		} else {
 			logger.info(username + " not in userbetmap");
 		}
-
+		
+		// release bet
 		if (bet != null) {
 			betService.offScreen(bet);
-			userBetBean.getUserBetMap().remove(username);
+			userBetBean.remove(username);
 			logger.info("setting bet off screen");
 		} else {
 			logger.info("null bet");
