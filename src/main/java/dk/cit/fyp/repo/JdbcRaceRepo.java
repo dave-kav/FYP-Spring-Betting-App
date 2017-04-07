@@ -20,7 +20,6 @@ import dk.cit.fyp.mapper.RaceRowMapper;
 public class JdbcRaceRepo implements RaceDAO {
 
 	private JdbcTemplate jdbcTemplate;
-	private final static Logger logger = Logger.getLogger(JdbcRaceRepo.class);
 	
 	@Autowired
 	public JdbcRaceRepo(JdbcTemplate jdbcTemplate) {
@@ -30,7 +29,6 @@ public class JdbcRaceRepo implements RaceDAO {
 	@Override
 	public Race get(int raceID) {
 		String sql = "SELECT * FROM Races WHERE Race_id = ?";
-		logger.info("In race repo, raceID:" + raceID);
 		return jdbcTemplate.queryForObject(sql, new Object[] {raceID}, new RaceRowMapper());
 	}
 	

@@ -278,9 +278,9 @@ public class RestController {
 	
 	@RequestMapping(value={"/api/bet/new"}, method=RequestMethod.POST)
 	@ResponseBody
-	public String placeBet() {
+	public String placeBet(HttpServletRequest request) {
 		logger.info("request to /bet/new");
-		
+		logger.info(request.getParameter("username"));
 		
 		
 		return null;
