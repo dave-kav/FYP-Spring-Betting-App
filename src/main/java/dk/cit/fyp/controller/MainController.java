@@ -71,11 +71,13 @@ public class MainController {
 	
 	@RequestMapping(value={"/", "/translate", "/home"}, method=RequestMethod.GET)
 	public String showTranslatePage(Model model, Principal principal) {
+		User user = userService.get(principal.getName()).get(0);
+		
 		logger.info("GET request to '/translate'");
 		model.addAttribute("userName", principal.getName());
 		model.addAttribute("translatePage", true);
 		
-		model = betService.getNext(model);
+		model = betService.getNext(model, user);
 		
 		model.addAttribute("tracks", raceService.getTracks());
 		model.addAttribute("horses", horseService.getHorses());
@@ -113,7 +115,6 @@ public class MainController {
 		bet.setEachWay(tempBet.isEachWay());
 		bet.setOdds(tempBet.getOdds());
 		bet.setRaceID(raceService.find(tempRace.getTime()).get(0).getRaceID());
-		
 		betService.save(bet);
 		
 		return "redirect:/translate";
@@ -235,8 +236,14 @@ public class MainController {
 		else
 			model.addAttribute("race", new Race());
 
-		Horse h = horseService.getById(Integer.parseInt(bet.getSelection()));
-		bet.setSelection(h.getName());
+		Horse h;
+		try {
+			h = horseService.getById(Integer.parseInt(bet.getSelection()));
+			bet.setSelection(h.getName());
+		} catch (NumberFormatException e) {
+			
+		}
+		
 		model.addAttribute("bet", bet);
 		model.addAttribute("tracks", raceService.getTracks());
 		model.addAttribute("horses", horseService.getHorses());

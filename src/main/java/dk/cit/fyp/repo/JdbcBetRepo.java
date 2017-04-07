@@ -48,7 +48,7 @@ public class JdbcBetRepo implements BetDAO {
 	
 	private void update(Bet bet) {
 		String sql = "UPDATE Bets SET Selection_id = ?, Race_id = ?, Stake = ?,"
-				+ "Translated = ?, Online_bet = ?, Winnings = ?, Image = ?, "
+				+ "Translated = ?, On_screen = ?, Online_bet = ?, Winnings = ?, Image = ?, "
 				+ "Customer_id = ?, Each_way = ?, Odds_numerator = ?, Odds_denominator = ?, Status = ? WHERE Bet_id = ?";
 		
 		String odds = bet.getOdds();
@@ -57,7 +57,7 @@ public class JdbcBetRepo implements BetDAO {
 		int denominator = Integer.parseInt(parts[1]);
 				
 		jdbcTemplate.update(sql, new Object[] {bet.getSelection(), bet.getRaceID(), bet.getStake(), 
-				bet.isTranslated(), bet.isOnlineBet(), bet.getWinnings(), bet.getImagePath(), 
+				bet.isTranslated(), "false", bet.isOnlineBet(), bet.getWinnings(), bet.getImagePath(), 
 				bet.getCustomerID(), bet.isEachWay(), numerator, denominator, bet.getStatus().toString(), bet.getBetID()});
 	}
 	
@@ -79,7 +79,7 @@ public class JdbcBetRepo implements BetDAO {
 	@Override
 	public List<Bet> top() {
 		String sql 	= "SELECT * FROM "
-					+ "Bets WHERE Translated=0 "
+					+ "Bets WHERE Translated=0 AND On_screen=0 "
 					+ "ORDER BY Bet_id "
 					+ "LIMIT 1;";
 		return jdbcTemplate.query(sql, new BetRowMapper());

@@ -3,6 +3,7 @@ package dk.cit.fyp.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.RowMapper;
 
 import dk.cit.fyp.domain.User;
@@ -18,6 +19,8 @@ public class UserRowMapper implements RowMapper<User> {
 		
 		boolean admin = rs.getString("authority").equals("ADMIN") ? true : false;
 		e.setAdmin(admin);
+		
+		Logger.getInstance(UserRowMapper.class).info(e.toString());
 		
 		return e;
 	}

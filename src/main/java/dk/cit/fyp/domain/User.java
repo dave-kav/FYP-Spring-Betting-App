@@ -6,7 +6,8 @@ public class User {
 	private String username;
 	private String password;
 	private boolean admin;
-	
+	private Bet currentBet;
+
 	public int getID() {
 		return id;
 	}
@@ -39,6 +40,14 @@ public class User {
 		this.admin = admin;
 	}
 	
+	public Bet getCurrentBet() {
+		return currentBet;
+	}
+
+	public void setCurrentBet(Bet currentBet) {
+		this.currentBet = currentBet;
+	}
+
 	@Override
 	public String toString() {
 		return "User [employeeID=" + id + ", username=" + username + ", password=" + password + ", admin="

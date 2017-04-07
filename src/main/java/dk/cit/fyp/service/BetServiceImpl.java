@@ -9,10 +9,12 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import dk.cit.fyp.bean.UserBetBean;
 import dk.cit.fyp.domain.Bet;
 import dk.cit.fyp.domain.Horse;
 import dk.cit.fyp.domain.Race;
 import dk.cit.fyp.domain.Status;
+import dk.cit.fyp.domain.User;
 import dk.cit.fyp.repo.BetDAO;
 
 @Service
@@ -23,6 +25,8 @@ public class BetServiceImpl implements BetService {
 	private BetDAO betRepo;
 	@Autowired
 	private ImageService imgService;
+	@Autowired
+	UserBetBean userBetBean;
 	
 	@Autowired
 	public BetServiceImpl(BetDAO betRepo, ImageService imgService) {
@@ -51,10 +55,13 @@ public class BetServiceImpl implements BetService {
 	}
 	
 	@Override
-	public Model getNext(Model model) {
+	public Model getNext(Model model, User user) {
 		List<Bet> bets = betRepo.top();
 		if (bets.size() != 0) {
 			Bet bet = bets.get(0);
+			userBetBean.setBet(user.getUsername(), bet);
+			onScreen(bet);
+			
 			logger.info("Loading image for bet_id " + bet.getBetID());
 			String imgSrc = "";
 			try {

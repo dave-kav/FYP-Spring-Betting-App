@@ -7,6 +7,9 @@ import java.util.Base64;
 
 import org.springframework.stereotype.Service;
 
+import ch.qos.logback.classic.Logger;
+import dk.cit.fyp.controller.MainController;
+
 @Service
 public class ImageServiceImpl implements ImageService {
 	
@@ -35,14 +38,14 @@ public class ImageServiceImpl implements ImageService {
 	        fileBytes = bos.toByteArray();
 	        
         } catch (IOException e) {
-        	e.printStackTrace();
+        	org.apache.log4j.Logger.getInstance(ImageServiceImpl.class).error("No image available!");
         } finally {
         	try {
 	        	fis.close();
 	        	bos.close();
 	        	
         	} catch (IOException e) {
-        		e.printStackTrace();
+        		org.apache.log4j.Logger.getInstance(ImageServiceImpl.class).error("No image available!");
         	}
         }
 		return fileBytes;
@@ -57,8 +60,7 @@ public class ImageServiceImpl implements ImageService {
 
 	@Override
 	public void storeLastImgPath(String filePath) {
-		ImageServiceImpl.last_file = filePath;
-		
+		ImageServiceImpl.last_file = filePath;		
 	}
 
 	@Override

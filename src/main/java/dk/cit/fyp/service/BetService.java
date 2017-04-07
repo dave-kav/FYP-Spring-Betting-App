@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 
 import dk.cit.fyp.domain.Bet;
 import dk.cit.fyp.domain.Race;
+import dk.cit.fyp.domain.User;
 
 public interface BetService {
 
@@ -17,7 +18,7 @@ public interface BetService {
 	
 	int getNumUntranslated();
 	
-	Model getNext(Model model);
+	Model getNext(Model model, User user);
 	
 	List<Bet> findAll();
 	
