@@ -275,4 +275,14 @@ public class RestController {
 		jsonObj.add("races", gson.toJsonTree(allRaces));
 		return jsonObj.toString();
 	}	
+	
+	@RequestMapping(value={"/api/bet/new"}, method=RequestMethod.POST)
+	@ResponseBody
+	public String placeBet() {
+		logger.info("request to /bet/new");
+		
+		
+		
+		return null;
+	}
 }
