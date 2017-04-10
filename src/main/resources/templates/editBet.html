@@ -20,6 +20,7 @@
 				<!-- Panel on left of GUI -->
 				<div class="col-sm-4 img-rounded" id="left-box">
 					<img id="bet-img" class="bet-img" th:if="${imgSrc}" th:src="${imgSrc}"></img>
+					<img id="bet-placeholder" class="bet-img" th:unless="${imgSrc}" src="/images/default-placeholder.png"></img>
 					
 					 
 					<div>

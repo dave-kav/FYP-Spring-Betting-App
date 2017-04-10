@@ -374,12 +374,21 @@ public class MainController {
 	 * 
 	 * @param customer Customer object to be added to database.
 	 * @param bindingResult BindingResult object used to validate errors.
+	 * @param attributes RedirectAttributes object used to pass error message.
 	 * @return Redirect to customer interface.
 	 */
 	@RequestMapping(value={"/customers"}, method=RequestMethod.POST)
-	public String addCustomer(Customer customer, BindingResult bindingResult) {
+	public String addCustomer(Customer customer, BindingResult bindingResult, RedirectAttributes attributes) {
 		if (bindingResult.hasErrors())
 			return "redirect:/customers";
+		
+		List<Customer> customers = customerService.findAll();
+		for (Customer c: customers) {
+			if (c.getUsername().equals(customer.getUsername())) {
+				attributes.addFlashAttribute("addCustomerError", "Username already taken!");
+				return "redirect:/customers";
+			}
+		}
 		
 		logger.info("POST request to '/customers'");
 		customerService.save(customer);

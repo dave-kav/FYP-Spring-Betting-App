@@ -26,6 +26,11 @@ html, body {
 	max-height: 90%;
 }
 
+#bet-placeholder {
+	padding-top: 70px;
+	padding-bottom: 70px;
+}
+
 .fields {
 	width: 100%;
 	padding: 20px;

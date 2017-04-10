@@ -31,7 +31,7 @@
 					</thead>
 					<tbody class="hand-cursor">
 						<div th:each="customer: ${customers}">
-							<tr th:href="@{/customers/} + ${customer.username}" class="table-row clickable"><!-- Create href -->
+							<tr th:href="@{/customers/} + ${customer.username}" class="table-row clickable">
 								<td th:text="${customer.username}"></td>
 								<td th:text="${customer.firstName}"></td>
 								<td th:text="${customer.lastName}"></td>
@@ -76,6 +76,7 @@
 						</div>
 					</div>
 					<button class="btn btn-primary pull-right" id="customerSubmit" type="submit">Add</button>
+					<p th:if="${addCustomerError}" th:text="${addCustomerError}" class="text-danger text-center"></p>
 				</form>
 			</div>
 		</div>
