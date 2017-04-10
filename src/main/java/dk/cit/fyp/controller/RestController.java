@@ -281,8 +281,10 @@ public class RestController {
 	public String placeBet(HttpServletRequest request) {
 		logger.info("request to /bet/new");
 		logger.info(request.getParameter("username"));
+		logger.info(request.getParameter("stake"));
+		logger.info(request.getParameter("eachway"));
 		
-		
-		return null;
+		jsonObj.addProperty("result", "ok");
+		return jsonObj.toString();
 	}
 }

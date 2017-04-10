@@ -35,7 +35,7 @@ public class ReleaseImageInterceptor implements HandlerInterceptor {
 	UserBetBean userBetBean;
 
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws NullPointerException {
 		// obtain logged in user
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String username;
