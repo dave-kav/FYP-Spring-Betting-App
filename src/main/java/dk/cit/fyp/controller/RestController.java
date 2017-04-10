@@ -280,18 +280,44 @@ public class RestController {
 		return jsonObj.toString();
 	}	
 	
+	/**
+	 * Process placing of a bet via mobile app.
+	 * 
+	 * @param request HttpServletRequest used to obtain credentials.
+	 * @return JSON formatted details of bet placed.
+	 */
 	@RequestMapping(value={"/api/bet/new"}, method=RequestMethod.POST)
 	@ResponseBody
 	public String placeBet(HttpServletRequest request) {
 		logger.info("request to /bet/new");
-		logger.info(request.getParameter("username"));
-		logger.info(request.getParameter("stake"));
-		logger.info(request.getParameter("eachway"));
-		logger.info(request.getParameter("horse"));
+		
+		String name = request.getParameter("horse").split(" - ")[1];
+		Horse horse = horseService.get(name).get(0);
+		Race race = raceService.get(horse.getRaceID());
+		
+		Bet bet = new Bet();
+		bet.setStake(Double.parseDouble(request.getParameter("stake")));
+		bet.setSelection(String.format("%d", horse.getSelectionID()));
+		bet.setRaceID(race.getRaceID());
+		bet.setCustomerID(request.getParameter("username"));
+		bet.setEachWay(Boolean.valueOf(request.getParameter("eachway")));
+		bet.setOdds("11/4");
 		
 		JsonObject jsonObj = new JsonObject();
 		
-		jsonObj.addProperty("result", "ok");
+		long id = betService.saveRest(bet);
+		
+		if (id != 0) {
+			logger.info("NEW BET ID: " + id);
+			jsonObj.addProperty("result", "ok");
+		} else { 
+			jsonObj.addProperty("result", "error");
+			jsonObj.addProperty("erorr", "bet not placed");
+		}
+		
+		bet = betService.get(Integer.valueOf(String.format("%d", id)));
+		jsonObj.add("bet", gson.toJsonTree(bet, Bet.class));
+		
 		return jsonObj.toString();
 	}
 }

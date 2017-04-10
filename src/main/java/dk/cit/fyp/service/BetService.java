@@ -14,6 +14,8 @@ public interface BetService {
 	
 	void save(Bet bet);
 	
+	long saveRest(Bet bet);
+	
 	List<Bet> top();
 	
 	int getNumUntranslated();

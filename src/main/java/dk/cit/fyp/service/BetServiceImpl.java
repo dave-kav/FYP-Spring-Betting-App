@@ -43,6 +43,11 @@ public class BetServiceImpl implements BetService {
 	public void save(Bet bet) {
 		betRepo.save(bet);
 	}
+	
+	@Override
+	public long saveRest(Bet bet) {
+		return betRepo.saveRest(bet);
+	}
 
 	@Override
 	public List<Bet> top() {

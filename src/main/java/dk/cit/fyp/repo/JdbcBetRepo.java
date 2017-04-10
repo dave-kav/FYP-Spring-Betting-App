@@ -1,10 +1,17 @@
 package dk.cit.fyp.repo;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import dk.cit.fyp.domain.Bet;
@@ -61,19 +68,39 @@ public class JdbcBetRepo implements BetDAO {
 				bet.getCustomerID(), bet.isEachWay(), numerator, denominator, bet.getStatus().toString(), bet.getBetID()});
 	}
 	
-	public void saveRest(Bet bet) {
-		String sql = "INSERT INTO Bets (Stake, Online_bet, Image, Selection_id, Race_id, Stake, Translated, Winnings, Customer_id, "
-				+ "Each_way, Odds_numerator, Odds_denominator) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	@Override
+	public long saveRest(Bet bet) {
+		String sql = "INSERT INTO Bets (Stake, Online_bet, Image, Selection_id, Race_id, Translated, Customer_id, "
+				+ "Each_way, Odds_numerator, Odds_denominator) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
 		String odds = bet.getOdds();
 		String[] parts = odds.split("/");
 		int numerator = Integer.parseInt(parts[0]);
 		int denominator = Integer.parseInt(parts[1]);
 		
-		jdbcTemplate.update(sql, new Object[]{bet.getStake(), true, null, bet.getSelection(), bet.getRaceID(), bet.getStake(), true,
-				bet.getWinnings(), bet.getCustomerID(), bet.isEachWay(), numerator, denominator});
+		// place bet and retrieve placed bet id
+		KeyHolder holder = new GeneratedKeyHolder();
+		jdbcTemplate.update(new PreparedStatementCreator() {
+			
+			@Override
+			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+				PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				ps.setDouble(1, bet.getStake());
+				ps.setBoolean(2, true);
+				ps.setString(3, "null");
+				ps.setString(4, bet.getSelection());
+				ps.setInt(5, bet.getRaceID());
+				ps.setBoolean(6, true);
+				ps.setString(7, bet.getCustomerID());
+				ps.setBoolean(8, Boolean.valueOf(bet.isEachWay()));
+				ps.setInt(9, numerator);
+				ps.setInt(10, denominator);
+				return ps;
+			}
+		}, holder);
 		
-		logger.info("Added online bet to database.");
+		Long id = holder.getKey().longValue();
+		return id;
 	}
 	
 	@Override
