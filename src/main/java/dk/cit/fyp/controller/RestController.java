@@ -290,18 +290,15 @@ public class RestController {
 	@ResponseBody
 	public String placeBet(HttpServletRequest request) {
 		logger.info("request to /bet/new");
+		
+		//get bet details from request
 		String customerID = request.getParameter("username");
 		double stake = Double.parseDouble(request.getParameter("stake"));
-		
-		// update customer account balance
-		Customer customer = customerService.get(customerID).get(0);
-		customer.setCredit(customer.getCredit() - stake);
-		customerService.save(customer);
-		
 		String name = request.getParameter("horse").split(" - ")[1];
 		Horse horse = horseService.get(name).get(0);
 		Race race = raceService.get(horse.getRaceID());
 		
+		//build bet object
 		Bet bet = new Bet();
 		bet.setStake(stake);
 		bet.setSelection(String.format("%d", horse.getSelectionID()));
@@ -310,9 +307,15 @@ public class RestController {
 		bet.setEachWay(Boolean.valueOf(request.getParameter("eachway")));
 		bet.setOdds("11/4");
 		
-		JsonObject jsonObj = new JsonObject();
+		// update customer account balance
+		Customer customer = customerService.get(customerID).get(0);
+		customer.setCredit(customer.getCredit() - stake);
+		customerService.save(customer);
 		
+		// save bet
 		long id = betService.saveRest(bet);
+		
+		JsonObject jsonObj = new JsonObject();
 		
 		if (id != 0) {
 			logger.info("NEW BET ID: " + id);
