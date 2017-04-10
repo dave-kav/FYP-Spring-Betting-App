@@ -40,26 +40,27 @@ public class ReleaseImageInterceptor implements HandlerInterceptor {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String username;
 		Bet bet = null;
-		if (principal instanceof UserDetails) {
+		if (principal instanceof UserDetails)
 			username = ((UserDetails)principal).getUsername();
-		} else {
+		else
 			username = principal.toString();
-		}
 		
-		// find bet in queue mapped to current user
-		if (userBetBean.contains(username)) {
-			bet = userBetBean.getBet(username);
-		} else {
-			logger.info(username + " not in userbetmap");
-		}
-		
-		// release bet
-		if (bet != null) {
-			betService.offScreen(bet);
-			userBetBean.remove(username);
-			logger.info("setting bet off screen");
-		} else {
-			logger.info("null bet");
+		if (!username.equals("anonymousUser")) {		
+			// find bet in queue mapped to current user
+			if (userBetBean.contains(username)) {
+				bet = userBetBean.getBet(username);
+			} else {
+				logger.info(username + " not in userbetmap");
+			}
+			
+			// release bet
+			if (bet != null) {
+				betService.offScreen(bet);
+				userBetBean.remove(username);
+				logger.info("setting bet off screen");
+			} else {
+				logger.info("null bet");
+			}
 		}
 
 		return true;

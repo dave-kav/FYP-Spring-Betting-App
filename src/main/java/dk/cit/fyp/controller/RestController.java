@@ -52,7 +52,6 @@ public class RestController {
 	BetService betService;
 	
 	private final static Logger logger = Logger.getLogger(RestController.class);
-	private JsonObject jsonObj = new JsonObject();
 	private Gson gson = new Gson();
 		
 	/**
@@ -121,6 +120,7 @@ public class RestController {
 	@RequestMapping(value={"/api/race/track/{track}"}, method=RequestMethod.GET)
 	@ResponseBody 
 	public String getRacesByTrack(@PathVariable(value="track") String track) {	
+		JsonObject jsonObj = new JsonObject();
 		List<String> times = raceService.getTimesByTrack(track);
 		JsonElement timesJson = gson.toJsonTree(times);
 		jsonObj.add("times", timesJson);
@@ -150,6 +150,8 @@ public class RestController {
 		logger.info("POST to '/api/login'");
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
+		
+		JsonObject jsonObj = new JsonObject();
 		
 		Customer customer = null; 
 		// if incorrect username or password
@@ -197,6 +199,8 @@ public class RestController {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String dob = request.getParameter("dob");
+		
+		JsonObject jsonObj = new JsonObject();
 		
 		// if username exists already
 		if (customerService.get(username).size() > 0) {
@@ -264,7 +268,7 @@ public class RestController {
 	@RequestMapping(value={"/api/raceInfo"}, method=RequestMethod.GET)
 	@ResponseBody
 	public String getRaceInfo() {
-		
+		JsonObject jsonObj = new JsonObject();
 		List<Race> allRaces = raceService.findAll();
 		
 		for (Race r: allRaces) {
@@ -283,6 +287,8 @@ public class RestController {
 		logger.info(request.getParameter("username"));
 		logger.info(request.getParameter("stake"));
 		logger.info(request.getParameter("eachway"));
+		
+		JsonObject jsonObj = new JsonObject();
 		
 		jsonObj.addProperty("result", "ok");
 		return jsonObj.toString();
