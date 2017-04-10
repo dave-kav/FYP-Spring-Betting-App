@@ -287,6 +287,7 @@ public class RestController {
 		logger.info(request.getParameter("username"));
 		logger.info(request.getParameter("stake"));
 		logger.info(request.getParameter("eachway"));
+		logger.info(request.getParameter("horse"));
 		
 		JsonObject jsonObj = new JsonObject();
 		
