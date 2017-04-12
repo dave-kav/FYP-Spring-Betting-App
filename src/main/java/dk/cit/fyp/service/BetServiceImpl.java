@@ -163,6 +163,7 @@ public class BetServiceImpl implements BetService {
 	@Async
 	private void settleWin(Bet bet, Horse winner) {	
 		double winnings = 0;
+		double roundedWinnings = 0;
 		double stake = bet.getStake();
 		String odds[] = bet.getOdds().split("/");
 		double oddVals[] = new double[2]; 
@@ -171,10 +172,11 @@ public class BetServiceImpl implements BetService {
 		
 		//check horse on which bet has been placed is the winner of the race 
 		if (Integer.parseInt(bet.getSelection()) == winner.getSelectionID()) {
-			//business logic of calcualting winnings using basic factor
+			//business logic of calculating winnings using basic factor
 			winnings = ((oddVals[0] / oddVals[1]) + 1 ) * stake;  
 			
-			bet.setWinnings(winnings);
+			roundedWinnings = Math.round(winnings * 100.0) / 100.0;
+			bet.setWinnings(roundedWinnings);
 			bet.setStatus(Status.WINNER);
 			if (!bet.getCustomerID().equals("0")) {
 				Customer c = customerService.get(bet.getCustomerID()).get(0);
@@ -219,8 +221,7 @@ public class BetServiceImpl implements BetService {
 		for (Horse h: winAndPlace) {
 			if (Integer.parseInt(bet.getSelection()) == h.getSelectionID()) {
 
-				winnings = ((oddVals[0] * denom) + 1 ) * stake;  
-				
+				winnings = ((oddVals[0] * denom) + 1 ) * stake;  		
 				roundedWinnings = Math.round(winnings * 100.0) / 100.0;
 				bet.setWinnings(roundedWinnings);
 				bet.setStatus(Status.PLACED);
