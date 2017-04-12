@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 
 import dk.cit.fyp.bean.UserBetBean;
 import dk.cit.fyp.domain.Bet;
+import dk.cit.fyp.domain.Customer;
 import dk.cit.fyp.domain.Horse;
 import dk.cit.fyp.domain.Race;
 import dk.cit.fyp.domain.Status;
@@ -26,7 +27,9 @@ public class BetServiceImpl implements BetService {
 	@Autowired
 	private ImageService imgService;
 	@Autowired
-	UserBetBean userBetBean;
+	private CustomerService customerService;
+	@Autowired
+	private UserBetBean userBetBean;
 	
 	@Autowired
 	public BetServiceImpl(BetDAO betRepo, ImageService imgService) {
@@ -158,7 +161,7 @@ public class BetServiceImpl implements BetService {
 	 * @param winner winning horse in race to which bet applies
 	 */
 	@Async
-	private double settleWin(Bet bet, Horse winner) {	
+	private void settleWin(Bet bet, Horse winner) {	
 		double winnings = 0;
 		double stake = bet.getStake();
 		String odds[] = bet.getOdds().split("/");
@@ -173,13 +176,18 @@ public class BetServiceImpl implements BetService {
 			
 			bet.setWinnings(winnings);
 			bet.setStatus(Status.WINNER);
+			if (!bet.getCustomerID().equals("0")) {
+				Customer c = customerService.get(bet.getCustomerID()).get(0);
+				c.setCredit(c.getCredit() + bet.getWinnings());
+				customerService.save(c);
+				bet.setPaid(true);
+			}
 			betRepo.save(bet);
 		}
 		else {
 			bet.setStatus(Status.LOSER);
 			betRepo.save(bet);
 		}
-		return winnings;
 	}
 	
 	/**
@@ -216,6 +224,12 @@ public class BetServiceImpl implements BetService {
 				roundedWinnings = Math.round(winnings * 100.0) / 100.0;
 				bet.setWinnings(roundedWinnings);
 				bet.setStatus(Status.PLACED);
+				if (!bet.getCustomerID().equals("0")) {
+					Customer c = customerService.get(bet.getCustomerID()).get(0);
+					c.setCredit(c.getCredit() + bet.getWinnings());
+					customerService.save(c);
+					bet.setPaid(true);
+				}
 				betRepo.save(bet);
 				placed = true;
 			}
@@ -227,6 +241,12 @@ public class BetServiceImpl implements BetService {
 			roundedWinnings = Math.round(winnings * 100.0) / 100.0;
 			bet.setWinnings(roundedWinnings);			
 			bet.setStatus(Status.WINNER);
+			if (!bet.getCustomerID().equals("0")) {
+				Customer c = customerService.get(bet.getCustomerID()).get(0);
+				c.setCredit(c.getCredit() + bet.getWinnings());
+				customerService.save(c);
+				bet.setPaid(true);
+			}
 			betRepo.save(bet);
 		}
 		else {
