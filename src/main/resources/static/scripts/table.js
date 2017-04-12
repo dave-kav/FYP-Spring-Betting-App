@@ -8,7 +8,7 @@ $(document).ready(function($) {
     	"order": [[ 0, "desc"]]
     });  
     
-    $('#user-table').DataTable(); 
+    var userTable = $('#user-table').DataTable();
     
     $('#race-table').DataTable();
     
@@ -33,6 +33,7 @@ $(document).ready(function($) {
         								    return $(this).text() == username;
         								}).closest("tr");
         								tableRow.fadeOut();
+        								tableRow.remove();  
         							})
         						}
         					},
@@ -45,7 +46,8 @@ $(document).ready(function($) {
         	reset: {
     			name: 'Reset Password',
     			callback : function(key, opt) {
-    				//TODO - implement
+    				var username = opt.$trigger[0].innerText;
+    				console.log(username);
     			}
     		}    
         }

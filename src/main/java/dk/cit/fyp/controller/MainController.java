@@ -510,6 +510,14 @@ public class MainController {
 	public String addUser(User user, RedirectAttributes attributes) {
 		logger.info("POST request to '/users'");
 		
+		List<User> allUsers = userService.findAll();
+		for (User u: allUsers) {
+			if (u.getUsername().equals(user.getUsername())) {
+				attributes.addFlashAttribute("addUserErrorMessage", "User with name " + user.getUsername() + " already exists!");
+				return "redirect:/admin?tab=3";
+			}
+		}
+		
 		logger.info("Adding user...");
 		userService.save(user);
 		logger.info("User added!");

@@ -1,4 +1,3 @@
-@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300);
 * {
   box-sizing: border-box;
   margin: 0;
@@ -15,7 +14,17 @@ body {
 }
 
 .wrapper {
-  background:steelblue;
+  /* Mozilla Firefox */ 
+  background-image: -moz-linear-gradient(top, #008C1C 0%, #000000 100%);
+
+  /* Webkit (Safari/Chrome 10) */ 
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #008C1C), color-stop(100, #000000));
+
+  /* Webkit (Chrome 11+) */ 
+  background-image: -webkit-linear-gradient(top, #008C1C 0%, #000000 100%);
+
+  /* W3C Markup */ 
+  background-image: linear-gradient(to bottom, #008C1C 0%, #000000 100%);
   background-size: cover;
   background-position: center;
   position: absolute;

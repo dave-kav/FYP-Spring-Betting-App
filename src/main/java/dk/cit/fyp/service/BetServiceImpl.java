@@ -159,7 +159,6 @@ public class BetServiceImpl implements BetService {
 	 */
 	@Async
 	private double settleWin(Bet bet, Horse winner) {	
-		logger.info("in settle win");
 		double winnings = 0;
 		double stake = bet.getStake();
 		String odds[] = bet.getOdds().split("/");
@@ -171,14 +170,12 @@ public class BetServiceImpl implements BetService {
 		if (Integer.parseInt(bet.getSelection()) == winner.getSelectionID()) {
 			//business logic of calcualting winnings using basic factor
 			winnings = ((oddVals[0] / oddVals[1]) + 1 ) * stake;  
-			logger.info("Winnings calculated: " + stake + " @ " + bet.getOdds() + " = "  + winnings);
 			
 			bet.setWinnings(winnings);
 			bet.setStatus(Status.WINNER);
 			betRepo.save(bet);
 		}
 		else {
-			logger.info("losing bet");
 			bet.setStatus(Status.LOSER);
 			betRepo.save(bet);
 		}
@@ -197,6 +194,7 @@ public class BetServiceImpl implements BetService {
 	private void settleEachWay(Bet bet, Race race) {
 		double stake = bet.getStake() / 2;
 		double winnings = 0;
+		double roundedWinnings = 0;
 		String odds[] = bet.getOdds().split("/");
 		double oddVals[] = new double[2]; 
 		oddVals[0] = Double.parseDouble(odds[0]);
@@ -211,33 +209,28 @@ public class BetServiceImpl implements BetService {
 		
 		//calculate place winnings
 		for (Horse h: winAndPlace) {
-			logger.info("selection: " +  bet.getSelection());
-			logger.info("placed: " +  h.getSelectionID());
 			if (Integer.parseInt(bet.getSelection()) == h.getSelectionID()) {
 
 				winnings = ((oddVals[0] * denom) + 1 ) * stake;  
-				logger.info("Place return calculated: " + stake + " @ " + bet.getOdds() + " = "  + winnings);
 				
-				bet.setWinnings(winnings);
+				roundedWinnings = Math.round(winnings * 100.0) / 100.0;
+				bet.setWinnings(roundedWinnings);
 				bet.setStatus(Status.PLACED);
 				betRepo.save(bet);
 				placed = true;
 			}
 		}
 		
-		logger.info("winnings after place calculation: " + winnings);
 		//calculate win part if applicable
 		if (Integer.parseInt(bet.getSelection()) == race.getWinner().getSelectionID()) {
-			logger.info(stake);
-			winnings += ((oddVals[0] / oddVals[1]) + 1 ) * stake;  
-			logger.info("Each way Winnings calculated: " + stake + " @ " + bet.getOdds() + " = "  + winnings);
-			bet.setWinnings(winnings);
+			winnings += ((oddVals[0] / oddVals[1]) + 1 ) * stake;
+			roundedWinnings = Math.round(winnings * 100.0) / 100.0;
+			bet.setWinnings(roundedWinnings);			
 			bet.setStatus(Status.WINNER);
 			betRepo.save(bet);
 		}
 		else {
 			if (!placed) {
-				logger.info("loser place bet");
 				bet.setStatus(Status.LOSER);
 				betRepo.save(bet);
 			}

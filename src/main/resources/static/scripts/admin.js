@@ -5,7 +5,6 @@ var alphaNumPattern = /^\w+$/;
 var activeTab;
 var url = window.location.href;
 activeTab = url.split('?').pop().split('=').pop();
-console.log(activeTab);
 
 if (activeTab == 2) {
 	$('#1').removeClass("active");
