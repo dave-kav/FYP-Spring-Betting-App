@@ -48,7 +48,7 @@
 	            	</li>
 	            	<li sec:authorize="isAuthenticated()" >
 	            		<a href="#" id="user-name">
-	            			<i class="fa fa-user-o" aria-hidden="true"> <span th:text=" ${userName}"></span></i>
+	            			<i class="fa fa-user-o" aria-hidden="true"> <span id="username" th:text=" ${userName}"></span></i>
             			</a>
            			</li>  
            			<li>

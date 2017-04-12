@@ -102,7 +102,7 @@
 									<div th:if="${bet.winnings} > 0" class="form-group row">
 										<label for="winnings" class="col-sm-2 col-form-label">Winnings:</label>
 										<div class="col-sm-10">
-											<input type="text" class="form-control" name="winnings" th:value="${bet.winnings}" th:disabled="true"></input>								
+										<input type="text" class="form-control" name="winnings" th:value="@{&euro;} + ${#numbers.formatDecimal(bet.winnings, 0, 2)}" th:disabled="true"></input>
 										</div>
 							  		</div>	  								
 								  	<div th:unless="${bet.paid} OR ${bet.onlineBet}" class="checkbox" id="check-ew">

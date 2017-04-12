@@ -47,7 +47,7 @@
 								<span th:case="false">No</span>
 							</td>
 							<td th:text="${bet.status}"></td>
-							<td th:text="${bet.winnings}"></td>
+							<td th:text="@{&euro;} + ${#numbers.formatDecimal(bet.winnings, 0, 2)}"></td>
 							<td th:switch="${bet.paid}">
 								<span th:case="true">Yes</span>
 								<span th:case="false">No</span>

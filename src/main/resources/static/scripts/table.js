@@ -28,13 +28,17 @@ $(document).ready(function($) {
         						text: 'Delete',
             					btnClass: 'btn-red',
         						action: function() {
-        							$.post('/users/delete/' + username, function(){
-        								var tableRow = $("td").filter(function() {
-        								    return $(this).text() == username;
-        								}).closest("tr");
-        								tableRow.fadeOut();
-        								tableRow.remove();  
-        							})
+        							if (username != $('#username')[0].outerText) {
+        								$.post('/users/delete/' + username, function(){
+            								var tableRow = $("td").filter(function() {
+            								    return $(this).text() == username;
+            								}).closest("tr");
+            								tableRow.fadeOut();
+            								tableRow.remove();  
+            							})
+        							} else {
+        								$.dialog("Can't delete currently logged in user!");
+        							}        							
         						}
         					},
         					cancel: function() {        						

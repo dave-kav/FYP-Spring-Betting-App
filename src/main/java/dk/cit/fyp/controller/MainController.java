@@ -29,6 +29,7 @@ import dk.cit.fyp.domain.Bet;
 import dk.cit.fyp.domain.Customer;
 import dk.cit.fyp.domain.Horse;
 import dk.cit.fyp.domain.Race;
+import dk.cit.fyp.domain.Status;
 import dk.cit.fyp.domain.User;
 import dk.cit.fyp.service.BetService;
 import dk.cit.fyp.service.CustomerService;
@@ -346,6 +347,8 @@ public class MainController {
 	 		
 		bet.setSelection(selectionID + "");		
 		bet.setTranslated(true);
+		bet.setStatus(Status.OPEN);	
+		
 		betService.save(bet);
 		
 		return "redirect:/bets/all";
