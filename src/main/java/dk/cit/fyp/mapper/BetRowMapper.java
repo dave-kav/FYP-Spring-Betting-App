@@ -16,7 +16,7 @@ import dk.cit.fyp.domain.Status;
  * @author Dave Kavanagh
  *
  */
-public class BetRowMapper implements RowMapper<Bet>{
+public class BetRowMapper implements RowMapper<Bet> {
 
 	@Override
 	public Bet mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -32,6 +32,7 @@ public class BetRowMapper implements RowMapper<Bet>{
 		b.setStake(rs.getFloat("Stake"));
 		b.setTranslated(rs.getBoolean("Translated"));
 		b.setOnlineBet(rs.getBoolean("Online_bet"));
+		b.setPaid(rs.getBoolean("Paid"));
 		b.setWinnings(rs.getFloat("Winnings"));
 		b.setImagePath(rs.getString("Image"));
 		b.setCustomerID(rs.getString("Customer_id"));

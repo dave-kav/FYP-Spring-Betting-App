@@ -147,7 +147,10 @@
 									<div th:each="user: ${allUsers}">
 										<tr>
 											<td th:text="${user.username}"></td>
-											<td th:text="${user.admin}"></td>
+											<td th:switch="${user.admin}">
+												<span th:case="true">Administrator</span>
+												<span th:case="false">User</span>
+											</td>
 										</tr>
 									</div>
 								</tbody>
