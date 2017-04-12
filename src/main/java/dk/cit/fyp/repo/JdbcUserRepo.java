@@ -63,4 +63,10 @@ public class JdbcUserRepo implements UserDAO {
 		String sql = "SELECT * FROM users u INNER JOIN authorities a ON a.username = u.username";		
 		return jdbcTemplate.query(sql, new UserRowMapper());
 	}
+
+	@Override
+	public void delete(String username) {
+		String sql = "DELETE u, a FROM users u INNER JOIN authorities a ON u.username = a.username WHERE a.username=?";
+		jdbcTemplate.update(sql, new Object[] {username});
+	}
 }

@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(NullPointerException.class)
 	public String handleReleaseImageException(NullPointerException e) {
-		logger.error(e.getCause());
+		e.printStackTrace();
 		return "error";
 	}
 }

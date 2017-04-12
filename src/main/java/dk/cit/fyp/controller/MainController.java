@@ -519,6 +519,22 @@ public class MainController {
 		return "redirect:/admin?tab=3";
 	}
 	
+	//TODO
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@RequestMapping(value={"/users/delete/{username}"}, method=RequestMethod.POST)
+	public String deleteUser(Principal principal, RedirectAttributes attributes, @PathVariable(value="username") String username) {
+		logger.info("POST request to /users/delete/'" + username + "'");
+		
+		if (username.equals(principal.getName())) {
+			attributes.addAttribute("errorDeleteMessage", "Cannot delete the logged in User!");
+			return "redirect:/admin?tab=4";
+		}
+		
+		userService.delete(username);
+		attributes.addFlashAttribute("successDeleteMessage", "User deleted!");
+		return "redirect:/admin?tab=4";
+	}
+	
 	/**
 	 * Return horses interface for adding horses to a new race.
 	 * 
