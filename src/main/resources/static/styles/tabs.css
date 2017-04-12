@@ -25,12 +25,12 @@ body {
 	width:50%;	
 }
 
-.table-scroll tbody {
+/* .table-scroll tbody {
     position: absolute;
     overflow-y: scroll;
     height: 68vh;
 }
-
+ */
 .table-scroll tr {
     width: 95%;
     table-layout: fixed;
@@ -52,4 +52,17 @@ body {
 
 .error {
 	border-color: #ff0022;
+}
+
+#horse-form {
+	padding-left: 90px;
+}
+
+#horse-lead {
+	padding-left: 70px;
+} 
+
+#horse-button {
+	margin-left: 280px;
+	margin-top: 10px;
 }

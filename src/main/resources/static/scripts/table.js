@@ -9,5 +9,9 @@ $(document).ready(function($) {
     });  
     
     $('.datepicker').datepicker();
+    
+    $('#user-table').DataTable(); 
+    
+    $('#race-table').DataTable(); 
 });
 

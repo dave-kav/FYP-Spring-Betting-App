@@ -48,8 +48,8 @@ public class JdbcRaceRepo implements RaceDAO {
 	}
 	
 	private void add(Race race) {
-		String sql = "INSERT INTO Races (Time, Racetrack, Terms, Places, Runners) "
-					+ "VALUES (?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO Races (Time, Date, Racetrack, Terms, Places, Runners) "
+					+ "VALUES (?, ?, ?, ?, ?, ?)";
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 		Date time = null;
 		try {
@@ -60,7 +60,7 @@ public class JdbcRaceRepo implements RaceDAO {
 		}
 		String formattedTime = sdf.format(time);
 		
-		jdbcTemplate.update(sql, new Object[] {formattedTime, race.getTrack(), race.getTerms(),
+		jdbcTemplate.update(sql, new Object[] {formattedTime, race.getDate(), race.getTrack(), race.getTerms(),
 											race.getPlaces(), race.getRunners()});
 	}
 	

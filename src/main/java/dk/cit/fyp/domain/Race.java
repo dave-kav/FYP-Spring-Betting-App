@@ -1,5 +1,6 @@
 package dk.cit.fyp.domain;
 
+import java.sql.Date;
 import java.util.List;
 
 import javax.validation.constraints.Min;
@@ -18,6 +19,7 @@ public class Race {
 	private int raceID;
 	@NotEmpty
 	private String time;
+	private Date date;
 	@NotEmpty
 	@Pattern(regexp="^[A-Za-z]*$")
 	private String track;
@@ -47,6 +49,14 @@ public class Race {
 		this.time = time;
 	}
 	
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
 	public String getTrack() {
 		return track;
 	}

@@ -493,6 +493,7 @@ public class MainController {
 		model.addAttribute("user", new User());
 		model.addAttribute("tempRace", new Race());
 		model.addAttribute("allRaces", raceService.findAll());
+		model.addAttribute("allUsers", userService.findAll());
 		
 		return "admin";
 	}

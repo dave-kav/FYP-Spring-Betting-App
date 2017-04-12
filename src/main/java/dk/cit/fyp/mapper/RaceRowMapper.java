@@ -23,6 +23,7 @@ public class RaceRowMapper implements RowMapper<Race> {
 		
 		r.setRaceID(rs.getInt("Race_id"));
 		r.setTime(rs.getTime("Time").toString());
+		r.setDate(rs.getDate("Date"));
 		r.setTrack(rs.getString("Racetrack"));
 		r.setPlaces(rs.getInt("Places"));
 		r.setTerms(rs.getDouble("Terms"));
