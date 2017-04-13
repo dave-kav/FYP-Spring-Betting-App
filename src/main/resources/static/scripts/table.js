@@ -115,7 +115,3 @@ function validatePasswordFields() {
 	
 	return errors;
 }
-
-$("#passwd").change(function() {
-	$("#passwd").text("");
-});

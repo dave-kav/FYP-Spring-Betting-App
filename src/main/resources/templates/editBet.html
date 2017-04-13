@@ -15,28 +15,26 @@
 	<div th:replace="fragments/header :: header">&nbsp;</div>
 	<div class="content">
 		<div class="container">
-			<div class="row">
-				
+			<div class="row">				
 				<!-- Panel on left of GUI -->
 				<div class="col-sm-4 img-rounded" id="left-box">
 					<img id="bet-img" class="bet-img" th:if="${imgSrc}" th:src="${imgSrc}"></img>
-					<img id="bet-placeholder" class="bet-img" th:unless="${imgSrc}" src="/images/default-placeholder.png"></img>					
-					 
-					<div>
-						<p th:if="${bet.status == T(dk.cit.fyp.domain.Status).WINNER}" class="h3 text-success text-center">WINNING BET</p>
-						<p th:if="${bet.status == T(dk.cit.fyp.domain.Status).PLACED}" class="h3 text-info text-center">PLACED BET</p>
-						<p th:if="${bet.status == T(dk.cit.fyp.domain.Status).OPEN}" class="h3 text-center">OPEN BET</p>
-						<p th:if="${bet.status == T(dk.cit.fyp.domain.Status).LOSER}" class="h3 text-danger text-center">LOSING BET</p>
-					</div>
+					<img id="bet-placeholder" class="bet-img" th:unless="${imgSrc}" src="/images/default-placeholder.png"></img>													
 				</div>
 				
 				<!-- Panel on right of GUI -->
 				<div class="col-sm-8">
 					<div id="right-box">
 						<!-- Right panel -->
-						<div id="left-box" class="row img-rounded">
+						<div id="left-box" class="row img-rounded">							
 							<div class="fields">
 								<form class="form" th:action="@{/bets/} + ${bet.betID}" th:method="post">
+									<div class="form-group row">
+										<label for="selection" class="col-sm-2 col-form-label">Status:</label>
+										<div class="col-sm-10">
+											<input type="text" class="form-control" th:name="status" th:id="status" th:value="${bet.status}" th:disabled="true"></input>								
+										</div>
+								  	</div>
 									<div class="form-group row">
 									    <label for="betID" class="col-sm-2 col-form-label">Bet Number:</label>
 									    <div class="col-sm-10">
@@ -92,19 +90,13 @@
 											<input th:if="${bet.paid} OR ${bet.onlineBet}" type="text" class="form-control" th:name="odds" th:id="odds" th:value="${bet.odds}" th:field="*{bet.odds}" th:disabled="true"></input>								
 											<input th:unless="${bet.paid} OR ${bet.onlineBet}" type="text" class="form-control" th:name="odds" th:id="odds" th:value="${bet.odds}" th:field="*{bet.odds}"></input>								
 										</div>
-								  	</div>
-								  	<div class="form-group row">
-										<label for="selection" class="col-sm-2 col-form-label">Status:</label>
-										<div class="col-sm-10">
-											<input type="text" class="form-control" th:name="status" th:id="status" th:value="${bet.status}" th:disabled="true"></input>								
-										</div>
-								  	</div>
+								  	</div>								  	
 									<div th:if="${bet.winnings} > 0" class="form-group row">
 										<label for="winnings" class="col-sm-2 col-form-label">Winnings:</label>
 										<div class="col-sm-10">
 										<input type="text" class="form-control" name="winnings" th:value="@{&euro;} + ${#numbers.formatDecimal(bet.winnings, 0, 2)}" th:disabled="true"></input>
 										</div>
-							  		</div>	  								
+							  		</div>
 								  	<div th:unless="${bet.paid} OR ${bet.onlineBet}" class="checkbox" id="check-ew">
 		    							<label>
 			      							<input type="checkbox" th:name="eachWay" th:field="${bet.eachWay}">Each-way</input>
@@ -114,13 +106,14 @@
 		  							<input type="hidden" th:name="betTime" th:id="betTime" th:value="${bet.timePlaced}" th:field="*{bet.timePlaced}"></input>
 		  							<input type="hidden" th:name="betStatus" th:id="betStatus" th:value="${bet.status}" th:field="*{bet.status}"></input>
 		  							<input type="hidden" th:name="raceID" th:id="raceID" th:value="${bet.raceID}" th:field="*{bet.raceID}"></input>
-								 	<button type="submit" id="editSubmit" class="btn btn-primary pull-right">Submit</button>
-								</form>
+								 	<button type="submit" id="editSubmit" class="btn btn-primary pull-right">Submit</button>								 	
+								</form>								
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+			<p class="pull-right"><a href="javascript:history.go(-1)">Back...</a></p>
 		</div>
 	</div>
 	
