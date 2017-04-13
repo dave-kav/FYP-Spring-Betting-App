@@ -570,11 +570,12 @@ public class MainController {
 	 */
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value={"/races"}, method=RequestMethod.POST)
-	public String addHorses(Model model, Principal principal, @Valid Race tempRace, BindingResult bindingResult) {
+	public String addHorses(Model model, Principal principal, @Valid Race tempRace, BindingResult bindingResult, RedirectAttributes attributes) {
 		logger.info("POST request to '/races'");
 		if (bindingResult.hasErrors()) {
 			logger.info("Error: redirecting");
-			return "redirect:/admin";
+			attributes.addFlashAttribute("errorRaceMessage", "Failed to add race, are you sure those details are correct?");
+			return "redirect:/admin?tab=2";
 		}
 		model.addAttribute("userName", principal.getName());
 

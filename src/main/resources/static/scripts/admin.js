@@ -65,10 +65,10 @@ $("#addRace").click(function() {
 		$("#time").removeClass("error");
 	});
 	
-	if ($("#runners").val() < 1) {
+	if ($("#runners").val() < 2) {
 		$("#runners").addClass("error");
 		errors = true;
-		errorMessage += "Can't have a race with 0 runners.<br>";
+		errorMessage += "Minimum of 2 horses per race.<br>";
 	}
 	
 	if ($("#runners").val() > 40) {

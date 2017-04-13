@@ -7,8 +7,9 @@
 		<title>Settle Race</title>	    
 	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"></link>
 		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" 
-		  integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"></link>
-		 <link rel="stylesheet" type="text/css" href="/styles/main.css"></link>
+		      integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"></link>
+	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.1.1/jquery-confirm.min.css"></link>
+		<link rel="stylesheet" type="text/css" href="/styles/main.css"></link>
 	</head>
 	
 	<body>
@@ -17,30 +18,34 @@
 			<div class="center-content">
 				<p class="lead text-center" th:text="${#strings.substring(race.time, 0, 5)} + @{ - } + ${race.track}"></p>
 				<p class="text-center" th:text="@{Places: } + ${race.places}"></p>
-				<p class="text-center" th:text="@{Each Way Terms: } + ${race.terms}"></p>
+				<p th:if="${race.places} > 1" class="text-center" th:text="@{Each Way Terms: } + ${race.terms}"></p>
 			
-				<p th:if="${settleMessage}" th:text="${settleMessage}" class="text-danger text-center"></p>				
-				<p th:unless="${race.places} > 1" class="lead">Select winner</p>
-				<p th:if="${race.places} > 1" class="lead">Select winner and places</p>
-				<form class="form" th:action="@{/races/} + ${race.raceID}" th:method="post" th:object="${wrapper}">
-					<div class="form-group">
-						<select class="form-control" th:name="winner" th:id="winner" th:field="*{winner.name}">
-							<option value="0">Select Winner</option>
-							<option th:each="horse: ${horses}" th:value="${horse.name}" th:text="${horse.number} + @{ - } + ${horse.name}"></option>
-						</select>
-					</div>
-					<div class="form-group" th:if="*{race.places} > 1" th:each="placedHorse, stat: ${wrapper.horseList}">
-						<select class = "form-control" th:name="@{place} + ${stat.index}" th:id="@{place} + ${stat.index}" th:field="*{horseList[__${stat.index}__].name}">
-							<option value="0">Select Place</option>
-							<option th:each="horse: ${horses}" th:value="${horse.name}" th:text="${horse.number} + @{ - } + ${horse.name}" ></option>
-						</select>
-					</div>
-					<input type="hidden" th:name="raceID" th:id="raceID" th:field="*{race.raceID}" th:value="${race.raceID}"></input>
-					<button class="btn btn-primary pull-right" type="submit">Submit</button>
-					<p th:if="${errorMessage}" th:text="${errorMessage}" class="text-danger center-content"></p>
-				</form>
+				<p th:if="${settleMessage}" th:text="${settleMessage}" class="text-danger text-center"></p>	
+				<p th:if="${errorMessage}" th:text="${errorMessage}" class="text-danger text-center"></p>
+				<div th:unless="${settleMessage}">
+					<p th:unless="${race.places} > 1" class="lead">Select winner</p>
+					<p th:if="${race.places} > 1" class="lead">Select winner and places</p>
+					<form class="form" th:action="@{/races/} + ${race.raceID}" th:method="post" th:object="${wrapper}">
+						<div class="form-group">
+							<select class="form-control" th:name="winner" th:id="winner" th:field="*{winner.name}">
+								<option value="0">Select Winner</option>
+								<option th:each="horse: ${horses}" th:value="${horse.name}" th:text="${horse.number} + @{ - } + ${horse.name}"></option>
+							</select>
+						</div>
+						<div class="form-group" th:if="*{race.places} > 1" th:each="placedHorse, stat: ${wrapper.horseList}">
+							<select class = "form-control" th:name="@{place} + ${stat.index}" th:id="@{place} + ${stat.index}" th:field="*{horseList[__${stat.index}__].name}">
+								<option value="0">Select Place</option>
+								<option th:each="horse: ${horses}" th:value="${horse.name}" th:text="${horse.number} + @{ - } + ${horse.name}" ></option>
+							</select>
+						</div>
+						<input type="hidden" th:name="raceID" th:id="raceID" th:field="*{race.raceID}" th:value="${race.raceID}"></input>
+						<button id="settle-race-btn" class="btn btn-primary pull-right" type="submit">Submit</button>						
+					</form>
+				</div>							
 			</div>
 		</div>
 	</body>
 	<script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.1.1/jquery-confirm.min.js"></script>
+	<script src="/scripts/settle.js"></script>
 </html>
