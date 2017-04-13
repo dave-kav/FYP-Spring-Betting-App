@@ -27,10 +27,12 @@ import dk.cit.fyp.domain.Bet;
 import dk.cit.fyp.domain.Customer;
 import dk.cit.fyp.domain.Horse;
 import dk.cit.fyp.domain.Race;
+import dk.cit.fyp.domain.User;
 import dk.cit.fyp.service.BetService;
 import dk.cit.fyp.service.CustomerService;
 import dk.cit.fyp.service.HorseService;
 import dk.cit.fyp.service.RaceService;
+import dk.cit.fyp.service.UserService;
 
 /**
  * Restful style web interface used to provide data to web application via ajax
@@ -50,6 +52,8 @@ public class RestController {
 	HorseService horseService;
 	@Autowired
 	BetService betService;
+	@Autowired
+	UserService userService;
 	
 	private final static Logger logger = Logger.getLogger(RestController.class);
 	private Gson gson = new Gson();
@@ -330,4 +334,25 @@ public class RestController {
 		
 		return jsonObj.toString();
 	}
+
+	/**
+	 * Used with Ajax to udpate user password from web-app
+	 * 
+	 * @param request HttpServletRequest used to obtain credentials.
+	 * @param username
+	 * @return JSON formatted success message.
+	 */
+	@RequestMapping(value={"/api/user/{username}"}, method=RequestMethod.POST)
+	@ResponseBody
+	public String updateUserPassword(HttpServletRequest request, @PathVariable(value="username") String username) {
+		User user = userService.get(username).get(0);
+		
+		user.setPassword(request.getParameter("password"));
+		userService.save(user);
+		
+		JsonObject jsonObj = new JsonObject();
+		jsonObj.addProperty("result", "ok");
+		
+		return jsonObj.toString();
+	}	
 }

@@ -23,7 +23,7 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 	 */
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(releaseImageInterceptor()).addPathPatterns("/**").excludePathPatterns("/api**");
+		registry.addInterceptor(releaseImageInterceptor()).addPathPatterns("/**").excludePathPatterns("/api**", "https://ec2-34-250-24-17.eu-west-1.compute.amazonaws.com/ocr");
 	}
 	
 	/**

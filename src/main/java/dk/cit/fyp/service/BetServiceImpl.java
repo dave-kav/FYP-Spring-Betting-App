@@ -114,11 +114,13 @@ public class BetServiceImpl implements BetService {
 	
 	@Override
 	public void onScreen(Bet bet) {
+		logger.info("onScreen:" + bet.toString());
 		betRepo.onScreen(bet);
 	}
 	
 	@Override
 	public void offScreen(Bet bet) {
+		logger.info("offScreen:" + bet.toString());
 		betRepo.offScreen(bet);
 	}
 	

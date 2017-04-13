@@ -15,7 +15,7 @@
 	<body>
 		<div th:replace="fragments/header :: header">&nbsp;</div>
 		<div class="container">
-			<div class="center-content">
+			<div class="center-content">			
 				<p class="lead text-center" th:text="${#strings.substring(race.time, 0, 5)} + @{ - } + ${race.track}"></p>
 				<p class="text-center" th:text="@{Places: } + ${race.places}"></p>
 				<p th:if="${race.places} > 1" class="text-center" th:text="@{Each Way Terms: } + ${race.terms}"></p>
@@ -40,8 +40,9 @@
 						</div>
 						<input type="hidden" th:name="raceID" th:id="raceID" th:field="*{race.raceID}" th:value="${race.raceID}"></input>
 						<button id="settle-race-btn" class="btn btn-primary pull-right" type="submit">Submit</button>						
-					</form>
-				</div>							
+					</form>					
+				</div>	
+				<p><a href="javascript:history.go(-1)">Back...</a></p>						
 			</div>
 		</div>
 	</body>
