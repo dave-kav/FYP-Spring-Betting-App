@@ -160,7 +160,7 @@ public class BetServiceImpl implements BetService {
 	 * @param bet The bet on which to calculate winnings if appropriate and set status
 	 * @param winner winning horse in race to which bet applies
 	 */
-	@Async
+//	@Async
 	private void settleWin(Bet bet, Horse winner) {	
 		double winnings = 0;
 		double roundedWinnings = 0;
@@ -183,6 +183,7 @@ public class BetServiceImpl implements BetService {
 				c.setCredit(c.getCredit() + bet.getWinnings());
 				customerService.save(c);
 				bet.setPaid(true);
+				logger.info("settleWin: " + bet.toString());
 			}
 			betRepo.save(bet);
 		}
@@ -200,8 +201,9 @@ public class BetServiceImpl implements BetService {
 	 * @param winner The bet on which to calculate win part of each way bet
 	 * @param placedHorses Horses that placed in the race, used to settle place part of each way bet
 	 */
-	@Async
+//	@Async
 	private void settleEachWay(Bet bet, Race race) {
+		logger.info("bet: " + bet.getBetID());
 		double stake = bet.getStake() / 2;
 		double winnings = 0;
 		double roundedWinnings = 0;
@@ -209,7 +211,8 @@ public class BetServiceImpl implements BetService {
 		double oddVals[] = new double[2]; 
 		oddVals[0] = Double.parseDouble(odds[0]);
 		oddVals[1] = Double.parseDouble(odds[1]);
-		double denom = oddVals[1] * race.getTerms();
+		double denom = oddVals[1] / race.getTerms();
+		logger.info("denom:" + denom);
 		boolean placed = false;
 		
 		List<Horse> winAndPlace = new ArrayList<>();
@@ -221,8 +224,10 @@ public class BetServiceImpl implements BetService {
 		for (Horse h: winAndPlace) {
 			if (Integer.parseInt(bet.getSelection()) == h.getSelectionID()) {
 
-				winnings = ((oddVals[0] * denom) + 1 ) * stake;  		
+				winnings = ((oddVals[0] / denom) + 1 ) * stake;
+				logger.info("place winnings: " + winnings);
 				roundedWinnings = Math.round(winnings * 100.0) / 100.0;
+				logger.info("rounded: " + winnings);
 				bet.setWinnings(roundedWinnings);
 				bet.setStatus(Status.PLACED);
 				if (!bet.getCustomerID().equals("0")) {
@@ -232,6 +237,7 @@ public class BetServiceImpl implements BetService {
 					bet.setPaid(true);
 				}
 				betRepo.save(bet);
+				logger.info("settleEachWay - placed: " + bet.toString());
 				placed = true;
 			}
 		}
@@ -239,14 +245,17 @@ public class BetServiceImpl implements BetService {
 		//calculate win part if applicable
 		if (Integer.parseInt(bet.getSelection()) == race.getWinner().getSelectionID()) {
 			winnings += ((oddVals[0] / oddVals[1]) + 1 ) * stake;
+			logger.info("win winnings: " + winnings);
 			roundedWinnings = Math.round(winnings * 100.0) / 100.0;
-			bet.setWinnings(roundedWinnings);			
+			bet.setWinnings(roundedWinnings);
+			logger.info("rounded: " + winnings);
 			bet.setStatus(Status.WINNER);
 			if (!bet.getCustomerID().equals("0")) {
 				Customer c = customerService.get(bet.getCustomerID()).get(0);
 				c.setCredit(c.getCredit() + bet.getWinnings());
 				customerService.save(c);
 				bet.setPaid(true);
+				logger.info("settleEachWay - win: " + bet.toString());
 			}
 			betRepo.save(bet);
 		}

@@ -3,7 +3,7 @@ html, body {
 }
 
 .content {
-	padding-top: 90px;
+	padding-top: 90px;	
 } 
 
 #left-box {
@@ -14,21 +14,23 @@ html, body {
 #right-box {
 	height: 80vh;
 	width: 95%;
+	background: white;
+	margin-left: 10px;
 }
 
 .small-box {
 	border: 2px solid lightgray;
 	height: 40vh;
+	background: white;
 }
 
 .bet-img {
-	width: 100%; 
-	max-height: 90%;
+	width: 95%;
 }
 
 #bet-placeholder {
 	padding-top: 70px;
-	padding-bottom: 70px;
+	padding-bottom: 50px;
 }
 
 .fields {

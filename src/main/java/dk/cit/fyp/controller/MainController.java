@@ -335,6 +335,8 @@ public class MainController {
 	public String updateBet(HttpServletRequest request, Bet bet) {
 		logger.info("POST to /bets/'" + bet.getBetID() + "'");
 
+		logger.info("before update: " + bet.toString());
+		
 		//map from horse name/number to selection id
 		String selection = bet.getSelection();
 		int selectionID;
@@ -345,9 +347,12 @@ public class MainController {
 			selectionID = horseService.get(selection).get(0).getSelectionID();
 		}
 	 		
-		bet.setSelection(selectionID + "");		
+		bet.setSelection(selectionID + "");			
+		bet.setRaceID(horseService.get(selection).get(0).getRaceID());		
 		bet.setTranslated(true);
-		bet.setStatus(Status.OPEN);	
+		bet.setStatus(Status.OPEN);
+		
+		logger.info("after update: " + bet.toString());
 		
 		betService.save(bet);
 		
