@@ -30,6 +30,7 @@
 						<th>Winnings</th>
 						<th>Paid</th>
 						<th>How Placed</th>
+						<th>Translated By</th>
 					</tr>
 				</thead>
 				<tbody class="hand-cursor">
@@ -56,6 +57,7 @@
 								<span th:case="true">Online</span>
 								<span th:case="false">In store</span>
 							</td>
+							<td th:text="${bet.translatedBy}"></td>
 						</tr>
 					</div>
 				</tbody>

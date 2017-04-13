@@ -40,6 +40,7 @@ public class Bet {
 	// below references for REST mappings
 	private Horse horse;
 	private Race race;
+	private String translatedBy;
 	
 	public int getBetID() {
 		return betID;
@@ -167,6 +168,14 @@ public class Bet {
 
 	public void setRace(Race race) {
 		this.race = race;
+	}
+
+	public String getTranslatedBy() {
+		return translatedBy;
+	}
+
+	public void setTranslatedBy(String translatedBy) {
+		this.translatedBy = translatedBy;
 	}
 
 	@Override

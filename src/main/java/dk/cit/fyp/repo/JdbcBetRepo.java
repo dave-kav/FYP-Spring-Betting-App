@@ -54,17 +54,17 @@ public class JdbcBetRepo implements BetDAO {
 	}
 	
 	private void update(Bet bet) {
-		String sql = "UPDATE Bets SET Selection_id = ?, Race_id = ?, Stake = ?,"
-				+ "Translated = ?, On_screen = ?, Online_bet = ?, Winnings = ?, Image = ?, "
-				+ "Customer_id = ?, Each_way = ?, Odds_numerator = ?, Odds_denominator = ?, Status = ?, Paid = ? WHERE Bet_id = ?";
+		String sql = "UPDATE Bets SET Selection_id = ?, Race_id = ?, Stake = ?, Translated = ?, "
+				+ "Translated_by = ?, On_screen = ?, Online_bet = ?, Winnings = ?, Image = ?, Customer_id = ?, "
+				+ "Each_way = ?, Odds_numerator = ?, Odds_denominator = ?, Status = ?, Paid = ? WHERE Bet_id = ?";
 		
 		String odds = bet.getOdds();
 		String[] parts = odds.split("/");
 		int numerator = Integer.parseInt(parts[0]);
 		int denominator = Integer.parseInt(parts[1]);
 				
-		jdbcTemplate.update(sql, new Object[] {bet.getSelection(), bet.getRaceID(), bet.getStake(), 
-				bet.isTranslated(), false, bet.isOnlineBet(), bet.getWinnings(), bet.getImagePath(), bet.getCustomerID(), 
+		jdbcTemplate.update(sql, new Object[] {bet.getSelection(), bet.getRaceID(), bet.getStake(), bet.isTranslated(), 
+				bet.getTranslatedBy(), false, bet.isOnlineBet(), bet.getWinnings(), bet.getImagePath(), bet.getCustomerID(), 
 				bet.isEachWay(), numerator, denominator, bet.getStatus().toString(), bet.isPaid(), bet.getBetID()});
 	}
 	

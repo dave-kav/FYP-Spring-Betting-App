@@ -36,7 +36,7 @@
 								<td th:text="${customer.firstName}"></td>
 								<td th:text="${customer.lastName}"></td>
 								<td th:text="${customer.DOB}"></td>
-								<td th:text="${customer.credit}"></td>
+								<td th:text="@{&euro;} + ${#numbers.formatDecimal(customer.credit, 0, 2)}"></td>
 							</tr>
 						</div>
 					</tbody>

@@ -152,6 +152,7 @@ public class MainController {
 		bet.setEachWay(tempBet.isEachWay());
 		bet.setOdds(tempBet.getOdds());
 		bet.setRaceID(raceService.find(tempRace.getTime()).get(0).getRaceID());
+		bet.setTranslatedBy(principal.getName());
 		betService.save(bet);
 		
 		return "redirect:/translate";
@@ -535,7 +536,14 @@ public class MainController {
 		return "redirect:/admin?tab=3";
 	}
 	
-	//TODO
+	/**
+	 * Process deletion of user account.
+	 * 
+	 * @param principal Principal object user to obtain logged in user details.
+	 * @param attributes RedirectAttributes object used to pass error message.
+	 * @param username String represnting username of user to be deleted.
+	 * @return Redirect to admin interface, tab 4.
+	 */
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value={"/users/delete/{username}"}, method=RequestMethod.POST)
 	public String deleteUser(Principal principal, RedirectAttributes attributes, @PathVariable(value="username") String username) {

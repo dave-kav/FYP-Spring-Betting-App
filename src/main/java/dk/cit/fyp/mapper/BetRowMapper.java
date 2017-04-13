@@ -31,6 +31,7 @@ public class BetRowMapper implements RowMapper<Bet> {
 		b.setEachWay(rs.getBoolean("Each_way"));
 		b.setStake(rs.getFloat("Stake"));
 		b.setTranslated(rs.getBoolean("Translated"));
+		b.setTranslatedBy(rs.getString("Translated_by"));
 		b.setOnlineBet(rs.getBoolean("Online_bet"));
 		b.setPaid(rs.getBoolean("Paid"));
 		b.setWinnings(rs.getFloat("Winnings"));

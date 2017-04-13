@@ -20,9 +20,6 @@
 				<!-- Panel on left of GUI -->
 				<div class="col-sm-4 img-rounded" id="left-box">
 					<img th:if="${img}" th:src="${imgSrc}" id="bet-img" class="bet-img"></img>
-					<p th:if="${queue}" id="bets-left" class="h3">Bets to be translated:
-						<small class="text-muted" th:text="${queue}"></small>
-					</p>
 					<p th:unless="${queue}" class="no-bets h3">Waiting for new bets...</p>
 				</div>
 				
@@ -82,6 +79,9 @@
 						<!-- Panel on bottom right of GUI -->
 						<div class="row small-box img-rounded">
 							<div th:if="${img}" class="fields">
+								<p th:if="${queue}" id="bets-left" class="h3">Bets in queue:
+									<small class="text-muted" th:text="${queue}"></small>
+								</p>
 								<h4>Bet Details</h4>
 								<p class="h5">Betting Slip No:
 									<small class="text-muted" th:text="${bet.betID}"></small>

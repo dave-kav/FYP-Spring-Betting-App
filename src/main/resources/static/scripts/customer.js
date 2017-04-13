@@ -17,7 +17,8 @@ function getCreditJson(user) {
 //store user credit info on page load
 var user;
 $(document).ready(function() {
-	user = $("#username").val();
+	user = $("#customername").val();
+	console.log(user);
 	getCreditJson(user);
 });
 
@@ -58,7 +59,7 @@ $("#withdraw").click(function() {
 	if(!errors) {
 			$.confirm({
 		    title: 'Withdraw?',
-		    content: 'New balance will be: ' + (json.credit - $("#amount").val()),
+		    content: 'New balance will be: ' + (json.credit.toFixed(2) - $("#amount").val()),
 		    buttons: {
 		        confirm: function () {
 		        	var txType = $("<input>").attr("type", "hidden").attr("name", "withdraw").val("withdraw");
@@ -105,7 +106,7 @@ $("#deposit").click(function() {
 	if(!errors) {
 			$.confirm({
 		    title: 'Deposit?',
-		    content: 'New balance will be: ' + (parseFloat(json.credit) + parseFloat($("#amount").val())),
+		    content: 'New balance will be: ' + (parseFloat(json.credit) + parseFloat($("#amount").val())).toFixed(2),
 		    buttons: {
 		        confirm: function () {
 		        	var txType = $("<input>").attr("type", "hidden").attr("name", "deposit").val("deposit");
@@ -203,30 +204,30 @@ $("#editCustomer").click(function() {
 		$("#dob").removeClass("error");
 	});
 
-	if ($("#username").val() == "") {
-		$("#username").addClass("error");
-		errorFree = false;
-		userNameError = true;
-		errorMessage += "Please enter a value for username.<br>";
-	}
-	
-	if ($("#username").val().length > 24) {
-		$("#username").addClass("error");
-		errorFree = false;
-		if (!userNameError)  
-			errorMessage += "Username cannot exceed 24 characters.<br>";
-	}
-	
-	$("#username").change(function() {
-		$("#username").removeClass("error");
-	});
-
-	if ($("#password").val() == "") {
-		$("#password").addClass("error");
-		errorFree = false;
-		errorMessage += "Please enter a password.<br>";
-		passwordError = true;
-	}
+//	if ($("#username").val() == "") {
+//		$("#username").addClass("error");
+//		errorFree = false;
+//		userNameError = true;
+//		errorMessage += "Please enter a value for username.<br>";
+//	}
+//	
+//	if ($("#username").val().length > 24) {
+//		$("#username").addClass("error");
+//		errorFree = false;
+//		if (!userNameError)  
+//			errorMessage += "Username cannot exceed 24 characters.<br>";
+//	}
+//	
+//	$("#username").change(function() {
+//		$("#username").removeClass("error");
+//	});
+//
+//	if ($("#password").val() == "") {
+//		$("#password").addClass("error");
+//		errorFree = false;
+//		errorMessage += "Please enter a password.<br>";
+//		passwordError = true;
+//	}
 
 	if ($("#password").val().length < 8) {
 		$("#password").addClass("error");
