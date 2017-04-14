@@ -3,10 +3,7 @@ package dk.cit.fyp.bean;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import dk.cit.fyp.domain.Bet;
-import dk.cit.fyp.domain.User;
 
 /**
  * This class is used to manage the queue of untranslated bets, so that multiple users are not 
@@ -19,8 +16,6 @@ import dk.cit.fyp.domain.User;
  *
  */
 public class UserBetBean {
-	
-	private final static Logger logger = Logger.getLogger(UserBetBean.class);
 	
 	private Map<String,Bet> userBetMap = new HashMap<>();
 	

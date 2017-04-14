@@ -3,7 +3,6 @@ package dk.cit.fyp.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.RowMapper;
 
 import dk.cit.fyp.domain.User;

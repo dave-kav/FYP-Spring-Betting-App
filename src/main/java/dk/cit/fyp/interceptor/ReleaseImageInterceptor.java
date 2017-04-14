@@ -1,7 +1,5 @@
 package dk.cit.fyp.interceptor;
 
-import java.util.Arrays;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,7 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import dk.cit.fyp.bean.UserBetBean;
 import dk.cit.fyp.domain.Bet;
-import dk.cit.fyp.domain.User;
 import dk.cit.fyp.service.BetService;
 
 /**

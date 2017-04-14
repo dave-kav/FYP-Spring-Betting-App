@@ -7,9 +7,6 @@ import java.util.Base64;
 
 import org.springframework.stereotype.Service;
 
-import ch.qos.logback.classic.Logger;
-import dk.cit.fyp.controller.MainController;
-
 @Service
 public class ImageServiceImpl implements ImageService {
 	
