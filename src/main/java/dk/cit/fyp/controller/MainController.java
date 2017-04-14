@@ -333,7 +333,7 @@ public class MainController {
 	 * @return Redirect to 'review bets' page.
 	 */
 	@RequestMapping(value={"/bets/{betID}"}, method=RequestMethod.POST)
-	public String updateBet(HttpServletRequest request, Bet bet) {
+	public String updateBet(HttpServletRequest request, Principal principal, Bet bet) {
 		logger.info("POST to /bets/'" + bet.getBetID() + "'");
 
 		logger.info("before update: " + bet.toString());
@@ -352,6 +352,7 @@ public class MainController {
 		bet.setRaceID(horseService.get(selection).get(0).getRaceID());		
 		bet.setTranslated(true);
 		bet.setStatus(Status.OPEN);
+		bet.setTranslatedBy(principal.getName());
 		
 		logger.info("after update: " + bet.toString());
 		

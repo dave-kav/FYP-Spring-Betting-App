@@ -59,7 +59,22 @@ $(document).ready(function($) {
 	});
 	
 	// update button confirm dialog
-	
-	
-	
+	$('#editSubmit').click(function(){
+		event.preventDefault();
+		$.confirm({
+			title: "Update?",
+			content: "Do you really wish to update this bet's details?",
+			type: 'orange',
+			buttons: {
+				save: {
+					btnClass: 'btn-orange',
+					action: function() {
+						$('form').submit();
+					}					
+				},
+				cancel: {
+				}
+			}
+		});
+	});	
 });
