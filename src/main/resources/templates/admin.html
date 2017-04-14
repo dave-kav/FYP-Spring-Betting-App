@@ -80,6 +80,7 @@
 									<th>Runners</th>
 									<th>Places</th>
 									<th>E/W Terms</th>
+									<th>Settled</th>
 								</tr>
 							</thead>
 							<tbody class="hand-cursor">
@@ -91,6 +92,10 @@
 										<td th:text="${race.runners}"></td>
 										<td th:text="${race.places}"></td>
 										<td th:text="${race.terms}"></td>
+										<td class="context-menu" th:switch="${race.settled}">
+											<span th:case="true">Yes</span>
+											<span th:case="false">No</span>
+										</td>
 									</tr>
 								</div>
 							</tbody>

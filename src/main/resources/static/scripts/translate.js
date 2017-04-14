@@ -55,3 +55,17 @@ $('#track').bind('input', function(){
         }
 	}));
 });
+
+$('#selection').click(function() {
+	if ($('#selection').val() == 'No text detected in selection section!') {
+		$('#selection').val("");
+		$('#selection').removeClass("error");
+	}
+});
+
+$('#odds').click(function() {
+	if ($('#odds').val() == 'No text detected in odds section!') {
+		$('#odds').val("");
+		$('#odds').removeClass("error");
+	}
+});

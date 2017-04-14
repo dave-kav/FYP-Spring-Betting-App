@@ -14,14 +14,12 @@ html, body {
 #right-box {
 	height: 80vh;
 	width: 95%;
-	background: white;
 	margin-left: 10px;
 }
 
 .small-box {
 	border: 2px solid lightgray;
 	height: 40vh;
-	background: white;
 }
 
 .bet-img {

@@ -62,8 +62,6 @@ public class JdbcBetRepo implements BetDAO {
 		String[] parts = odds.split("/");
 		int numerator = Integer.parseInt(parts[0]);
 		int denominator = Integer.parseInt(parts[1]);
-		
-		logger.info(bet.getTranslatedBy());
 				
 		jdbcTemplate.update(sql, new Object[] {bet.getSelection(), bet.getRaceID(), bet.getStake(), bet.isTranslated(), 
 				bet.getTranslatedBy(), false, bet.isOnlineBet(), bet.getWinnings(), bet.getImagePath(), bet.getCustomerID(), 
@@ -161,7 +159,7 @@ public class JdbcBetRepo implements BetDAO {
 
 	@Override
 	public List<Bet> getWinBets(Race race) {
-		String sql = "SELECT * FROM Bets Where Each_way = 0 AND Translated = 1 AND Status = 'OPEN' AND Race_id = ?";
+		String sql = "SELECT * FROM Bets Where Each_way = 0 AND Translated = 1 AND Status = 'OPEN' AND Race_id = ? AND Paid=0";
 		return jdbcTemplate.query(sql, new Object[] {race.getRaceID()}, new BetRowMapper());
 	}
 
@@ -174,6 +172,14 @@ public class JdbcBetRepo implements BetDAO {
 	@Override
 	public List<Bet> getCustomerBets(String customerID) {
 		String sql = "SELECT * FROM Bets WHERE Customer_id = ?";
+		
 		return jdbcTemplate.query(sql, new Object[] {customerID}, new BetRowMapper());
+	}
+
+	@Override
+	public List<Bet> getAllUnpaid(int raceID) {
+		String sql = "SELECT * FROM Bets WHERE Race_id=? AND Paid=0";
+		
+		return jdbcTemplate.query(sql, new Object[] {raceID}, new BetRowMapper());
 	}
 }

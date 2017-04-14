@@ -32,6 +32,7 @@ public class Race {
 	private List<Horse> placedHorses;
 	private List<Integer> placedHorseIDs;
 	private List<Horse> allHorses;
+	private boolean settled;
 	
 	public int getRaceID() {
 		return raceID;
@@ -129,11 +130,19 @@ public class Race {
 		this.allHorses = allHorses;
 	}
 
-	@Override
-	public String toString() {
-		return "Race [raceID=" + raceID + ", time=" + time + ", track=" + track + ", places=" + places + ", terms="
-				+ terms + ", runners=" + runners + "]";
+	public boolean isSettled() {
+		return settled;
 	}
 
-
+	public void setSettled(boolean settled) {
+		this.settled = settled;
+	}
+	
+	@Override
+	public String toString() {
+		return "Race [raceID=" + raceID + ", time=" + time + ", date=" + date + ", track=" + track + ", places="
+				+ places + ", terms=" + terms + ", runners=" + runners + ", winner=" + winner + ", winnerID=" + winnerID
+				+ ", placedHorses=" + placedHorses + ", placedHorseIDs=" + placedHorseIDs + ", allHorses=" + allHorses
+				+ ", settled=" + settled + "]";
+	}
 }

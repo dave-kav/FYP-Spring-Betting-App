@@ -41,4 +41,6 @@ public interface BetService {
 	List<Bet> getEachWayBets(Race race);
 	
 	List<Bet> getCustomerBets(String customerID);
+
+	void unsettleBets(int raceID);
 }

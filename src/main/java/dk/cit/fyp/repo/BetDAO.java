@@ -34,5 +34,7 @@ public interface BetDAO {
 	List<Bet> getEachWayBets(Race race);
 	
 	List<Bet> getCustomerBets(String customerID);
+
+	List<Bet> getAllUnpaid(int raceID);
 	
 }

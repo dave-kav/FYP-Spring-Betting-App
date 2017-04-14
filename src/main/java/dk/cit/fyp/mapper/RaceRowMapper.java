@@ -34,6 +34,7 @@ public class RaceRowMapper implements RowMapper<Race> {
 		places.add(rs.getInt("Place2"));
 		places.add(rs.getInt("Place3"));
 		r.setPlacedHorseIDs(places);
+		r.setSettled(rs.getBoolean("Settled"));
 		return r;
 	}
 }

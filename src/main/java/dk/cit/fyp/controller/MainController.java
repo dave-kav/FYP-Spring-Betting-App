@@ -1,6 +1,7 @@
 package dk.cit.fyp.controller;
 
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -730,10 +731,32 @@ public class MainController {
 
 		race.setWinner(winner);
 		race.setPlacedHorses(placedHorses);
+		race.setSettled(true);
 		raceService.save(race);
 		betService.settleBets(race);
 		
 		attributes.addFlashAttribute("successSettleMessage", "All bets on " + race.getTime() + " at " + race.getTrack() + " now being settled");
 		return "redirect:/admin";
+	}
+	
+	@PreAuthorize("hasAuthority('ADMIN')")
+	@RequestMapping(value={"/races/{raceID}/resettle"}, method=RequestMethod.POST)
+	public String resettleRace(HttpServletRequest request, RedirectAttributes attributes, @PathVariable(value="raceID") int raceID) {
+		logger.info("POST to '/races/" + raceID + "/resettle'");
+		Race race = raceService.get(raceID);
+		logger.info(race.toString());
+		
+		race.setWinnerID(0);		
+		race.setSettled(false);
+		List<Integer> placedIDs = race.getPlacedHorseIDs(); 
+		for (int i = 0; i <placedIDs.size(); i++)
+			placedIDs.set(i, 0);
+		race.setPlacedHorseIDs(placedIDs);
+		
+		betService.unsettleBets(raceID);
+		raceService.save(race);
+		
+		logger.info(race.toString());
+		return "redirect:/races/" + raceID;
 	}
 }

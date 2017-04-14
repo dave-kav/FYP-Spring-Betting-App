@@ -33,3 +33,24 @@ $('#settle-race-btn').click(function() {
 		}
 	});
 });
+
+$('#edit-settle-btn').click(function() {
+	event.preventDefault();
+	$.confirm({
+		type: 'red',
+		title: "Reset this race?",
+		content: "Please proceed with extreme caution! Choosing to reset this race will result "
+			+ "in all unpaid bets being unsettled - this includes bets placed via the mobile app."
+			+ "Any bets paid out in store will have been paid in error and the shop will be at a deficit.",
+		buttons: {
+			confirm: {
+				btnClass: 'btn-red',
+				action: function() {
+					$('#edit-form').submit();
+				}
+			},
+			cancel: function() {				
+			}
+		}
+	});
+});

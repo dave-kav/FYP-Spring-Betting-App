@@ -272,4 +272,26 @@ public class BetServiceImpl implements BetService {
 	public List<Bet> getCustomerBets(String customerID) {
 		return betRepo.getCustomerBets(customerID);
 	}
+
+	@Override
+	public void unsettleBets(int raceID) {
+		List<Bet> bets = betRepo.getAllUnpaid(raceID);
+		Customer customer;
+		
+		for (Bet bet: bets) {			
+			if (bet.getCustomerID() != null && !bet.getCustomerID().equals("0")) {
+				customer = customerService.get(bet.getCustomerID()).get(0);
+				logger.info(customer.toString());
+				customer.setCredit(customer.getCredit() - bet.getWinnings());
+				customerService.save(customer);
+				logger.info(customer.toString());
+			}
+			
+			logger.info(bet.toString());
+			bet.setStatus(Status.OPEN);
+			bet.setWinnings(0.00);
+			save(bet);
+			logger.info(bet.toString());
+		}
+	}
 }
