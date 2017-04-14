@@ -74,15 +74,25 @@ $(document).ready(function($) {
 				url: 'api/user/' + username,
 				dataType: 'json',
 				data: {'password':$('#passwd').val()},
-				success: function(result) {					
-					$.dialog({
+				success: function(result) {
+					$('#passwd').val("")
+					$('#confirm').val("")
+					$.confirm({
+						type: 'green',
 						title: 'Success!',
-						content: 'Password updated.',
-						autocancel: '500'
+						content: 'Password updated. Press enter to close.',
+						buttons: {
+							closeFunc: {
+								text: 'Close',
+								btnClass: 'btn-green',
+								keys: ['enter']
+							}
+						},
 					});
 				},
 				error: function() {
 					$.dialog({
+						type: 'red',
 						title: 'Failed!',
 						content: 'Sorry, could not update password.',
 						autocancel: '500'

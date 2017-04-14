@@ -62,6 +62,8 @@ public class JdbcBetRepo implements BetDAO {
 		String[] parts = odds.split("/");
 		int numerator = Integer.parseInt(parts[0]);
 		int denominator = Integer.parseInt(parts[1]);
+		
+		logger.info(bet.getTranslatedBy());
 				
 		jdbcTemplate.update(sql, new Object[] {bet.getSelection(), bet.getRaceID(), bet.getStake(), bet.isTranslated(), 
 				bet.getTranslatedBy(), false, bet.isOnlineBet(), bet.getWinnings(), bet.getImagePath(), bet.getCustomerID(), 

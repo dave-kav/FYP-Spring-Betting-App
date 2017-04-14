@@ -109,3 +109,7 @@ html, body {
 p.pull-right {
 	margin:10px;
 }
+
+#payout-btn {
+	margin-right: 10px;
+}

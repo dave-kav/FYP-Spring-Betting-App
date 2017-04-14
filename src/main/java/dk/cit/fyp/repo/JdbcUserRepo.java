@@ -47,9 +47,7 @@ public class JdbcUserRepo implements UserDAO {
 	}
 	
 	private void updateEmployee(User user) {
-		String role = user.isAdmin() ? "ADMIN" : "USER"; 
-		System.out.println(role);
-		System.out.println(user.toString());
+		String role = user.isAdmin() ? "ADMIN" : "USER"; 	
 		
 		String sql = "UPDATE users SET Password = ? WHERE Username = ?";
 		jdbcTemplate.update(sql, new Object[] {user.getPassword(), user.getUsername()});

@@ -334,6 +334,25 @@ public class RestController {
 		
 		return jsonObj.toString();
 	}
+	
+	@RequestMapping(value={"/api/bet/"}, method=RequestMethod.POST)
+	@ResponseBody
+	public String payBet(HttpServletRequest request) {
+		logger.info("POST to '/api/bet'");
+		
+		String betIDString = request.getParameter("betID");
+		logger.info(betIDString);
+		
+		int betID = Integer.parseInt(betIDString);
+		Bet bet = betService.get(betID);
+		bet.setPaid(true);
+		betService.save(bet);
+		
+		JsonObject jsonObj = new JsonObject();
+		jsonObj.addProperty("result", "ok");
+		
+		return jsonObj.toString();
+	}
 
 	/**
 	 * Used with Ajax to udpate user password from web-app
@@ -354,5 +373,5 @@ public class RestController {
 		jsonObj.addProperty("result", "ok");
 		
 		return jsonObj.toString();
-	}	
+	}
 }

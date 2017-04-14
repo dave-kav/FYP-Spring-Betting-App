@@ -204,31 +204,6 @@ $("#editCustomer").click(function() {
 		$("#dob").removeClass("error");
 	});
 
-//	if ($("#username").val() == "") {
-//		$("#username").addClass("error");
-//		errorFree = false;
-//		userNameError = true;
-//		errorMessage += "Please enter a value for username.<br>";
-//	}
-//	
-//	if ($("#username").val().length > 24) {
-//		$("#username").addClass("error");
-//		errorFree = false;
-//		if (!userNameError)  
-//			errorMessage += "Username cannot exceed 24 characters.<br>";
-//	}
-//	
-//	$("#username").change(function() {
-//		$("#username").removeClass("error");
-//	});
-//
-//	if ($("#password").val() == "") {
-//		$("#password").addClass("error");
-//		errorFree = false;
-//		errorMessage += "Please enter a password.<br>";
-//		passwordError = true;
-//	}
-
 	if ($("#password").val().length < 8) {
 		$("#password").addClass("error");
 		errorFree = false;

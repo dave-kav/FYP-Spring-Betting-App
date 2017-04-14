@@ -19,8 +19,6 @@ $(document).ready(function(){
 			$.ajax({
 				type: 'POST',
 				url: 'https://ec2-34-250-24-17.eu-west-1.compute.amazonaws.com/ocr/stake',
-				//below line is for dev. only, remove in prod.
-//				url: 'http://localhost:8081/ocr/stake',
 				dataType: 'json',
 				data: {'imgData':imgData},
 				success: function(result) {
@@ -54,7 +52,6 @@ $(document).ready(function(){
 					var timeVal = $('#time').val();
 					var timeObj = $('#timesList').find("option[value='" + timeVal + "']");
 					if (timeObj != null && timeObj.length > 0) {
-						console.log("valid time");
 						$('#time').trigger('input');
 					} else {
 						$('#time').addClass('error');
