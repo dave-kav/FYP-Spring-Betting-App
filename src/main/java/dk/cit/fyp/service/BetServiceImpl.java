@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -161,7 +162,7 @@ public class BetServiceImpl implements BetService {
 	 * @param bet The bet on which to calculate winnings if appropriate and set status
 	 * @param winner winning horse in race to which bet applies
 	 */
-//	@Async
+	@Async
 	private void settleWin(Bet bet, Horse winner) {	
 		double winnings = 0;
 		double roundedWinnings = 0;
@@ -202,7 +203,7 @@ public class BetServiceImpl implements BetService {
 	 * @param winner The bet on which to calculate win part of each way bet
 	 * @param placedHorses Horses that placed in the race, used to settle place part of each way bet
 	 */
-//	@Async
+	@Async
 	private void settleEachWay(Bet bet, Race race) {
 		logger.info("bet: " + bet.getBetID());
 		double stake = bet.getStake() / 2;
@@ -272,8 +273,9 @@ public class BetServiceImpl implements BetService {
 	public List<Bet> getCustomerBets(String customerID) {
 		return betRepo.getCustomerBets(customerID);
 	}
-
+	
 	@Override
+	@Async
 	public void unsettleBets(int raceID) {
 		List<Bet> bets = betRepo.getAllUnpaid(raceID);
 		Customer customer;

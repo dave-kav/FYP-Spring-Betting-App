@@ -18,9 +18,9 @@
 			<div class="center-content">
 				<div class="jumbotron">
 					<h1 class="display-3" th:text="${#strings.substring(race.time, 0, 5)}"></h1>
-					<p class="lead" th:text="${race.track}"></p>
-					<p th:if="${race.places} > 1" class="text-center" th:text="@{Each Way Terms: } + ${race.terms}"></p>
+					<p class="lead" th:text="${race.track}"></p>					
 					<hr class="my-4"></hr>
+					<p th:if="${race.places} > 1" th:text="@{Each Way Terms: } + ${race.terms}"></p>
 					<p th:if="${settleMessage}" th:text="${settleMessage}" class="text-danger text-center"></p>	
 					<p th:if="${errorMessage}" th:text="${errorMessage}" class="text-danger text-center"></p>					
 				</div>			
@@ -50,7 +50,7 @@
 				<form id="edit-form" th:if="${settleMessage}" th:action="@{/races/} + ${race.raceID} + @{/resettle}" th:method="post">	
 					<button id="edit-settle-btn" class="btn btn-danger pull-right" type="submit">Edit</button>
 				</form>
-				<p><a href="javascript:history.go(-1)">Back...</a></p>			
+				<p><a href="javascript:history.go(-1)">Back...</a></p>		
 			</div>
 		</div>
 	</body>

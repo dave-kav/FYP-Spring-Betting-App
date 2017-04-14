@@ -178,8 +178,10 @@ public class JdbcBetRepo implements BetDAO {
 
 	@Override
 	public List<Bet> getAllUnpaid(int raceID) {
-		String sql = "SELECT * FROM Bets WHERE Race_id=? AND Paid=0";
+		String sql = "SELECT * FROM Bets WHERE Race_id=? AND Paid=0 "
+				+ "UNION "
+				+ "SELECT * FROM Bets WHERE Race_id=? AND Online_bet=1";
 		
-		return jdbcTemplate.query(sql, new Object[] {raceID}, new BetRowMapper());
+		return jdbcTemplate.query(sql, new Object[] {raceID, raceID}, new BetRowMapper());
 	}
 }

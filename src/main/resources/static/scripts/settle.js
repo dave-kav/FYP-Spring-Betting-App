@@ -46,10 +46,25 @@ $('#edit-settle-btn').click(function() {
 			confirm: {
 				btnClass: 'btn-red',
 				action: function() {
-					$('#edit-form').submit();
+					$.confirm({
+						type: 'red',
+						title: "Reset this race?",
+						content: "Are you really sure??",
+						buttons: {
+							confirm: {
+								btnClass: 'btn-red',
+								action: function() {
+									$('#edit-form').submit();
+								}
+							},
+							cancel: function() {								
+							}
+						}
+					});
 				}
 			},
-			cancel: function() {				
+			cancel: function() {
+				$('#edit-form').submit();
 			}
 		}
 	});
