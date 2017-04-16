@@ -15,8 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @SpringBootApplication
 @EnableAsync
 public class BettingApplication extends WebMvcConfigurerAdapter implements CommandLineRunner {
-	
-	
+
 	@Override
 	public void run(String... arg0) throws Exception {
 	}
@@ -24,4 +23,5 @@ public class BettingApplication extends WebMvcConfigurerAdapter implements Comma
 	public static void main(String[] args) {
 		SpringApplication.run(BettingApplication.class);
 	}
+
 }

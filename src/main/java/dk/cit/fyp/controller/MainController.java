@@ -12,7 +12,9 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
+import org.jgroups.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +26,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 
 import dk.cit.fyp.domain.Bet;
 import dk.cit.fyp.domain.Customer;
@@ -61,7 +67,11 @@ public class MainController {
 	HorseService horseService;
 	@Autowired
 	CustomerService customerService;
+	@Autowired
+	AmazonS3Client s3;
 	
+	@Value("${cloud.aws.bucket.name}")
+    private String bucketName;
 	private final static Logger logger = Logger.getLogger(MainController.class);
 	
 	/**
@@ -249,8 +259,15 @@ public class MainController {
 		model.addAttribute("userName", principal.getName());
 		model.addAttribute("uploadPage", true);
 		
-		String imagePath = imgService.getLastImagePath();		
-		bet.setImagePath(imagePath);
+		String imagePath = imgService.getLastImagePath();
+		
+		//TODO - do save to s3 - return image URL, save as image path
+		String key = "betting-slip-" + UUID.randomUUID();
+		s3.putObject(new PutObjectRequest(bucketName, key, new File(imagePath)).withCannedAcl(CannedAccessControlList.PublicRead));
+		String url = s3.getResourceUrl(bucketName, key);
+		logger.info(url);
+			
+		bet.setImagePath(url);				
 		betService.save(bet);
 		
 		attributes.addFlashAttribute("uploadSuccess", "Bet added to queue.");
@@ -295,12 +312,16 @@ public class MainController {
 		
 		//encode image for display
 		String imgSrc = "";
-		try {
-			byte[] bytes = imgService.getBytes(bet.getImagePath());
-			imgSrc = imgService.getImageSource(bytes);	
-			model.addAttribute("imgSrc", imgSrc);
-		} catch (NullPointerException e) {
-			logger.error("Image not found in server!");
+		if (!bet.getImagePath().contains("betting-app1-default-image-store.s3-eu-west-1.amazonaws.com")) {
+			try {
+				byte[] bytes = imgService.getBytes(bet.getImagePath());
+				imgSrc = imgService.getImageSource(bytes);	
+			
+			} catch (NullPointerException e) {
+				logger.error("Image not found in server!");
+			}	
+		} else {
+			imgSrc = bet.getImagePath();
 		}
 		
 		//If bet has been translated already race info for the bet is added
@@ -318,6 +339,7 @@ public class MainController {
 		}
 		
 		// add bet to model, along with horse, race and time info for edit translate purposes
+		model.addAttribute("imgSrc", imgSrc);
 		model.addAttribute("bet", bet);
 		model.addAttribute("tracks", raceService.getTracks());
 		model.addAttribute("horses", horseService.getHorses());
