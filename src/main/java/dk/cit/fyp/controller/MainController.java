@@ -315,13 +315,16 @@ public class MainController {
 		if (!bet.getImagePath().contains("betting-app1-default-image-store.s3-eu-west-1.amazonaws.com")) {
 			try {
 				byte[] bytes = imgService.getBytes(bet.getImagePath());
-				imgSrc = imgService.getImageSource(bytes);	
-			
+				imgSrc = imgService.getImageSource(bytes);
+				logger.info(imgSrc);
+				model.addAttribute("imgSrc", imgSrc);			
 			} catch (NullPointerException e) {
 				logger.error("Image not found in server!");
 			}	
-		} else {
+		} else if (bet.getImagePath().contains("betting-app1-default-image-store.s3-eu-west-1.amazonaws.com")){
 			imgSrc = bet.getImagePath();
+			logger.info(imgSrc);
+			model.addAttribute("imgSrc", imgSrc);  
 		}
 		
 		//If bet has been translated already race info for the bet is added
@@ -339,7 +342,6 @@ public class MainController {
 		}
 		
 		// add bet to model, along with horse, race and time info for edit translate purposes
-		model.addAttribute("imgSrc", imgSrc);
 		model.addAttribute("bet", bet);
 		model.addAttribute("tracks", raceService.getTracks());
 		model.addAttribute("horses", horseService.getHorses());
