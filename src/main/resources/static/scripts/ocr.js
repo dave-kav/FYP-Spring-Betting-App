@@ -1,3 +1,17 @@
+function toDataUrl(url, callback) {
+  var xhr = new XMLHttpRequest();
+  xhr.onload = function() {
+    var reader = new FileReader();
+    reader.onloadend = function() {
+      callback(reader.result);
+    }
+    reader.readAsDataURL(xhr.response);
+  };
+  xhr.open('GET', url);
+  xhr.responseType = 'blob';
+  xhr.send();
+}
+
 $(document).ready(function(){
 	var messageDialog;
 	if ($('#bet-img')[0] != undefined) {
@@ -12,6 +26,11 @@ $(document).ready(function(){
 		});
 		
 		var img = $('#bet-img')[0].src;
+		
+		toDataUrl(img, function(base64Img) {
+			  console.log(base64Img);
+			});
+		
 		var imgData = JSON.stringify(img);
 		
 		//ocr for stake on upload page
