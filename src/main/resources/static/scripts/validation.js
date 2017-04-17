@@ -433,6 +433,12 @@ $("#file").on('change', function() {
 $("#uploadSubmit").click(function(){
 	var errorFree = true;
 	
+	if (!$.isNumeric($("#stake").val())) {
+		$("#stake").addClass("error");
+		errorFree = false;
+		$.dialog('Invalid value!<br>');
+	}
+	
 	if ($("#stake").val() == 0.0) {
 		$("#stake").addClass("error");
 		errorFree = false;

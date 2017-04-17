@@ -1,15 +1,21 @@
-function toDataUrl(url, callback) {
-  var xhr = new XMLHttpRequest();
-  xhr.onload = function() {
-    var reader = new FileReader();
-    reader.onloadend = function() {
-      callback(reader.result);
-    }
-    reader.readAsDataURL(xhr.response);
+function toDataUrl(src, callback, outputFormat) {
+  var img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = function() {
+    var canvas = document.createElement('CANVAS');
+    var ctx = canvas.getContext('2d');
+    var dataURL;
+    canvas.height = this.height;
+    canvas.width = this.width;
+    ctx.drawImage(this, 0, 0);
+    dataURL = canvas.toDataURL(outputFormat);
+    callback(dataURL);
   };
-  xhr.open('GET', url);
-  xhr.responseType = 'blob';
-  xhr.send();
+  img.src = src;
+  if (img.complete || img.complete === undefined) {
+    img.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+    img.src = src;
+  }
 }
 
 $(document).ready(function(){
