@@ -1,7 +1,13 @@
 package dk.cit.fyp.service;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,7 +87,22 @@ public class BetServiceImpl implements BetService {
 					logger.error("Image file not found in server");
 				}
 			} else {
-				imgSrc = bet.getImagePath();
+				BufferedImage img = null;
+				try {
+					img = ImageIO.read(new URL(bet.getImagePath()));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				try {
+					ImageIO.write(img, "jpg", baos);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				byte[] bytes = baos.toByteArray();
+				imgSrc = imgService.getImageSource(bytes);
 			}			
 			 
 			model.addAttribute("imgSrc", imgSrc);
