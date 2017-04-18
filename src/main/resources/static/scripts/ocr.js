@@ -1,21 +1,15 @@
-function toDataUrl(src, callback, outputFormat) {
-  var img = new Image();
-  img.crossOrigin = 'anonymous';
-  img.onload = function() {
-    var canvas = document.createElement('CANVAS');
-    var ctx = canvas.getContext('2d');
-    var dataURL;
-    canvas.height = this.height;
-    canvas.width = this.width;
-    ctx.drawImage(this, 0, 0);
-    dataURL = canvas.toDataURL(outputFormat);
-    callback(dataURL);
+function toDataUrl(url, callback) {
+  var xhr = new XMLHttpRequest();
+  xhr.onload = function() {
+    var reader = new FileReader();
+    reader.onloadend = function() {
+      callback(reader.result);
+    }
+    reader.readAsDataURL(xhr.response);
   };
-  img.src = src;
-  if (img.complete || img.complete === undefined) {
-    img.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
-    img.src = src;
-  }
+  xhr.open('GET', url);
+  xhr.responseType = 'blob';
+  xhr.send();
 }
 
 $(document).ready(function(){
@@ -31,12 +25,7 @@ $(document).ready(function(){
 	 		}
 		});
 		
-		var img = $('#bet-img')[0].src;
-		
-		toDataUrl(img, function(base64Img) {
-			  console.log(base64Img);
-			});
-		
+		var img = $('#bet-img')[0].src;	
 		var imgData = JSON.stringify(img);
 		
 		//ocr for stake on upload page
@@ -67,6 +56,10 @@ $(document).ready(function(){
 		
 		//ocr on translate page
 		else {
+			console.log(imgData);
+			imgData = toDataUrl(img, function(base64Img) {
+				  return base64Img;
+				});
 			$.ajax({
 				type: 'POST',
 				url: 'https://ec2-34-250-24-17.eu-west-1.compute.amazonaws.com/ocr',
