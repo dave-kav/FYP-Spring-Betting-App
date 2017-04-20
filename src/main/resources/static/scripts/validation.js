@@ -356,22 +356,22 @@ $("#customerSubmit").click(function(){
 		$("#dob").removeClass("error");
 	});
 
-	if ($("#username").val() == "") {
-		$("#username").addClass("error");
+	if ($("#user").val() == "") {
+		$("#user").addClass("error");
 		errorFree = false;
 		userNameError = true;
 		errorMessage += "Please enter a value for username.<br>";
 	}
 	
-	if ($("#username").val().length > 24) {
-		$("#username").addClass("error");
+	if ($("#user").val().length > 24) {
+		$("#user").addClass("error");
 		errorFree = false;
 		if (!userNameError)  
 			errorMessage += "Username cannot exceed 24 characters.<br>";
 	}
 	
-	$("#username").change(function() {
-		$("#username").removeClass("error");
+	$("#user").change(function() {
+		$("#user").removeClass("error");
 	});
 
 	if ($("#password").val() == "") {

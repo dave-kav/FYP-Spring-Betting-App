@@ -30,6 +30,12 @@
 				<div class="tab-pane active table-tab" id="1">
 	        		<div class="container">
 	        			<div class="center-content">
+	        				<div th:if="${successMessage}" class="alert alert-success" role="alert">
+			        			<p th:text="${successMessage}" class="text-center"></p>
+			        		</div>
+			        		<div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+			        			<p th:text="${errorMessage}" class="text-center"></p>
+			        		</div>
 		        			<form class="form" th:method="post" th:object="${customer}" th:id="updateBalance" th:action="@{/balance/} + ${customer.username}">
 		        				<div class="form-group row">
 		        					<label for="track" class="col-sm-2 col-form-label">Balance:</label>
@@ -42,9 +48,7 @@
 		        					<div class="col-sm-10">
 		        						<input type="text" class="form-control" th:autofocus="true" th:id="amount" th:name="amount"></input>
 		        					</div>
-		        				</div>
-		        				<p th:if="${successMessage}" th:text="${successMessage}" class="text-success center-content"></p>
-		        				<p th:if="${errorMessage}" th:text="${errorMessage}" class="text-danger center-content"></p>
+		        				</div>		        				
 		        				<div class="center-content buttons">
 			        				<button type="button" class="btn btn-primary" name="deposit" id="deposit" value="deposit">Deposit</button>
 			        				<button type="button" class="btn btn-warning" name="withdraw" id="withdraw" value="withdraw">Withdraw</button>

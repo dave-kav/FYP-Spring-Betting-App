@@ -30,8 +30,17 @@
 			
 					<!-- Right panel -->
 					<div id="left-box" class="row img-rounded">
-						<!-- Display if no image -->
+						<!-- Display if no image -->						
 						<div th:unless="${imgSrc}" class="upload-fields">
+							<div th:if="${noFile}" class="alert alert-danger" role="alert">
+		        				<p th:text="${noFile}" class="text-center"></p>
+		        			</div>
+		        			<div th:if="${wrongFile}" class="alert alert-danger" role="alert">
+		        				<p th:text="${wrongFile}" class="text-center"></p>
+		        			</div>
+		        			<div th:if="${uploadSuccess}" class="alert alert-success" role="alert">
+		        				<p th:text="${uploadSuccess}" class="text-center"></p>
+		        			</div>
 							<form class="form" th:action="@{/upload}" method="post" enctype="multipart/form-data">
 								<div class="form-group">
 								    <label for="inputFile">Upload File</label>
@@ -42,9 +51,6 @@
 								</div>
 								<button type="submit" class="btn btn-primary pull-right">Submit</button>
 							</form>
-							<p th:if="${noFile}" th:text="${noFile}" class="text-danger"></p>
-							<p th:if="${wrongFile}" th:text="${wrongFile}" class="text-danger"></p>
-							<p th:if="${uploadSuccess}" th:text="${uploadSuccess}" class="text-success"></p>
 						</div>
 						<!-- Display to confirm image --> 
 						<div th:if="${imgSrc}" class="upload-fields">
@@ -61,12 +67,7 @@
 								<button id="uploadSubmit" type="submit" class="btn btn-default pull-right">Submit</button>
 							</form>
 						</div>
-					</div>
-					
-					<!-- Panel on bottom right of GUI 
-					<div class="row small-box img-rounded">
-						<p>Bet details go here</p>
-					</div> -->
+					</div>					
 				</div>
 			</div>
 		</div>

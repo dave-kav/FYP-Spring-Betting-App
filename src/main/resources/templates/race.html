@@ -21,8 +21,12 @@
 					<p class="lead" th:text="${race.track}"></p>					
 					<hr class="my-4"></hr>
 					<p th:if="${race.places} > 1" th:text="@{Each Way Terms: } + ${race.terms}"></p>
-					<p th:if="${settleMessage}" th:text="${settleMessage}" class="text-danger text-center"></p>	
-					<p th:if="${errorMessage}" th:text="${errorMessage}" class="text-danger text-center"></p>					
+					<div th:if="${settleMessage}" class="alert alert-danger" role="alert">
+        				<p th:text="${settleMessage}" class="text-center"></p>
+        			</div>
+        			<div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+        				<p th:text="${errorMessage}" class="text-center"></p>
+        			</div>
 				</div>			
 				<!-- <p class="lead text-center"></p>
 				<p class="text-center" th:text="@{Places: } + ${race.places}"></p> -->		

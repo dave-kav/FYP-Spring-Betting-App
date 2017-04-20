@@ -357,7 +357,7 @@ public class MainController {
 	 * @return Redirect to 'review bets' page.
 	 */
 	@RequestMapping(value={"/bets/{betID}"}, method=RequestMethod.POST)
-	public String updateBet(HttpServletRequest request, Principal principal, Bet bet) {
+	public String updateBet(HttpServletRequest request, RedirectAttributes attributes, Principal principal, Bet bet) {
 		logger.info("POST to /bets/'" + bet.getBetID() + "'");
 
 		logger.info("before update: " + bet.toString());
@@ -382,6 +382,7 @@ public class MainController {
 		
 		betService.save(bet);
 		
+		attributes.addFlashAttribute("editBetSuccess", "Successfully updated bet: " + bet.getBetID());
 		return "redirect:/bets/all";
 	}
 	
@@ -426,7 +427,8 @@ public class MainController {
 		
 		logger.info("POST request to '/customers'");
 		customerService.save(customer);
-				
+		
+		attributes.addFlashAttribute("addCustomerSuccess", "Successfully added new customer account!");
 		return "redirect:customers";		
 	}
 	
@@ -455,11 +457,12 @@ public class MainController {
 	 * @return Redirect to customer management interface.
 	 */
 	@RequestMapping(value={"/customers/{username}"}, method=RequestMethod.POST)
-	public String updateCustomer(Customer customer) {
+	public String updateCustomer(Customer customer, RedirectAttributes attributes) {
 		logger.info("POST request to '/customers/'" + customer.getUsername());
 		
 		customerService.save(customer);
 		
+		attributes.addFlashAttribute("addCustomerSuccess", "Successfully updated account details for: " + customer.getUsername());
 		return "redirect:/customers";
 	}
 	

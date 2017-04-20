@@ -79,23 +79,28 @@
 						<!-- Panel on bottom right of GUI -->
 						<div class="row small-box img-rounded">
 							<div th:if="${img}" class="fields">
-								<p th:if="${queue}" id="bets-left" class="h3">Bets in queue:
-									<small class="text-muted" th:text="${queue}"></small>
-								</p>
-								<h4>Bet Details</h4>
-								<p class="h5">Betting Slip No:
-									<small class="text-muted" th:text="${bet.betID}"></small>
-								</p>
-								<p class="h5">Time Placed:
-									<small class="text-muted" th:text="${bet.timePlaced}"></small>
-								</p>
-								<p class="h3">Stake:
-									<small class="text-muted" th:text="${bet.stake}"></small>
-								</p>
+								<div th:if="${queue}" class="alert alert-warning" role="alert">
+					   				<p class="h3">Bets in queue:
+										<small class="text-muted" th:text="${queue}"></small>
+									</p>
+					   			</div>
+					   			<div class="alert alert-info" role="alert">
+					   				<h4>Bet Details</h4>
+									<p class="h5">Betting Slip No:
+										<small class="text-muted" th:text="${bet.betID}"></small>
+									</p>
+									<p class="h5">Time Placed:
+										<small class="text-muted" th:text="${bet.timePlaced}"></small>
+									</p>
+									<p class="h3">Stake:
+										<small class="text-muted" th:text="${bet.stake}"></small>
+									</p>
+					   			</div>								
 							</div>
-							<div th:unless="${img}" class="fields">
-								<h4 class="no-bets-translate">No bets left to translate</h4>
-							</div>
+							<div th:unless="${img}" class="alert alert-success" role="alert">
+								<h4 class="alert-heading">Queue Empty!</h4>
+								There are currently no more bets awaiting translation.
+							</div>							
 						</div>
 					</div>
 				</div>

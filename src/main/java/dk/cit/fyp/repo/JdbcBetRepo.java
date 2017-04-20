@@ -115,7 +115,7 @@ public class JdbcBetRepo implements BetDAO {
 	@Override
 	public int getNumUntranslated() {
 		String sql = "SELECT COUNT(*) FROM Bets "
-					+ "WHERE Translated=0";
+					+ "WHERE Translated=0 AND Oc_screen=0";
 		return jdbcTemplate.queryForObject(sql, Integer.class);
 	}
 

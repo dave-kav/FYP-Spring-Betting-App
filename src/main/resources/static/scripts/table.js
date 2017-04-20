@@ -75,8 +75,8 @@ $(document).ready(function($) {
 				dataType: 'json',
 				data: {'password':$('#passwd').val()},
 				success: function(result) {
-					$('#passwd').val("")
-					$('#confirm').val("")
+					$('#passwd').val("");
+					$('#confirm').val("");
 					$.confirm({
 						type: 'green',
 						title: 'Success!',
@@ -100,7 +100,12 @@ $(document).ready(function($) {
 				}
 			});     		
     	}
-    });    
+    });   
+    
+    $('#close-btn').click(function() {
+    	$('#passwd').val("");
+		$('#confirm').val("");
+    });
 });
 
 function validatePasswordFields() {
@@ -109,17 +114,20 @@ function validatePasswordFields() {
 
 	if ($('#passwd').val().length < 8) {
 		errors += "Password must be 8 characters minimum.";
+		$('#error-modal').removeClass('hidden')
 		errorFree = false;
 	}
 	
 	if ($('#passwd').val().length > 100) {
 		errors += "Please must not exceed 100 characters.";
+		$('#error-modal').removeClass('hidden')
 		errorFree = false;
 	}	
 	
 	if ($('#passwd').val() != $('#confirm').val()) {
 		if (errorFree) {
 			errors += "Passwords do not match.";
+			$('#error-modal').removeClass('hidden')
 		}
 	}	 
 	

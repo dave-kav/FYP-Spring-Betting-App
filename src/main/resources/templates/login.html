@@ -15,7 +15,9 @@
 			
 		<div class="wrapper">
 			<div class="container1">
-				<h4 class="text-danger" th:if="${loginError}">Invalid username or password!</h4>
+				<div th:if="${loginError}" class="alert alert-warning" role="alert">
+					<p>Invalid username or password!</p>
+	   			</div>
 				<form th:action="@{/login}" method="post">
 					<input type="text" name="username" placeholder="Username" th:autofocus="true"></input>
 					<input type="password" name="password" placeholder="Password"></input>
