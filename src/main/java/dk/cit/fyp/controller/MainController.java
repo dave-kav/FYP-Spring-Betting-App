@@ -234,9 +234,9 @@ public class MainController {
 		model.addAttribute("bet", new Bet());
 		model.addAttribute("imgSrc", imgSrc);
 
-		//temporary store for display 
+		//pass image for storage
         String filePath = path  + fileName;
-		imgService.storeLastImgPath(filePath); 
+		model.addAttribute("filePath", filePath);
 		
         return "upload";  
 	}
@@ -252,18 +252,19 @@ public class MainController {
 	 * @return Redirect to upload page.
 	 */
 	@RequestMapping(value={"/confirmUpload"}, method=RequestMethod.POST)
-	public String confirmUpload(Model model, Principal principal, Bet bet, BindingResult bindingResult, RedirectAttributes attributes) {		
+	public String confirmUpload(Model model, Principal principal, Bet bet, BindingResult bindingResult, RedirectAttributes attributes, 
+								HttpServletRequest request) {		
 		if (bindingResult.hasErrors())
 			return "redirect:/upload";
 		
 		model.addAttribute("userName", principal.getName());
 		model.addAttribute("uploadPage", true);
 		
-		String imagePath = imgService.getLastImagePath();
+		String filePath = request.getParameter("filePath");
 		
 		//TODO - do save to s3 - return image URL, save as image path
 		String key = "betting-slip-" + UUID.randomUUID();
-		s3.putObject(new PutObjectRequest(bucketName, key, new File(imagePath)).withCannedAcl(CannedAccessControlList.PublicRead));
+		s3.putObject(new PutObjectRequest(bucketName, key, new File(filePath)).withCannedAcl(CannedAccessControlList.PublicRead));
 		String url = s3.getResourceUrl(bucketName, key);
 		logger.info(url);
 			

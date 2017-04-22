@@ -30,17 +30,32 @@ $(document).ready(function($) {
         						text: 'Delete',
             					btnClass: 'btn-red',
         						action: function() {
-        							if (username != $('#username')[0].outerText) {
-        								$.post('/users/delete/' + username, function(){
-            								var tableRow = $("td").filter(function() {
-            								    return $(this).text() == username;
-            								}).closest("tr");
-            								tableRow.fadeOut();
-            								tableRow.remove();  
-            							})
-        							} else {
-        								$.dialog("Can't delete currently logged in user!");
-        							}        							
+        							$.confirm({
+        								type: 'red',
+        								title: 'Delete User?',
+        								content: 'This action cannot be undone, are you really sure?',
+        								buttons: {
+        									confirm: {
+        										btnClass: 'btn-red',
+        										action: function() {
+        											if (username != $('#username')[0].outerText) {
+        		        								$.post('/users/delete/' + username, function(){
+        		            								var tableRow = $("td").filter(function() {
+        		            								    return $(this).text() == username;
+        		            								}).closest("tr");
+        		            								tableRow.fadeOut();
+        		            								tableRow.remove();  
+        		            							})
+        		        							} else {
+        		        								$.dialog("Can't delete currently logged in user!");
+        		        							}
+        										}
+        									},
+        									cancel: function() {
+        										
+        									}
+        								}
+        							});        							
         						}
         					},
         					cancel: function() {        						

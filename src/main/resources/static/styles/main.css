@@ -24,6 +24,8 @@ html, body {
 
 .bet-img {
 	width: 95%;
+	margin-top: 20px;
+	margin-left: 15px;
 }
 
 #bet-placeholder {
