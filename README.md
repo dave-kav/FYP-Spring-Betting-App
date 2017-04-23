@@ -7,9 +7,11 @@ Spring Boot application
 Betting Management Application
 
 ### Description ###
+Betting management application that incorporates OCR technology to aid in Bet Translation. OCR element of the system is hosted separately on AWS.
 
 #### Prod. Env. ####
 https://betting-app1.herokuapp.com/login
+
 User: Dave_kavanagh
 Pass: 12121212
 
