@@ -26,9 +26,9 @@ public class GlobalExceptionHandler {
 		return "redirect:upload";
 	}
 	
-//	@ExceptionHandler(NullPointerException.class)
-//	public String handleReleaseImageException(NullPointerException e) {
-//		logger.error(e.getMessage());
-//		return "error";
-//	}
+	@ExceptionHandler(NullPointerException.class)
+	public String handleReleaseImageException(NullPointerException e) {
+		logger.error(e.getMessage());
+		return "error";
+	}
 }

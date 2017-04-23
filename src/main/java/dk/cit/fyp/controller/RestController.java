@@ -366,6 +366,8 @@ public class RestController {
 	public String updateUserPassword(HttpServletRequest request, @PathVariable(value="username") String username) {
 		User user = userService.get(username).get(0);
 		
+		String pass = request.getParameter("password");
+		logger.info(pass);
 		user.setPassword(request.getParameter("password"));
 		userService.save(user);
 		

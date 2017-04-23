@@ -82,13 +82,14 @@ $(document).ready(function($) {
     		$('#modal-error').text(error);
     	} else {
     		// close modal and display dialog
+    		var password = $('#passwd').val();
     		$('#close-btn')[0].click();
-    		
+
     		$.ajax({
 				type: 'POST',
 				url: 'api/user/' + username,
 				dataType: 'json',
-				data: {'password':$('#passwd').val()},
+				data: {'password':password},
 				success: function(result) {
 					$('#passwd').val("");
 					$('#confirm').val("");

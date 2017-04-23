@@ -84,6 +84,11 @@
 										<small class="text-muted" th:text="${queue}"></small>
 									</p>
 					   			</div>
+					   			<div th:unless="${queue}" class="alert alert-warning" role="alert">
+					   				<p class="h3">Bets in queue:
+										<small class="text-muted">0</small>
+									</p>
+					   			</div>
 					   			<div class="alert alert-info" role="alert">
 					   				<h4>Bet Details</h4>
 									<p class="h5">Betting Slip No:
