@@ -2,9 +2,7 @@
 
 Spring Boot application
 
-### What is this repository for? ###
-
-Betting Management Application
+## Betting Management Application ##
 
 ### Description ###
 Betting management application that incorporates OCR technology to aid in Bet Translation. OCR element of the system is hosted separately on AWS.
