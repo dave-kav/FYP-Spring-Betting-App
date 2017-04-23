@@ -20,8 +20,6 @@ public interface BetService {
 	
 	int getNumUntranslated();
 	
-	Model getNext(Model model, User user);
-	
 	List<Bet> findAll();
 	
 	List<Bet> findAllOpen();

@@ -1,27 +1,18 @@
 package dk.cit.fyp.service;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
-import dk.cit.fyp.bean.UserBetBean;
 import dk.cit.fyp.domain.Bet;
 import dk.cit.fyp.domain.Customer;
 import dk.cit.fyp.domain.Horse;
 import dk.cit.fyp.domain.Race;
 import dk.cit.fyp.domain.Status;
-import dk.cit.fyp.domain.User;
 import dk.cit.fyp.repo.BetDAO;
 
 @Service
@@ -31,16 +22,12 @@ public class BetServiceImpl implements BetService {
 	@Autowired
 	private BetDAO betRepo;
 	@Autowired
-	private ImageService imgService;
-	@Autowired
 	private CustomerService customerService;
-	@Autowired
-	private UserBetBean userBetBean;
 	
 	@Autowired
-	public BetServiceImpl(BetDAO betRepo, ImageService imgService) {
+	public BetServiceImpl(BetDAO betRepo, CustomerService customerService) {
 		this.betRepo = betRepo;
-		this.imgService = imgService;
+		this.customerService = customerService;
 	}
 
 	@Override
@@ -66,56 +53,6 @@ public class BetServiceImpl implements BetService {
 	@Override
 	public int getNumUntranslated() {
 		return betRepo.getNumUntranslated();
-	}
-	
-	@Override
-	public Model getNext(Model model, User user) {
-		List<Bet> bets = betRepo.top();
-		if (bets.size() != 0) {
-			Bet bet = bets.get(0);
-			userBetBean.setBet(user.getUsername(), bet);
-			onScreen(bet);
-			
-			logger.info("Loading image for bet_id " + bet.getBetID());
-			String imgSrc = "";
-			if (!bet.getImagePath().contains("betting-app1-default-image-store.s3-eu-west-1.amazonaws.com")) {
-				logger.info(bet.getImagePath());
-				try {
-					byte[] bytes = imgService.getBytes(bet.getImagePath());
-					imgSrc = imgService.getImageSource(bytes);					
-				} catch (NullPointerException e) {
-					logger.error("Image file not found in server");
-				}
-			} else {
-				BufferedImage img = null;
-				try {
-					img = ImageIO.read(new URL(bet.getImagePath()));
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				try {
-					ImageIO.write(img, "jpg", baos);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				byte[] bytes = baos.toByteArray();
-				imgSrc = imgService.getImageSource(bytes);
-			}			
-			 
-			model.addAttribute("imgSrc", imgSrc);
-			model.addAttribute("img", true);
-			model.addAttribute("bet", bet);
-			model.addAttribute("race", new Race());
-			model.addAttribute("queue", getNumUntranslated());
-		}
-		else {
-			model.addAttribute("race", new Race());
-			model.addAttribute("bet", new Bet());
-		}
-		return model;
 	}
 	
 	@Override

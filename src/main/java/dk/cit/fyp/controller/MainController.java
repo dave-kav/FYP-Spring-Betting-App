@@ -1,12 +1,17 @@
 package dk.cit.fyp.controller;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -31,6 +36,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
+import dk.cit.fyp.bean.UserBetBean;
 import dk.cit.fyp.domain.Bet;
 import dk.cit.fyp.domain.Customer;
 import dk.cit.fyp.domain.Horse;
@@ -69,6 +75,8 @@ public class MainController {
 	CustomerService customerService;
 	@Autowired
 	AmazonS3Client s3;
+	@Autowired
+	UserBetBean userBetBean;
 	
 	@Value("${cloud.aws.bucket.name}")
     private String bucketName;
@@ -113,8 +121,64 @@ public class MainController {
 		model.addAttribute("userName", principal.getName());
 		model.addAttribute("translatePage", true);
 		
-		model = betService.getNext(model, user);
+		// get next bet in queue, if one exists
+		List<Bet> bets = betService.top();
+		if (bets.size() != 0) {
+			Bet bet = bets.get(0);
+			// add mapping for user and bet - used to manage queue
+			userBetBean.setBet(user.getUsername(), bet);
+			betService.onScreen(bet);
 		
+			logger.info("Loading image for bet_id " + bet.getBetID());
+			
+			String imgSrc = "";
+			if (!bet.getImagePath().contains("betting-app1-default-image-store.s3-eu-west-1.amazonaws.com")) {
+				
+				logger.info(bet.getImagePath());
+				
+				try {
+					byte[] bytes = imgService.getBytes(bet.getImagePath());
+					imgSrc = imgService.getImageSource(bytes);					
+				} catch (NullPointerException e) {
+					logger.error("Image file not found in server");
+				}
+			} else {
+				
+				BufferedImage img = null;
+				
+				try {
+					img = ImageIO.read(new URL(bet.getImagePath()));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				
+				try {
+					ImageIO.write(img, "jpg", baos);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				byte[] bytes = baos.toByteArray();
+				imgSrc = imgService.getImageSource(bytes);
+			}			
+			 
+			model.addAttribute("imgSrc", imgSrc);
+			model.addAttribute("img", true);
+			model.addAttribute("bet", bet);
+			model.addAttribute("race", new Race());
+			model.addAttribute("queue", betService.getNumUntranslated());
+		}
+		else {
+			//empty objects used in fields 
+			model.addAttribute("race", new Race());
+			model.addAttribute("bet", new Bet());
+		}
+		
+		// add data for translate fields
 		model.addAttribute("tracks", raceService.getTracks());
 		model.addAttribute("horses", horseService.getHorses());
 		model.addAttribute("times", raceService.getTimes());
@@ -242,7 +306,7 @@ public class MainController {
 	}
 	
 	/**
-	 * Used to process uploaded image, saving new bet to database.
+	 * Used to process uploaded image, saving new bet to database, and storing image in S3.
 	 * 
 	 * @param model Model object used to pass data to client side for display.
 	 * @param principal Principal object user to obtain logged in user details.
@@ -262,12 +326,10 @@ public class MainController {
 		
 		String filePath = request.getParameter("filePath");
 		
-		//TODO - do save to s3 - return image URL, save as image path
 		String key = "betting-slip-" + UUID.randomUUID();
 		s3.putObject(new PutObjectRequest(bucketName, key, new File(filePath)).withCannedAcl(CannedAccessControlList.PublicRead));
 		String url = s3.getResourceUrl(bucketName, key);
-		logger.info(url);
-			
+		
 		bet.setImagePath(url);				
 		betService.save(bet);
 		

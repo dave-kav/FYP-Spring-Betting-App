@@ -29,7 +29,10 @@ $(document).ready(function($) {
 										closeFunc: {
 											text: 'Close',
 											btnClass: 'btn-green',
-											keys: ['enter']
+											keys: ['enter'],
+											action: function() {
+												location.reload();
+											}
 										}
 									},
 								});
