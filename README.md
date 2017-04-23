@@ -4,17 +4,17 @@ Spring Boot application
 
 ### What is this repository for? ###
 
-Betting Management and OCR APP
+Betting Management Application
 
-### ToDo ###
+### Description ###
 
-* Create front end for image selection/translation
-    * Decide how to store images
-* Interface for reviewing translated bets
-    * Draw up designs for interfaces
-* Create admin interface for entering new horse races/selecting winners/adding employees
-    * When selection made a winner all bets to be 'settled'
+#### Prod. Env. ####
+https://betting-app1.herokuapp.com/login
+User: Dave_kavanagh
+Pass: 12121212
 
+User: Dave_admin
+Pass: 12121212
 ### Author ###
 
 Dave Kavanagh, CIT.
