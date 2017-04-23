@@ -1,8 +1,6 @@
-# README #
+# Betting Management Application #
 
 Spring Boot application
-
-## Betting Management Application ##
 
 ### Description ###
 Betting management application that incorporates OCR technology to aid in Bet Translation. OCR element of the system is hosted separately on AWS.
