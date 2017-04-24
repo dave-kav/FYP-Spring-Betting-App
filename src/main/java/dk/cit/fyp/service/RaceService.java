@@ -16,7 +16,7 @@ public interface RaceService {
 
 	List<String> getTracks();
 	
-	List<String> getTimes();
+	List<Race> getRaceTimes();
 
 	List<String> getTimesByTrack(String track);
 

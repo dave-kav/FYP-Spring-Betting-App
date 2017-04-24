@@ -102,16 +102,10 @@ public class JdbcRaceRepo implements RaceDAO {
 	}
 	
 	@Override
-	public List<String> getTimes() {
-		String sql = "SELECT DISTINCT Time FROM Races ORDER BY Time";
+	public List<Race> getRaceTimes() {
+		String sql = "SELECT * FROM Races ORDER BY Time";
 		
-		return jdbcTemplate.query(sql, new RowMapper<String>(){
-
-			@Override
-			public String mapRow(ResultSet rs, int rowNum) throws SQLException {
-				return rs.getString(1);
-			}
-		});
+		return jdbcTemplate.query(sql, new RaceRowMapper());
 
 	}
 

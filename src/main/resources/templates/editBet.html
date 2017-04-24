@@ -60,7 +60,7 @@
 									    	<input th:if="${bet.paid} OR ${bet.onlineBet}" type="time" class="form-control" th:id="time" th:name="time" th:value="${race.time}" th:field="*{race.time}" th:list="timesList" th:disabled="true"></input>
 									    	<input th:unless="${bet.paid} OR ${bet.onlineBet}" type="time" class="form-control" th:id="time" th:name="time" th:value="${race.time}" th:field="*{race.time}" th:list="timesList"></input>
 									    	<datalist th:id="timesList">
-									    		<option th:each="time: ${times}" th:value="${time}" th:text="${time}"></option>
+									    		<option th:each="r: ${times}" th:value="${r.time}" th:label="${r.track}"></option>
 									    	</datalist>
 									    </div>
 									</div>

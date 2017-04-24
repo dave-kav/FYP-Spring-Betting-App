@@ -44,7 +44,8 @@ $(document).ready(function($) {
         		            								    return $(this).text() == username;
         		            								}).closest("tr");
         		            								tableRow.fadeOut();
-        		            								tableRow.remove();  
+        		            								tableRow.remove();
+        		            								location.href="/admin?tab=4";
         		            							})
         		        							} else {
         		        								$.dialog("Can't delete currently logged in user!");

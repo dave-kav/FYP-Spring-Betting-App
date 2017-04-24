@@ -181,7 +181,7 @@ public class MainController {
 		// add data for translate fields
 		model.addAttribute("tracks", raceService.getTracks());
 		model.addAttribute("horses", horseService.getHorses());
-		model.addAttribute("times", raceService.getTimes());
+		model.addAttribute("times", raceService.getRaceTimes());
 		
 		return "translate";
 	}
@@ -408,7 +408,7 @@ public class MainController {
 		model.addAttribute("bet", bet);
 		model.addAttribute("tracks", raceService.getTracks());
 		model.addAttribute("horses", horseService.getHorses());
-		model.addAttribute("times", raceService.getTimes());
+		model.addAttribute("times", raceService.getRaceTimes());
 		
 		return "editBet";
 	}

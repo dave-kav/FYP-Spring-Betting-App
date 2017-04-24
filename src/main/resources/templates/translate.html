@@ -36,7 +36,7 @@
 									    <div class="col-sm-10">
 									    	<input type="time" class="form-control" th:id="time" th:name="time" th:field="*{race.time}" th:autofocus="true" th:list="timesList" onClick="this.select()"></input>
 									    	<datalist th:id="timesList">
-									    		<option th:each="time: ${times}" th:value="${time}" th:text="${time}"></option>
+									    		<option th:each="r: ${times}" th:value="${r.time}" th:label="${r.track}"></option>
 									    	</datalist>
 									    </div>
 									</div>
@@ -102,10 +102,12 @@
 									</p>
 					   			</div>								
 							</div>
-							<div th:unless="${img}" class="alert alert-success" role="alert">
-								<h4 class="alert-heading">Queue Empty!</h4>
-								There are currently no more bets awaiting translation.
-							</div>							
+							<div th:unless="${img}" class="fields">
+								<div class="alert alert-success" role="alert">
+									<h4 class="alert-heading">Queue Empty!</h4>
+									There are currently no more bets awaiting translation.
+								</div>							
+							</div>
 						</div>
 					</div>
 				</div>

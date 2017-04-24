@@ -68,8 +68,8 @@ public class RaceServiceImpl implements RaceService {
 	}
 	
 	@Override
-	public List<String> getTimes() {
-		return raceRepo.getTimes();
+	public List<Race> getRaceTimes() {
+		return raceRepo.getRaceTimes();
 	}
 
 	@Override

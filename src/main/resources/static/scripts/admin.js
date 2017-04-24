@@ -20,6 +20,14 @@ else if (activeTab == 3) {
 	$('#l3').addClass("active");
 }
 
+else if (activeTab == 4) {
+	$('#1').removeClass("active");
+	$('#l1').removeClass("active");
+	$('#4').addClass("active");
+	$('#l4').addClass("active");
+}
+
+
 //validate add race form
 $("#addRace").click(function() {
 	var errors = false;
