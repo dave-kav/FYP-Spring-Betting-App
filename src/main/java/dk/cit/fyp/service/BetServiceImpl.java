@@ -111,10 +111,17 @@ public class BetServiceImpl implements BetService {
 		}
 		
 		if (race.getPlaces() > 1) {
+			
 			List<Bet> placeBets = getEachWayBets(race);
+			
+			List<Horse> winAndPlace = new ArrayList<>();
+			winAndPlace.add(race.getWinner());
+			for (Horse h: race.getPlacedHorses())
+				winAndPlace.add(h);
+			
 			if (placeBets.size() > 0) {
 				for (Bet b: placeBets) {
-					settleEachWay(b, race);
+					settleEachWay(b, race, winAndPlace);
 				}
 			}
 		}
@@ -167,7 +174,7 @@ public class BetServiceImpl implements BetService {
 	 * @param placedHorses Horses that placed in the race, used to settle place part of each way bet
 	 */
 	@Async
-	private void settleEachWay(Bet bet, Race race) {
+	private void settleEachWay(Bet bet, Race race, List<Horse> winAndPlace) {
 		logger.info("bet: " + bet.getBetID());
 		double stake = bet.getStake() / 2;
 		double winnings = 0;
@@ -180,11 +187,6 @@ public class BetServiceImpl implements BetService {
 		logger.info("denom:" + denom);
 		boolean placed = false;
 		
-		List<Horse> winAndPlace = new ArrayList<>();
-		winAndPlace.add(race.getWinner());
-		for (Horse h: race.getPlacedHorses())
-			winAndPlace.add(h);
-		
 		//calculate place winnings
 		for (Horse h: winAndPlace) {
 			if (Integer.parseInt(bet.getSelection()) == h.getSelectionID()) {
@@ -195,15 +197,9 @@ public class BetServiceImpl implements BetService {
 				logger.info("rounded: " + winnings);
 				bet.setWinnings(roundedWinnings);
 				bet.setStatus(Status.PLACED);
-				if (!bet.getCustomerID().equals("0")) {
-					Customer c = customerService.get(bet.getCustomerID()).get(0);
-					c.setCredit(c.getCredit() + bet.getWinnings());
-					customerService.save(c);
-					bet.setPaid(true);
-				}
-				betRepo.save(bet);
 				logger.info("settleEachWay - placed: " + bet.toString());
 				placed = true;
+				break;
 			}
 		}
 		
@@ -215,21 +211,20 @@ public class BetServiceImpl implements BetService {
 			bet.setWinnings(roundedWinnings);
 			logger.info("rounded: " + winnings);
 			bet.setStatus(Status.WINNER);
-			if (!bet.getCustomerID().equals("0")) {
-				Customer c = customerService.get(bet.getCustomerID()).get(0);
-				c.setCredit(c.getCredit() + bet.getWinnings());
-				customerService.save(c);
-				bet.setPaid(true);
-				logger.info("settleEachWay - win: " + bet.toString());
-			}
-			betRepo.save(bet);
 		}
 		else {
 			if (!placed) {
-				bet.setStatus(Status.LOSER);
-				betRepo.save(bet);
+				bet.setStatus(Status.LOSER);				
 			}
 		}
+		
+		if (!bet.getCustomerID().equals("0") && bet.getStatus() != Status.LOSER) {
+			Customer c = customerService.get(bet.getCustomerID()).get(0);
+			c.setCredit(c.getCredit() + bet.getWinnings());
+			customerService.save(c);
+			bet.setPaid(true);
+		}
+		betRepo.save(bet);
 	}
 
 	@Override
