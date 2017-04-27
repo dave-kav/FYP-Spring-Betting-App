@@ -148,6 +148,4 @@ public class BetController {
 		attributes.addFlashAttribute("editBetSuccess", "Successfully updated bet: " + bet.getBetID());
 		return "redirect:/bets/all";
 	}
-	
-
 }
