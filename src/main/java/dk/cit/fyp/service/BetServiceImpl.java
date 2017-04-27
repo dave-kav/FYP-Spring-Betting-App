@@ -133,7 +133,7 @@ public class BetServiceImpl implements BetService {
 	 * @param winner winning horse in race to which bet applies
 	 */
 	@Async
-	private void settleWin(Bet bet, Horse winner) {	
+	protected void settleWin(Bet bet, Horse winner) {	
 		double winnings = 0;
 		double roundedWinnings = 0;
 		double stake = bet.getStake();
@@ -174,7 +174,7 @@ public class BetServiceImpl implements BetService {
 	 * @param placedHorses Horses that placed in the race, used to settle place part of each way bet
 	 */
 	@Async
-	private void settleEachWay(Bet bet, Race race, List<Horse> winAndPlace) {
+	protected void settleEachWay(Bet bet, Race race, List<Horse> winAndPlace) {
 		logger.info("bet: " + bet.getBetID());
 		double stake = bet.getStake() / 2;
 		double winnings = 0;
