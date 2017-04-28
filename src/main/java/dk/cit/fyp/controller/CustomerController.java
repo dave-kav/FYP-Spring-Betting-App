@@ -140,7 +140,7 @@ public class CustomerController {
 			}
 			// not enough credit
 			else {
-				attributes.addFlashAttribute("errorMessage", "Insufficient Credit - Max withdrawal: " + customer.getCredit());
+				attributes.addFlashAttribute("errorMessage", String.format("Insufficient Credit - Max withdrawal: \u20ac%.2f", customer.getCredit()));
 				return "redirect:/customers/" + username;
 			}
 		}

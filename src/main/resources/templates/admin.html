@@ -116,6 +116,9 @@
 			        		<div th:if="${errorRaceMessage}" class="alert alert-danger" role="alert">
 			        			<p th:text="${errorRaceMessage}" class="text-center"></p>
 			        		</div>
+			        		<div th:if="${blankName}" class="alert alert-danger" role="alert">
+			        			<p th:text="${blankName}" class="text-center"></p>
+			        		</div>
 		        			<p class="lead">Add a new race</p>
 		        			<form class="form" th:action="@{/races}" th:method="post" th:object="${tempRace}">
 		        				<div class="form-group row">
