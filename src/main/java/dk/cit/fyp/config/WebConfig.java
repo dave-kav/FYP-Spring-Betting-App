@@ -15,7 +15,7 @@ import dk.cit.fyp.interceptor.ReleaseImageInterceptor;
  *
  */
 @Configuration
-public class WebConfig extends WebMvcConfigurerAdapter{
+public class WebConfig extends WebMvcConfigurerAdapter {
 
 	/**
 	 * Adds interceptor to registry of interceptors which pre processes requests 

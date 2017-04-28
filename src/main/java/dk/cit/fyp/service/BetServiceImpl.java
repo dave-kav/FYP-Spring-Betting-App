@@ -127,28 +127,57 @@ public class BetServiceImpl implements BetService {
 		}
 	}
 	
+	@Override
+	public double getWinBasicFactor(String oddString) {
+		String odds[] = oddString.split("/");
+		double oddVals[] = {Double.parseDouble(odds[0]), Double.parseDouble(odds[1])};
+		return (oddVals[0] / oddVals[1]) + 1;
+	}
+	
+	@Override
+	public double getEachWayBasicFactor(String oddString, double terms) {
+		String odds[] = oddString.split("/");
+		double oddVals[] = {Double.parseDouble(odds[0]), Double.parseDouble(odds[1])};
+		
+		return ((oddVals[0] / oddVals[1]) * terms) + 1 ;
+	}
+	
+	@Override
+	public double winSettle(String odds, double stake) {
+		double winnings = 0;
+				
+		double basicFactor = getWinBasicFactor(odds); 
+		winnings =  basicFactor * stake;  
+		winnings = Math.round(winnings * 100.0) / 100.0;
+		
+		return winnings;
+	}
+	
+	@Override
+	public double eachWaySettle(String odds, double stake, double terms) {
+		double winnings = 0;
+		
+		stake = stake / 2;			
+		double basicFactor = getEachWayBasicFactor(odds, terms);
+				
+		winnings =  basicFactor * stake;  
+		winnings = Math.round(winnings * 100.0) / 100.0;
+		
+		return winnings;
+	}
+	
 	/**
 	 * Settles 'win only' bets. Formula used to calculate applies business logic of 'basic factors'
 	 * @param bet The bet on which to calculate winnings if appropriate and set status
 	 * @param winner winning horse in race to which bet applies
 	 */
 	@Async
-	protected void settleWin(Bet bet, Horse winner) {	
-		double winnings = 0;
-		double roundedWinnings = 0;
-		double stake = bet.getStake();
-		String odds[] = bet.getOdds().split("/");
-		double oddVals[] = new double[2]; 
-		oddVals[0] = Double.parseDouble(odds[0]);
-		oddVals[1] = Double.parseDouble(odds[1]);
-		
+	protected void settleWin(Bet bet, Horse winner) {					
 		//check horse on which bet has been placed is the winner of the race 
 		if (Integer.parseInt(bet.getSelection()) == winner.getSelectionID()) {
 			//business logic of calculating winnings using basic factor
-			winnings = ((oddVals[0] / oddVals[1]) + 1 ) * stake;  
-			
-			roundedWinnings = Math.round(winnings * 100.0) / 100.0;
-			bet.setWinnings(roundedWinnings);
+			double winnings = winSettle(bet.getOdds(), bet.getStake());
+			bet.setWinnings(winnings);
 			bet.setStatus(Status.WINNER);
 			if (!bet.getCustomerID().equals("0")) {
 				Customer c = customerService.get(bet.getCustomerID()).get(0);
@@ -176,26 +205,17 @@ public class BetServiceImpl implements BetService {
 	@Async
 	protected void settleEachWay(Bet bet, Race race, List<Horse> winAndPlace) {
 		logger.info("bet: " + bet.getBetID());
-		double stake = bet.getStake() / 2;
 		double winnings = 0;
-		double roundedWinnings = 0;
-		String odds[] = bet.getOdds().split("/");
-		double oddVals[] = new double[2]; 
-		oddVals[0] = Double.parseDouble(odds[0]);
-		oddVals[1] = Double.parseDouble(odds[1]);
-		double denom = oddVals[1] / race.getTerms();
-		logger.info("denom:" + denom);
 		boolean placed = false;
 		
 		//calculate place winnings
 		for (Horse h: winAndPlace) {
 			if (Integer.parseInt(bet.getSelection()) == h.getSelectionID()) {
 
-				winnings = ((oddVals[0] / denom) + 1 ) * stake;
+				winnings = eachWaySettle(bet.getOdds(), bet.getStake(), race.getTerms());
 				logger.info("place winnings: " + winnings);
-				roundedWinnings = Math.round(winnings * 100.0) / 100.0;
 				logger.info("rounded: " + winnings);
-				bet.setWinnings(roundedWinnings);
+				bet.setWinnings(winnings);
 				bet.setStatus(Status.PLACED);
 				logger.info("settleEachWay - placed: " + bet.toString());
 				placed = true;
@@ -205,10 +225,9 @@ public class BetServiceImpl implements BetService {
 		
 		//calculate win part if applicable
 		if (Integer.parseInt(bet.getSelection()) == race.getWinner().getSelectionID()) {
-			winnings += ((oddVals[0] / oddVals[1]) + 1 ) * stake;
+			winnings += winSettle(bet.getOdds(), bet.getStake()/2);
 			logger.info("win winnings: " + winnings);
-			roundedWinnings = Math.round(winnings * 100.0) / 100.0;
-			bet.setWinnings(roundedWinnings);
+			bet.setWinnings(winnings);
 			logger.info("rounded: " + winnings);
 			bet.setStatus(Status.WINNER);
 		}

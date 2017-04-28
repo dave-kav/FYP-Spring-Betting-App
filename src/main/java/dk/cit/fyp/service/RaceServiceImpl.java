@@ -22,31 +22,50 @@ public class RaceServiceImpl implements RaceService {
 	public Race get(int raceID) {
 		return raceRepo.get(raceID);
 	}
+	
+	/**
+	 * Business logic to calculate each way places
+	 * @param runners
+	 * @return
+	 */
+	public int getPlaces(int runners) {
+		if (runners < 4) {
+			return 1;
+		} else if (runners < 8) {
+			return 2;
+		} else if (runners < 12) {
+			return 3;
+		} else if (runners < 16) {
+			return 3; 
+		} else {
+			return 4; 
+		}	
+	}
+	/**
+	 * Business logic to calculate each way bet terms
+	 * @param runners - runners in race
+	 * @return each way terms
+	 */
+	public double getTerms(int runners) {
+		if (runners < 4) {
+			return  0;
+		} else if (runners < 8) {
+			return  0.25;
+		} else if (runners < 12) {
+			return  0.2;
+		} else if (runners < 16) {
+			return  0.25;
+		} else {
+			return 0.25;
+		}	
+	}
 
 	@Override
 	public void save(Race race) {
 		int runners = race.getRunners();
-		int places;
-		double terms;
-		
-		//business logic to calculate each way bet places and terms
-		if (runners < 4) {
-			places = 1;
-			terms = 0;
-		} else if (runners < 8) {
-			places = 2;
-			terms = 0.25;
-		} else if (runners < 12) {
-			places = 3;
-			terms = 0.2;
-		} else if (runners < 16) {
-			places = 3; 
-			terms = 0.25;
-		} else {
-			places = 4; 
-			terms = 0.25;
-		}	
-		
+		int places = getPlaces(runners);
+		double terms = getTerms(runners);
+				
 		race.setPlaces(places);
 		race.setTerms(terms);
 		raceRepo.save(race);
